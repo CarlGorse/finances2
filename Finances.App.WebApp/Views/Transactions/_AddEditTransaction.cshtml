@@ -1,0 +1,100 @@
+﻿@using Finances.App.WebApp.Extensions;
+@using Finances.App.WebApp.Models.Views.Transactions;
+
+@model AddEditTransactionModel
+
+<div class="border-all">
+
+    @Html.HiddenFor(model => model.Transaction.TransactionId, new { id = Model.AddOrEditText + "Transaction_transactionId" })
+    @Html.HiddenFor(model => model.AddOrEditText)
+
+    <table width="100%">
+        <tr>
+
+            <td width="10%">EffDate:</td>
+            <td width="20%">
+                @Html.TextBoxFor(model => model.Transaction.EffDate, id: Model.AddOrEditText + "Transaction_effDate", tabIndex: 2)
+            </td>
+
+            <td width="5%"></td>
+
+            <td>Debit:</td>
+            <td>
+                @Html.TextBoxFor(model => model.Transaction.Debit, id: Model.AddOrEditText + "Transaction_debit", tabIndex: 6)
+            </td>
+
+            <td width="5%"></td>
+            <td width="10%"></td>
+            <td width="20%"></td>
+
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td>
+                @Html.TextBoxFor(model => model.Transaction.Description, id: Model.AddOrEditText + "Transaction_description", tabIndex: 3)
+            </td>
+            <td></td>
+            <td>Credit:</td>
+            <td>
+                @Html.TextBoxFor(model => model.Transaction.Credit, id: Model.AddOrEditText + "Transaction_credit", tabIndex: 7)
+            </td>
+        </tr>
+        <tr>
+            <td>Category:</td>
+            <td>
+                @Html.DropDownListCategoriesFor(model => model.Transaction.CategoryId, Model.Categories, id: Model.AddOrEditText + "Transaction_categoryId", tabIndex: 4, additionalItemText: "[all]")
+            </td>
+            <td></td>
+            <td>Is wage?:</td>
+            <td>
+                @Html.DropDownListYesNoFor(model => model.Transaction.IsWage, id: Model.AddOrEditText + "Transaction_isWage", tabIndex: 8)
+            </td>
+            @if (Model.AddOrEditText == "add") {
+            <td></td>
+            <td id='labelCategoryIdToDeductWageFrom'>Deduct from:</td>
+            <td>
+                @Html.DropDownListCategoriesFor(model => model.CategoryIdToDeductWageFrom, Model.Categories, id: Model.AddOrEditText + "Transaction_categoryIdToDeductWageFrom", tabIndex: 9, additionalItemText: "[none]")
+            </td>
+            }
+        </tr>
+        <tr>
+            <td>Item:</td>
+            <td>
+                @Html.TextBoxFor(model => model.Transaction.Item, id: Model.AddOrEditText + "Transaction_item", tabIndex: 5)
+            </td>
+            <td></td>
+            <td>Exclude?:</td>
+            <td>
+                @Html.DropDownListYesNoFor(model => model.Transaction.Exclude, id: Model.AddOrEditText + "Transaction_exclude", tabIndex: 10)
+            </td>
+
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    @Html.Raw($"<input type='button' value='Save' style='margin-top:20px' onclick=clickAddEditSave('{Model.AddOrEditText}') />")
+
+</div>
+
+<script>
+    $('#addTransaction_isWage').on("change", function () {
+        let isShow = $('#addTransaction_isWage').val() == 'true';
+        showHideDeductWageFrom(isShow);
+    });
+
+    showHideDeductWageFrom(false);
+
+    function showHideDeductWageFrom(isShow) {
+        if (isShow) {
+            $('#addTransaction_categoryIdToDeductWageFrom').show();
+            $('#labelCategoryIdToDeductWageFrom').show();
+        }
+        else {
+            $('#addTransaction_categoryIdToDeductWageFrom').hide();
+            $('#labelCategoryIdToDeductWageFrom').hide();
+        }
+    }
+
+</script>

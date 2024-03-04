@@ -1,0 +1,27 @@
+﻿@using Finances.App.WebApp.Extensions;
+@using Finances.App.WebApp.Models.Views.CategoryGroups;
+
+@model AddEditCategoryGroupModel
+
+<div class="border-all">
+
+    @Html.HiddenFor(model => model.CategoryGroup.CategoryGroupId, new { id = Model.AddOrEditText + "CategoryGroup_categoryGroupId" })
+
+    <table width="60%">
+        <tr>
+            <td width="20%">Name:</td>
+            <td width="15%">
+                @Html.TextBoxFor(model => model.CategoryGroup.Name, id: Model.AddOrEditText + "CategoryGroup_name", tabIndex: 1)
+            </td>
+        </tr>
+        <tr>
+            <td>Display order:</td>
+            <td>
+                @Html.TextBoxFor(model => model.CategoryGroup.DisplayOrder, id: Model.AddOrEditText + "CategoryGroup_displayOrder", tabIndex: 2)
+            </td>
+        </tr>
+    </table>
+
+    @Html.Raw($"<input type='button' value='Save' style='margin-top:20px' onclick=clickAddEditSave('{Model.AddOrEditText}') />")
+
+</div>

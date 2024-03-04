@@ -1,0 +1,70 @@
+﻿
+@using Finances.App.WebApp.Models.Views; 
+
+<div class="border-all">
+
+    <table width="40%">
+        <tr>
+            <td width="50%">
+                Credit to move:
+            </td>   
+            <td width="50%">
+                <input type="text" id="creditToMove" onchange="onchangeCreditToMove()" />
+            </td>
+        </tr>
+    </table>
+
+    <table width="100%" style="padding-top: 20px; margin-top: 20px">
+        <thead>
+            <tr>
+                <th class="align-center" width="3%"></th>
+                <th class="vertical-border-only align-center" width="10%">Date</th>
+                <th class="vertical-border-only align-center" width="15%">Category</th>
+                <th class="vertical-border-only align-center" width="22%">Description</th>
+                <th class="vertical-border-only align-center" width="20%">Item</th>
+                <th class="vertical-border-only align-center" width="10%">New credit</th>
+                <th width="20%"></th>
+            </tr>
+        </thead>
+
+        <tr>
+            <td></td>
+            <td class="vertical-border-only align-center">
+                <span id="moveTransactionFrom_effDate" />
+            </td>
+            <td class="vertical-border-only align-left">
+                <span id="moveTransactionFrom_categoryName" />
+            </td>
+            <td class="vertical-border-only align-left">
+                <span id="moveTransactionFrom_description" />
+            </td>
+            <td class="vertical-border-only align-left">
+                <span id="moveTransactionFrom_item" />
+            </td>
+            <td class="vertical-border-only align-right">
+                <span id="moveTransactionFrom_credit" />
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td class="vertical-border-only align-center">
+                <span id="moveTransactionTo_effDate" />
+            </td>
+            <td class="vertical-border-only align-left">
+                <span id="moveTransactionTo_categoryName" />
+            </td>
+            <td class="vertical-border-only align-left">
+                <span id="moveTransactionTo_description" />
+            </td>
+            <td class="vertical-border-only align-left">
+                <span id="moveTransactionTo_item" />
+            </td>
+            <td class="vertical-border-only align-right">
+                <span id="moveTransactionTo_credit" />
+            </td>
+        </tr>
+    </table>
+
+    <input type="button" style="margin-top:20px" value="Save" onclick="clickMoveSave()" />
+</div>

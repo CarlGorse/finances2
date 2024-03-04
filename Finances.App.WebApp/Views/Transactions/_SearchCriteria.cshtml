@@ -1,0 +1,140 @@
+﻿@using Finances.App.WebApp.Extensions;
+@using Finances.Engine.Models;
+
+@model SearchCriteriaModel
+
+<form id="form-search-criteria">
+
+    <div style="padding-top:10px; margin-bottom:20px; font-weight:900; font-size:30px; width:30%;">
+        @Html.DropDownListAccountsFor(model => model.AccountId, Model.Accounts, id: "accountId")
+    </div>
+
+    <div class="border-all" style="background-color: cornsilk">
+        <span id="showHideSearch"></span>
+        <div id="search">
+            <table width="70%" style="table-layout:fixed">
+                <tr>
+                    <td width="10%"></td>
+                    <td width="25%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="15%"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td colspan="3" class="align-center">Search by:</td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td colspan="3" style="text-align:center">
+                        @Html.DropDownListFor(
+                            model => model.FilterType,
+                            new SelectList(
+                            new List<Object> {
+                                    new { value = 0 , text = "Year / Period"  },
+                                    new { value = 1 , text = "Date" },
+                                    new { value = 2 , text = "Transaction id"} },
+                                "value",
+                                "text",
+                                Model.FilterType
+                            ), new { id = "filterType" }
+                        )
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label style="padding-right:10px">Category:</label>
+                    </td>
+                    <td>
+                        @Html.DropDownListCategoriesFor(model => model.CategoryId, Model.Categories, "categories", additionalItemText: "[all]")
+                    </td>
+                    <td style="text-align:right">
+                        <label id="labelFrom" style="padding-right:10px">from:</label>
+                        <label id="labelTransactionId" style="padding-right:10px">id:</label>
+                    </td>
+                    <td style="text-align:left">
+                        @Html.DropDownListYearsFor(model => model.StartYear, 
+                            id: "startYear",
+                            selectableYears: Constants.SearchableYears)
+
+                        @Html.TextBoxFor(model => model.StartEffDate, "{0:dd/MM/yyyy}", new { size = "11", id = "startEffDate" })
+                        @Html.TextBoxFor(model => model.TransactionId, new { id = "transactionId" })
+                    </td>
+                    <td>
+                        @Html.DropDownListPeriodsFor(model => model.StartPeriod, "startPeriod")
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align:right">
+                        <label id="labelTo" style="padding-right:10px">to:</label>
+                    </td>
+                    <td style="text-align:left">
+                        @Html.DropDownListYearsFor(model => model.EndYear, 
+                            id: "endYear",
+                            selectableYears: Constants.SearchableYears)
+
+                        @Html.TextBoxFor(model => model.EndEffDate, "{0:dd/MM/yyyy}", new { id = "endEffDate", size = "11" })
+                    </td>
+                    <td>
+                        @Html.DropDownListPeriodsFor(model => model.EndPeriod, "endPeriod")
+                    </td>
+                </tr>
+            </table>
+
+            <input type="button" style="margin-top:20px" name="SearchTransaction" value="Search" onclick="clickSearchAndDisplayTransactions()" />
+        </div>
+    </div>
+</form>
+
+<script>
+
+    selectFilterType();
+
+    $('#accountId').change(function () {
+        clearUserMessages();
+        searchAndDisplayTransactions();
+    })
+
+    $('#filterType').change(function () {
+        selectFilterType();
+    })
+
+    function selectFilterType() {
+        $('#labelFrom').hide();
+        $('#labelTo').hide();
+        $('#startYear').hide();
+        $('#endYear').hide();
+        $('#startPeriod').hide();
+        $('#endPeriod').hide();
+        $('#startEffDate').hide();
+        $('#endEffDate').hide();
+        $('#transactionId').hide();
+        $('#labelTransactionId').hide();
+
+        switch ($('#filterType').val()) {
+            case '0':
+                $('#labelFrom').show();
+                $('#labelTo').show();
+                $('#startYear').show();
+                $('#endYear').show();
+                $('#startPeriod').show();
+                $('#endPeriod').show();
+                break;
+            case '1':
+                $('#labelFrom').show();
+                $('#labelTo').show();
+                $('#startEffDate').show();
+                $('#endEffDate').show();
+                break;
+            default:
+                $('#transactionId').show();
+                $('#labelTransactionId').show();
+        }
+    }
+
+</script>

@@ -1,0 +1,125 @@
+﻿
+@using Finances.App.WebApp.Models.Views.Transactions;
+
+@model TransactionsIndexViewModel
+
+<script src="~/js/Transactions/moveWages.js" asp-append-version="true"></script>
+<script src="~/js/Transactions/searchTransactions.js" asp-append-version="true"></script>
+<script src="~/js/Transactions/transaction.js" asp-append-version="true"></script>
+
+<script>
+    var currentDate = new Date();
+    var sectionNames = ['add', 'edit', 'moveWages'];
+</script>
+
+<style>
+    select, option {
+        width: 100%;
+    }
+</style>
+
+<div style="position:sticky; top:0; background-color: #ffffff; padding-top:10px">
+
+    <partial name="_SearchCriteria" model='@Model.SearchCriteriaModel' />
+
+    <div id="user-messages" class="user-messages"></div>
+
+    <partial name="_Buttons" />
+
+    <div width="100%" style="background-color: cornsilk">
+        <div id="add-section">
+            <partial name="_AddEditTransaction" model='@new AddEditTransactionModel (
+                Model.Accounts, Model.Categories, AddEditTransactionModel.AddOrEdit.Add )' />
+        </div>
+        <div id="edit-section">
+            <partial name="_AddEditTransaction" model='@new AddEditTransactionModel (
+                Model.Accounts, Model.Categories, AddEditTransactionModel.AddOrEdit.Edit )' />
+        </div>
+        <div id="moveWages-section">
+            <partial name="_MoveWages" />
+        </div>
+    </div>
+
+    <!-- sticky header -->
+    <div class="border-all" style="border-bottom:none; padding-bottom:0px">
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th class="align-center" width="3%"></th>
+                    <th class="vertical-border-only align-center" width="10%">Date</th>
+                    <th class="vertical-border-only align-center" width="17%">Group</th>
+                    <th class="vertical-border-only align-center" width="17%">Category</th>
+                    <th class="vertical-border-only align-center" width="23%">Description</th>
+                    <!--th class="vertical-border-only align-center" width="20%">Item</th>-->
+                    <th class="vertical-border-only align-center" width="10%">Credit</th>
+                    <th class="vertical-border-only align-center" width="10%">Debit</th>
+                    <th class="vertical-border-only align-center" width="10%">Balance</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div class="border-all" style="margin-top:0px; border-top:none; padding-top:0px">
+    <table width="100%">
+        <thead>
+            <tr>
+                <th class="align-center" width="3%"></th>
+                <th class="vertical-border-only align-center" width="10%"></th>
+                <th class="vertical-border-only align-center" width="17%"></th>
+                <th class="vertical-border-only align-center" width="17%"></th>
+                <th class="vertical-border-only align-center" width="23%"></th>
+                <!--<th class="vertical-border-only align-center" width="20%"></th>-->
+                <th class="vertical-border-only align-center" width="10%"></th>
+                <th class="vertical-border-only align-center" width="10%"></th>
+                <th class="vertical-border-only align-center" width="10%"></th>
+            </tr>
+        </thead>
+        <tbody id="transactions">
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    setCurrentItemClass(transactionClass);
+
+    var currentYearPeriod = currentDate.getFullYear() + '/' + formatMonth2Digits(currentDate.getMonth());
+    $('#addTransaction_categoryId').val($("#addTransaction_categoryId")
+        .find("option:contains('Extra')").val());
+    $('#addTransaction_effDate').val(formatDateDDMMYYYY(currentDate));
+    $('#addTransaction_isWage').val('False');
+    $('#addTransaction_exclude').val('False');
+
+    hideAllSections();
+
+    searchAndDisplayTransactions({ displayUserMessage: true });
+
+    clearUserMessages(); // required for when switching between Index views
+
+    doShowHideSearch(false);
+    $('#showHideSearch').click(function () { showHideSearch() });
+
+    function showHideSearch() {
+        if ($('#search').hasClass('hidden')) {
+            doShowHideSearch(true);
+        }
+        else {
+            doShowHideSearch(false);
+        }
+    }
+
+    function doShowHideSearch(show) {
+        if (show) {
+            $('#search').addClass('visible');
+            $('#search').removeClass('hidden');
+            $('#showHideSearch').text('[hide search]');
+        }
+        else {
+            $('#search').addClass('hidden');
+            $('#search').removeClass('visible');
+            $('#showHideSearch').text('[show search]');
+        }
+    }
+
+</script>

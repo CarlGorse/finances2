@@ -1,0 +1,78 @@
+﻿@using Finances.App.WebApp.Models.Views.Categories;
+
+@model CategoriesIndexViewModel
+
+<script src="~/js/Categories/category.js" asp-append-version="true"></script>
+<script src="~/js/Categories/searchCategories.js" asp-append-version="true"></script>
+
+<script>
+    var currentDate = new Date();
+    var sectionNames = ['add', 'edit'];
+</script>
+
+<style>
+    select, option {
+        width: 100%;
+    }
+</style>
+
+<div style="position:sticky; top:0; background-color: #ffffff; padding-top:10px">
+
+    <div id="user-messages" class="user-messages"></div>
+
+    <partial name="_Buttons" />
+
+    <div width="100%" style="background-color: cornsilk">
+        <div id="add-section">
+            <partial name="_AddEditCategory" model='@new AddEditCategoryModel (
+                Model.CategoryGroups, AddEditCategoryModel.AddOrEdit.Add )' />
+        </div>
+        <div id="edit-section">
+            <partial name="_AddEditCategory" model='@new AddEditCategoryModel (
+                Model.CategoryGroups, AddEditCategoryModel.AddOrEdit.Edit )' />
+        </div>
+    </div>
+
+    <!-- sticky header -->
+    <div class="border-all" style="border-bottom:none; padding-bottom:0px">
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th class="align-center" width="3%"></th>
+                    <th class="vertical-border-only align-center" width="35%">Group</th>
+                    <th class="vertical-border-only align-center" width="35%">Category name</th>
+                    <th class="vertical-border-only align-center" width="17%">Group display order</th>
+                    <th class="vertical-border-only align-center" width="13%">Do not display?</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div class="border-all" style="margin-top:0px; border-top:none; padding-top:0px">
+    <table width="100%">
+        <thead>
+            <tr>
+                <th class="align-center" width="3%"></th>
+                <th class="vertical-border-only align-center" width="35%"></th>
+                <th class="vertical-border-only align-center" width="35%"></th>
+                <th class="vertical-border-only align-center" width="17%"></th>
+                <th class="vertical-border-only align-center" width="13%"></th>
+            </tr>
+        </thead>
+        <tbody id="categories">
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    setCurrentItemClass(categoryClass);
+
+    hideAllSections();
+
+    searchAndDisplayCategories({ displayUserMessage: true });
+
+    clearUserMessages(); // required for when switching between Index views
+
+</script>
