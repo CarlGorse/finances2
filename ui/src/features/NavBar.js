@@ -5,7 +5,7 @@ function NavBar() {
   return (
     <Navbar collapseOnSelect expand='sm' bg="dark" variant="dark" fixed="top">
       <Container>
-        <Navbar.Brand href="./home">Finances</Navbar.Brand>
+        <Navbar.Brand href="./">Finances</Navbar.Brand>
       </Container>
     </Navbar >
   );
