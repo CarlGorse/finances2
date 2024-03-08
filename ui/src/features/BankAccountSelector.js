@@ -2,7 +2,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { useEffect, useState } from 'react';
 import { baseUrl as apiBaseUrl, get as apiGet } from 'functions/api.js';
 
-function BankAccountSelector() {
+function BankAccountSelector({ onSelect }) {
 
   const [getTitle, setTitle] = useState("");
   const [getBankAccounts, setBankAccounts] = useState(null);
@@ -26,8 +26,6 @@ function BankAccountSelector() {
     return;
   }
 
-  console.log(getBankAccounts);
-
   return (
     <Dropdown>
       <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -37,7 +35,10 @@ function BankAccountSelector() {
       <Dropdown.Menu>
         {getBankAccounts.Accounts?.map((bankAccount) => (
 
-          <Dropdown.Item key={bankAccount.AccountId} as="button"><div onClick={(e) => setTitle(e.target.textContent)}>{bankAccount.Name}</div></Dropdown.Item>
+          <Dropdown.Item key={bankAccount.AccountId} as="button"><div onClick={(e) => {
+            setTitle(e.target.textContent);
+            onSelect(e.target.textContent)
+          }}>{bankAccount.Name}</div></Dropdown.Item>
         ))}
       </Dropdown.Menu>
     </Dropdown>

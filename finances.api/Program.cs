@@ -56,7 +56,7 @@ builder.Services.Configure<JsonSerializerSettings>(options => {
     options.ContractResolver = new DefaultContractResolver {
         NamingStrategy = new CamelCaseNamingStrategy()
     };
-    //options.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    //options.ReferenceLoopHandling = ReferenceLoopHa  ndling.Ignore;
 });
 
 var app = builder.Build();
