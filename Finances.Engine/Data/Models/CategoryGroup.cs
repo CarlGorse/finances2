@@ -1,8 +1,8 @@
 ﻿using Finances.Engine.Data.Models.Interfaces;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace Finances.Engine.Data.Models {
 

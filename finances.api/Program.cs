@@ -6,6 +6,8 @@ using Finances.Engine.Data.Repositories.Interfaces;
 using Finances.Engine.Factories;
 using Finances.Engine.Interfaces.Dtos;
 using Finances.Engine.Interfaces.Factories;
+using Finances.Engine.Services;
+using Finances.Engine.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,13 +21,34 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddScoped<IFinancesDbContext, FinancesDbContext>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<ICategoryGroupRepository, CategoryGroupRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IFinancesDbContext, FinancesDbContext>();
 builder.Services.AddScoped<IItemPropertiesFactory, ItemPropertiesFactory>();
+builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IReportTotalRepository, ReportTotalRepository>();
+builder.Services.AddScoped<ISearchCriteriaService, SearchCriteriaService>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 builder.Services.AddScoped<IItemProperties<Account>>(serviceProvider => {
     var factory = serviceProvider.GetRequiredService<IItemPropertiesFactory>();
     return factory.Get<Account>();
+});
+
+builder.Services.AddScoped<IItemProperties<Category>>(serviceProvider => {
+    var factory = serviceProvider.GetRequiredService<IItemPropertiesFactory>();
+    return factory.Get<Category>();
+});
+
+builder.Services.AddScoped<IItemProperties<CategoryGroup>>(serviceProvider => {
+    var factory = serviceProvider.GetRequiredService<IItemPropertiesFactory>();
+    return factory.Get<CategoryGroup>();
+});
+
+builder.Services.AddScoped<IItemProperties<Transaction>>(serviceProvider => {
+    var factory = serviceProvider.GetRequiredService<IItemPropertiesFactory>();
+    return factory.Get<Transaction>();
 });
 
 builder.Services.AddCors(options => {

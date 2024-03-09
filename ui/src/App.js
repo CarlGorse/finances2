@@ -1,19 +1,22 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import TransactionsViewer from 'features/TransactionsViewer';
 import NavBar from 'features/NavBar';
+import { RecoilRoot } from "recoil";
+import TransactionViewer from 'features/TransactionViewer';
 
 function App() {
 
   return (
-    <BrowserRouter>
+    <RecoilRoot>
+      <BrowserRouter>
 
-      <NavBar />
+        <NavBar />
 
-      <Routes>
-        <Route exact path='/' element={<TransactionsViewer />} />
-      </Routes>
+        <Routes>
+          <Route exact path='/' element={<TransactionViewer />} />
+        </Routes>
 
-    </BrowserRouter>
+      </BrowserRouter>
+    </RecoilRoot>
   );
 }
 

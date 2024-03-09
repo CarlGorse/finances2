@@ -1,10 +1,9 @@
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 
-function TransactionsList({ bankAccountName }) {
+function TransactionHeader() {
 
   return (
-    <Container className='mt-5'>
-      <p>Transactions for {bankAccountName}</p>
+    <b>
       <Row>
         <Col>
           Date
@@ -28,8 +27,8 @@ function TransactionsList({ bankAccountName }) {
           Balance
         </Col>
       </Row>
-    </Container>
+    </b>
   )
 }
 
-export default TransactionsList;
+export default TransactionHeader;

@@ -39,10 +39,6 @@ namespace Finances.Engine.Data {
             modelBuilder.Entity<Transaction>()
                 .HasOne(t => t.Category);
 
-            modelBuilder.Entity<Transaction>()
-                .HasOne(t => t.Account)
-                .WithMany(a => a.Transactions);
-
             modelBuilder.Entity<YearAndPeriod>()
                 .HasKey(yp => new { yp.Year, yp.Period });
         }
