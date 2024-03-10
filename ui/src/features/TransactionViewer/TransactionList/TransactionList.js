@@ -10,13 +10,11 @@ import MySpinner from 'components/MySpinner'
 
 function TransactionList() {
 
-  const [transactions, setTransactions] = useState(null);
+  const [transactionTotals, setTransactionTotals] = useState(null);
   const transactionSearch = useRecoilValue(transactionSearchAtom);
   const [loading, setLoading] = useState(null);
 
   useEffect(() => {
-
-    console.log(transactionSearch);
 
     if (
       transactionSearch.AccountId === null
@@ -46,7 +44,7 @@ function TransactionList() {
           TransactionId: 0
         },
         callback: (response => {
-          setTransactions(response.data.transactions);
+          setTransactionTotals(response.data.transactions);
           setLoading(false);;
         })
       }
@@ -60,8 +58,12 @@ function TransactionList() {
 
       {loading && <MySpinner />}
 
-      {!loading && transactions?.map(transactionTotal => (
-        <TransactionRow key={transactionTotal.Transaction.TransactionId} transactionTotal={transactionTotal} />
+      {!loading && transactionTotals?.map(transactionTotal => (
+        <TransactionRow
+          key={transactionTotal.Transaction.TransactionId}
+          transaction={transactionTotal.Transaction}
+          runningTotal={transactionTotal.RunningTotal}
+        />
       ))}
 
     </Container>

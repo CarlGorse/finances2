@@ -5,6 +5,7 @@ function TransactionHeader() {
   return (
     <b>
       <Row>
+        <Col xs={1} />
         <Col>
           Date
         </Col>

@@ -1,6 +1,5 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import SearchItem from './SearchItem'
-//import { UpdateTransactionSearch } from "functions/transactionSearch";
 import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useSetRecoilState } from "recoil";
 
@@ -11,16 +10,14 @@ function TransactionSearch() {
   const setTransactionSearch = useSetRecoilState(transactionSearchAtom);
 
   function UpdateTransactionSearch(propertyName, value) {
-    console.log(propertyName)
-    console.log(value)
     setTransactionSearch(prevState => ({ ...prevState, [propertyName]: value }))
   }
 
   return (
     <Container>
       <Row>
-        <Col>From</Col>
-        <Col>
+        <Col xs={1}>From:</Col>
+        <Col xs={1}>
           <SearchItem defaultValue="01" onSelect={value => UpdateTransactionSearch("StartPeriod", value)} values={periods} />
         </Col>
         <Col>
@@ -31,8 +28,8 @@ function TransactionSearch() {
         </Col>
       </Row>
       <Row>
-        <Col>To</Col>
-        <Col>
+        <Col xs={1}>To:</Col>
+        <Col xs={1}>
           <SearchItem defaultValue="03" onSelect={value => UpdateTransactionSearch("EndPeriod", value)} values={periods} />
         </Col>
         <Col>

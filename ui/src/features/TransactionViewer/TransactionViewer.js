@@ -1,7 +1,9 @@
-import { Container } from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 import BankAccountSelector from 'features/BankAccountSelector';
 import TransactionList from './TransactionList/TransactionList';
 import TransactionSearch from './TransactionSearch/TransactionSearch';
+import TransactionOperations from './TransactionOperations/TransactionOperations';
+import TransactionOperationError from './TransactionOperationError';
 
 function TransactionViewer() {
 
@@ -11,6 +13,12 @@ function TransactionViewer() {
       <BankAccountSelector />
 
       <TransactionSearch />
+
+      <Form>
+        <TransactionOperations />
+      </Form>
+
+      <TransactionOperationError />
 
       <TransactionList />
 

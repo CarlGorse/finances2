@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from 'features/NavBar';
 import { RecoilRoot } from "recoil";
-import TransactionViewer from 'features/TransactionViewer';
+import TransactionViewer from 'features/TransactionViewer/TransactionViewer';
 
 function App() {
 

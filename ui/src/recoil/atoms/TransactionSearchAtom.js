@@ -8,5 +8,5 @@ export const transactionSearchAtom = atom({
         EndYear: null,
         StartPeriod: null,
         EndPeriod: null
-    },
+    }
 });
