@@ -1,21 +1,26 @@
+import Container from 'react-bootstrap/Container';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { useEffect, useState, useCallback } from 'react';
 import { baseUrl as apiBaseUrl, get as apiGet } from 'functions/api.js';
-import { bankAccountAtom } from "recoil/atoms/BankAccountAtom";
+import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
+import { useCallback, useEffect, useState } from 'react';
 import { useSetRecoilState } from "recoil";
 
 function BankAccountSelector() {
 
   const [title, setTitle] = useState("");
   const [bankAccounts, setBankAccounts] = useState(null);
-  const setBankAccount = useSetRecoilState(bankAccountAtom);
 
   const defaultAccountName = "Natwest";
+  const setTransactionSearch = useSetRecoilState(transactionSearchAtom);
+
+  function UpdateTransactionSearch(propertyName, value) {
+    setTransactionSearch(prevState => ({ ...prevState, [propertyName]: value }))
+  }
 
   const selectBankAccount = useCallback((bankAccount) => {
     setTitle(bankAccount.Name);
-    setBankAccount(bankAccount);
-  }, [setBankAccount]);
+    UpdateTransactionSearch("AccountId", bankAccount.Id);
+  }, []);
 
   useEffect(() => {
     apiGet(
@@ -35,23 +40,29 @@ function BankAccountSelector() {
 
   return (
     <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
+      <Dropdown.Toggle variant="success" id="dropdown-basic" >
         {title}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {bankAccounts?.map(bankAccount => (
+        {
+          bankAccounts?.map(bankAccount => (
 
-          <Dropdown.Item key={bankAccount.AccountId} as="button"><div onClick={(e) => {
+            <Dropdown.Item key={bankAccount.AccountId} as="button" >
+              <div onClick={(e) => {
 
-            let bankAccount = bankAccounts.find(bankAccount => bankAccount.Name === e.target.textContent)
+                let bankAccount = bankAccounts.find(bankAccount => bankAccount.Name === e.target.textContent)
 
-            selectBankAccount(bankAccount);
+                selectBankAccount(bankAccount);
 
-          }}>{bankAccount.Name}</div></Dropdown.Item>
-        ))}
+              }}>
+                {bankAccount.Name}
+              </div>
+            </Dropdown.Item>
+          ))
+        }
       </Dropdown.Menu>
-    </Dropdown>
+    </Dropdown >
   );
 }
 

@@ -3,29 +3,43 @@ import { useEffect, useState } from 'react';
 import { baseUrl as apiBaseUrl, post as apiPost } from 'functions/api.js';
 import TransactionHeader from './TransactionHeader';
 import TransactionRow from './TransactionRow';
-import { bankAccountAtom } from "recoil/atoms/BankAccountAtom";
+import { transactionSearchAtom } from "recoil/atoms/TransactionSearchAtom";
 import { useRecoilValue } from "recoil";
+
+import MySpinner from 'components/MySpinner'
 
 function TransactionList() {
 
   const [transactions, setTransactions] = useState(null);
-  const bankAccount = useRecoilValue(bankAccountAtom);
+  const transactionSearch = useRecoilValue(transactionSearchAtom);
+  const [loading, setLoading] = useState(null);
 
   useEffect(() => {
-    if (bankAccount === null) {
+
+    console.log(transactionSearch);
+
+    if (
+      transactionSearch.AccountId === null
+      || transactionSearch.StartPeriod === null
+      || transactionSearch.StartYear === null
+      || transactionSearch.EndPeriod === null
+      || transactionSearch.EndYear === null
+    ) {
       return () => { };
     }
+
+    setLoading(true);
 
     apiPost(
       {
         url: apiBaseUrl + "/transactions/get",
         payload: {
-          AccountId: bankAccount?.Id,
+          AccountId: transactionSearch.AccountId,
           CategoryId: 0,
-          StartYear: 2024,
-          StartPeriod: 2,
-          EndYear: 2024,
-          EndPeriod: 2,
+          StartYear: transactionSearch.StartYear,
+          StartPeriod: transactionSearch.StartPeriod,
+          EndYear: transactionSearch.EndYear,
+          EndPeriod: transactionSearch.EndPeriod,
           FilterType: 0,
           StartEffDate: "09/03/2024",
           EndEffDate: "09/03/2024",
@@ -33,22 +47,23 @@ function TransactionList() {
         },
         callback: (response => {
           setTransactions(response.data.transactions);
+          setLoading(false);;
         })
       }
     )
-  }, [bankAccount])
-
-  if (bankAccount === null) {
-    return null;
-  }
+  }, [transactionSearch])
 
   return (
     <Container className='mt-5'>
+
       <TransactionHeader />
 
-      {transactions?.map(transactionTotal => (
+      {loading && <MySpinner />}
+
+      {!loading && transactions?.map(transactionTotal => (
         <TransactionRow key={transactionTotal.Transaction.TransactionId} transactionTotal={transactionTotal} />
       ))}
+
     </Container>
   )
 }
