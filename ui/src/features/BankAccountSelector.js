@@ -9,7 +9,7 @@ function BankAccountSelector() {
   const [title, setTitle] = useState("");
   const [bankAccounts, setBankAccounts] = useState(null);
 
-  const defaultAccountName = "Natwest";
+  const defaultAccountName = "Cash";
   const setTransactionSearch = useSetRecoilState(transactionSearchAtom);
 
   function UpdateTransactionSearch(propertyName, value) {
