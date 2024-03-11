@@ -1,15 +1,6 @@
 import { Col, Container, Form, Row } from 'react-bootstrap';
-import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { useRecoilValue } from "recoil";
 
 function AddEdit({ operation }) {
-
-    const transactionOperation = useRecoilValue(transactionOperationAtom);
-
-    if (transactionOperation !== operation) {
-        return null
-    }
-
     return (
         <>
             <Row>

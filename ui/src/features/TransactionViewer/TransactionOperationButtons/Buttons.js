@@ -1,13 +1,13 @@
 import { Button, Container } from 'react-bootstrap';
-import TransactionOperationButton from "./TransactionOperationButton";
-import Add from "./Add";
-import Delete from "./Delete";
-import Edit from "./Edit";
-import MoveWages from "./MoveWages";
+import TransactionOperationButton from "./Button";
+import Add from "../TransactionOperationInputs/Add";
+import Delete from "../TransactionOperationInputs/Delete";
+import Edit from "../TransactionOperationInputs/Edit";
+import MoveWages from "../TransactionOperationInputs/MoveWages";
 import { useSetRecoilState } from "recoil";
 import { clearSelectedTransactionsAtom } from 'recoil/atoms/ClearSelectedTransactionsAtom';
 
-function TransactionOperations() {
+function TransactionOperationButtons() {
 
     const setClearSelectedTransactions = useSetRecoilState(clearSelectedTransactionsAtom);
 
@@ -17,18 +17,14 @@ function TransactionOperations() {
     }
 
     return (
-        <Container>
+        <>
             <Button onClick={() => ClearSelection()}>Clear selection</Button>
             <TransactionOperationButton operation="Add" />
             <TransactionOperationButton operation="Edit" />
             <TransactionOperationButton operation="Delete" />
             <TransactionOperationButton operation="Move wages" />
-            <Add />
-            <Edit />
-            <Delete />
-            <MoveWages />
-        </Container>
+        </>
     );
 }
 
-export default TransactionOperations;
+export default TransactionOperationButtons;
