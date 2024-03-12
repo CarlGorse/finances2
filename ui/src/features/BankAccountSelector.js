@@ -1,5 +1,6 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import { baseUrl as apiBaseUrl, get as apiGet } from 'functions/api.js';
+import { clearSelectedTransactionsAtom } from 'recoil/atoms/ClearSelectedTransactionsAtom';
 import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useCallback, useEffect, useState } from 'react';
 import { useSetRecoilState } from "recoil";
@@ -10,6 +11,7 @@ function BankAccountSelector() {
   const [bankAccounts, setBankAccounts] = useState(null);
 
   const defaultAccountName = "Cash";
+  const setClearSelectedTransactions = useSetRecoilState(clearSelectedTransactionsAtom);
   const setTransactionSearch = useSetRecoilState(transactionSearchAtom);
 
   function UpdateTransactionSearch(propertyName, value) {
@@ -17,9 +19,15 @@ function BankAccountSelector() {
   }
 
   const selectBankAccount = useCallback((bankAccount) => {
+    ClearSelectedTransactions();
     setTitle(bankAccount.Name);
     UpdateTransactionSearch("AccountId", bankAccount.Id);
   }, []);
+
+  async function ClearSelectedTransactions() {
+    await setClearSelectedTransactions(true);
+    setClearSelectedTransactions(false);
+  }
 
   useEffect(() => {
     apiGet(
