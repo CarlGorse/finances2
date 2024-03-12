@@ -31,7 +31,7 @@ function MoveWages() {
                 })
             }
         }
-    }, [transactionOperation, selectedTransactions]);
+    }, [isValidForm, hasValidTransactionSelected, setError]);
 
     if (!isValidForm || !hasValidTransactionSelected) {
         return null;

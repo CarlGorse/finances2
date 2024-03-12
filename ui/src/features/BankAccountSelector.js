@@ -1,9 +1,11 @@
 import Dropdown from 'react-bootstrap/Dropdown';
-import { baseUrl as apiBaseUrl, get as apiGet } from 'functions/api.js';
+import { baseUrl as apiBaseUrl } from 'functions/api.js';
 import { clearSelectedTransactionsAtom } from 'recoil/atoms/ClearSelectedTransactionsAtom';
 import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useCallback, useEffect, useState } from 'react';
 import { useSetRecoilState } from "recoil";
+import axios from 'axios';
+import { transactionOperationErrorAtom } from 'recoil/atoms/TransactionOperationErrorAtom';
 
 function BankAccountSelector() {
 
@@ -13,6 +15,7 @@ function BankAccountSelector() {
   const defaultAccountName = "Cash";
   const setClearSelectedTransactions = useSetRecoilState(clearSelectedTransactionsAtom);
   const setTransactionSearch = useSetRecoilState(transactionSearchAtom);
+  const setError = useSetRecoilState(transactionOperationErrorAtom);
 
   function UpdateTransactionSearch(propertyName, value) {
     setTransactionSearch(prevState => ({ ...prevState, [propertyName]: value }))
@@ -30,16 +33,22 @@ function BankAccountSelector() {
   }
 
   useEffect(() => {
-    apiGet(
-      {
-        url: apiBaseUrl + "/bankAccounts/get",
-        callback: (response => {
-          setBankAccounts(response.data.Accounts);
-          selectBankAccount(response.data.Accounts.find(bankAccount => bankAccount.Name === defaultAccountName));
+    axios.get(apiBaseUrl + "/bankAccounts/get")
+      .then(response => {
+        setBankAccounts(response.data.Accounts);
+        selectBankAccount(response.data.Accounts.find(bankAccount => bankAccount.Name === defaultAccountName));
+        setError({
+          Message: null,
+          Variant: null
         })
-      }
-    )
-  }, [selectBankAccount])
+      })
+      .catch(function (error) {
+        setError({
+          Message: "Unable to load bank accounts",
+          Variant: "danger"
+        })
+      })
+  }, [selectBankAccount, setError])
 
   if (bankAccounts === null) {
     return;

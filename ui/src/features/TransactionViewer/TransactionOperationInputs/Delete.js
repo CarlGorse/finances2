@@ -32,7 +32,7 @@ function Delete() {
                 })
             }
         }
-    }, [transactionOperation, selectedTransactions]);
+    }, [isValidForm, hasValidTransactionSelected, setError, selectedTransactions]);
 
     if (!isValidForm || !hasValidTransactionSelected) {
         return null;

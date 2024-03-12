@@ -1,5 +1,5 @@
 import AddEdit from './AddEdit';
-import { Button, Container } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { transactionOperationErrorAtom } from 'recoil/atoms/TransactionOperationErrorAtom';
@@ -48,7 +48,7 @@ function Edit() {
 
     return (
         <>
-            <AddEdit operation={operation} />
+            <AddEdit />
             <div style={{ marginTop: "20px" }}>
                 <Button size="sm" onClick={() => Edit()}>Save</Button>
                 <Button style={{ marginLeft: "1px" }} size="sm" onClick={() => CancelTransactionOperation()}>Cancel</Button>

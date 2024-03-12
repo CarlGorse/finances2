@@ -1,4 +1,6 @@
-﻿using Finances.Engine.Data.Repositories.Interfaces;
+﻿using Finances.Engine.Data.Interfaces;
+using Finances.Engine.Data.Models;
+using Finances.Engine.Data.Repositories.Interfaces;
 using Finances.Engine.Models;
 using Finances.Engine.Services;
 using Finances.Engine.Services.Interfaces;
@@ -23,6 +25,7 @@ namespace finances.api.Controllers {
             public const string Search = "Search";
         }
 
+        private readonly IFinancesDbContext _DbContext;
         private readonly IReportService _ReportService;
         private readonly ISearchCriteriaService _SearchCriteriaService;
         private readonly ITransactionRepository _TransactionRepository;
@@ -30,11 +33,13 @@ namespace finances.api.Controllers {
         public TransactionsController(
             ITransactionRepository transactionRepository,
             ISearchCriteriaService searchCriteriaService,
-            IReportService reportService) {
+            IReportService reportService,
+            IFinancesDbContext dbContext) {
 
             _TransactionRepository = transactionRepository;
             _SearchCriteriaService = searchCriteriaService;
             _ReportService = reportService;
+            _DbContext = dbContext;
         }
 
         [HttpPost]
@@ -61,6 +66,21 @@ namespace finances.api.Controllers {
             }
 
             return Ok(new { searchCriteria, transactions });
+        }
+
+        [HttpPost]
+        public IActionResult Add([FromBody] Transaction transaction) {
+
+            ICollection<string> validationErrors = new List<string>();
+
+            var result = _TransactionRepository.Add(transaction, out validationErrors, saveChanges: false);
+            _DbContext.SaveChanges();
+
+            if (!result) {
+                return StatusCode(StatusCodes.Status406NotAcceptable, JsonSerializer.Serialize(new { transaction, validationErrors }));
+            }
+
+            return Ok(transaction.TransactionId);
         }
     }
 }

@@ -1,18 +1,22 @@
 import AddEdit from './AddEdit';
-import { Button, Container } from 'react-bootstrap';
-import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
+import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
+import axios from 'axios';
+import { Button } from 'react-bootstrap';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { transactionOperationErrorAtom } from 'recoil/atoms/TransactionOperationErrorAtom';
 import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { baseUrl as apiBaseUrl } from 'functions/api.js';
+import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
 
 function Add() {
 
     const operation = "Add";
 
-    const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
+    const addEditTransaction = useRecoilValue(addEditTransactionAtom);
     const setError = useSetRecoilState(transactionOperationErrorAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
+    const transactionSearch = useRecoilValue(transactionSearchAtom);
 
     const isValidForm = transactionOperation === operation
 
@@ -23,14 +27,30 @@ function Add() {
                 Variant: ""
             })
         }
-    }, [transactionOperation, selectedTransactions]);
+    }, [isValidForm, setError]);
 
     if (!isValidForm) {
         return null
     }
 
-    function Add() {
-        CancelTransactionOperation()
+    function Save() {
+        axios.post(
+            apiBaseUrl + "/transactions/add",
+            {
+                AccountId: transactionSearch.AccountId,
+                CategoryId: addEditTransaction.CategoryId,
+                Description: addEditTransaction.Description,
+                EffDate: addEditTransaction.EffDate,
+                Item: addEditTransaction.Item
+            }
+        )
+            .then(function (response) { CancelTransactionOperation() })
+            .catch(function (error) {
+                setError({
+                    Message: error.response.data.validationErrors[0],
+                    Variant: "danger"
+                })
+            })
     }
 
     function CancelTransactionOperation() {
@@ -39,9 +59,10 @@ function Add() {
 
     return (
         <>
-            <AddEdit operation={operation} />
+            <AddEdit />
+
             <div style={{ marginTop: "20px" }}>
-                <Button size="sm" onClick={() => Add()}>Save</Button>
+                <Button size="sm" onClick={() => Save()}>Save</Button>
                 <Button style={{ marginLeft: "1px" }} size="sm" onClick={() => CancelTransactionOperation()}>Cancel</Button>
             </div>
         </>

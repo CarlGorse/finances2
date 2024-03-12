@@ -17,5 +17,4 @@
     <ProjectReference Include="..\Finances.Engine\Finances.Engine.csproj" />
   </ItemGroup>
 
-
 </Project>
