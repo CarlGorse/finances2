@@ -13,24 +13,24 @@ function TransactionViewer() {
 
       <BankAccountSelector />
 
-      <div style={{ paddingTop: "20px" }}>
+      <div style={{ marginTop: "20px" }}>
         <TransactionSearch />
       </div>
 
-      <div style={{ paddingTop: "20px" }}>
+      <div style={{ marginTop: "20px" }}>
         <Form>
           <TransactionOperationButtons />
         </Form>
       </div>
 
-      <div style={{ paddingTop: "20px" }}>
+      <div style={{ marginTop: "20px" }}>
+        <TransactionOperationError />
+      </div>
+
+      <div style={{ marginTop: "20px" }}>
         <Form>
           <TransactionOperationInputs />
         </Form>
-      </div>
-
-      <div style={{ paddingTop: "10px" }}>
-        <TransactionOperationError />
       </div>
 
       <TransactionList />

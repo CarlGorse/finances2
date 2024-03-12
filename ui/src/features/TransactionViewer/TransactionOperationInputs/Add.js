@@ -38,11 +38,13 @@ function Add() {
     }
 
     return (
-        <Container>
+        <>
             <AddEdit operation={operation} />
-            <Button size="sm" onClick={() => Add()}>Save</Button>
-            <Button size="sm" onClick={() => CancelTransactionOperation()}>Cancel</Button>
-        </Container>
+            <div style={{ marginTop: "20px" }}>
+                <Button size="sm" onClick={() => Add()}>Save</Button>
+                <Button style={{ marginLeft: "1px" }} size="sm" onClick={() => CancelTransactionOperation()}>Cancel</Button>
+            </div>
+        </>
     );
 }
 

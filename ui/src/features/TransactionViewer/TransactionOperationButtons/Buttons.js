@@ -18,11 +18,21 @@ function TransactionOperationButtons() {
 
     return (
         <>
-            <Button onClick={() => ClearSelection()}>Clear selection</Button>
-            <TransactionOperationButton operation="Add" />
-            <TransactionOperationButton operation="Edit" />
-            <TransactionOperationButton operation="Delete" />
-            <TransactionOperationButton operation="Move wages" />
+            <span>
+                <Button onClick={() => ClearSelection()}>Clear selection</Button>
+            </span>
+            <span style={{ marginLeft: "20px" }}>
+                <TransactionOperationButton operation="Add" />
+            </span>
+            <span style={{ marginLeft: "1px" }}>
+                <TransactionOperationButton operation="Edit" />
+            </span >
+            <span style={{ marginLeft: "1px" }}>
+                <TransactionOperationButton operation="Delete" />
+            </span >
+            <span style={{ marginLeft: "1px" }}>
+                <TransactionOperationButton operation="Move wages" />
+            </span >
         </>
     );
 }

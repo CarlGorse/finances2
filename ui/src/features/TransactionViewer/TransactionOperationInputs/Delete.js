@@ -21,7 +21,7 @@ function Delete() {
         if (isValidForm) {
             if (!hasValidTransactionSelected) {
                 setError({
-                    Message: `You must select a ${selectedTransactions?.length > 0 ? " single " : ""}transaction`,
+                    Message: `You must select a${selectedTransactions?.length > 0 ? " single" : ""} transaction`,
                     Variant: "warning"
                 })
             }
@@ -50,7 +50,9 @@ function Delete() {
         <Container>
             <span>Do you wish to delete this transaction? </span>
             <Button size="sm" onClick={() => Delete()}>Yes</Button>
-            <CancelButton />
+            <span style={{ marginLeft: "1px" }} >
+                <CancelButton />
+            </span>
         </Container>
     );
 }
