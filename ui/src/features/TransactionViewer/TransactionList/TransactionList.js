@@ -1,9 +1,9 @@
-import { Container } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
 import { baseUrl as apiBaseUrl, post as apiPost } from 'functions/api.js';
+import { Table } from 'react-bootstrap';
 import TransactionHeader from './TransactionHeader';
 import TransactionRow from './TransactionRow';
 import { transactionSearchAtom } from "recoil/atoms/TransactionSearchAtom";
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from "recoil";
 
 import MySpinner from 'components/MySpinner'
@@ -52,21 +52,22 @@ function TransactionList() {
   }, [transactionSearch])
 
   return (
-    <Container className='mt-5'>
+    <>
+      <Table>
+        <TransactionHeader />
 
-      <TransactionHeader />
+        {loading && <MySpinner />}
 
-      {loading && <MySpinner />}
+        {!loading && transactionTotals?.map(transactionTotal => (
+          <TransactionRow
+            key={transactionTotal.Transaction.TransactionId}
+            transaction={transactionTotal.Transaction}
+            runningTotal={transactionTotal.RunningTotal}
+          />
+        ))}
+      </Table>
 
-      {!loading && transactionTotals?.map(transactionTotal => (
-        <TransactionRow
-          key={transactionTotal.Transaction.TransactionId}
-          transaction={transactionTotal.Transaction}
-          runningTotal={transactionTotal.RunningTotal}
-        />
-      ))}
-
-    </Container>
+    </>
   )
 }
 

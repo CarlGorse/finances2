@@ -1,31 +1,17 @@
-import { Col, Container, Form, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 
 function AddEdit({ operation }) {
     return (
         <>
             <Row>
                 <Col xs={2}>
-                    EffDate
+                    <Form.Label>EffDate</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Control />
                 </Col>
                 <Col xs={2}>
-                    Debit
-                </Col>
-                <Col xs={3}>
-                    <Form.Control />
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={2}>
-                    Description
-                </Col>
-                <Col xs={3}>
-                    <Form.Control />
-                </Col>
-                <Col xs={2}>
-                    Credit
+                    <Form.Label>Debit</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Control />
@@ -33,13 +19,27 @@ function AddEdit({ operation }) {
             </Row>
             <Row>
                 <Col xs={2}>
-                    Category
+                    <Form.Label>Description</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Control />
                 </Col>
                 <Col xs={2}>
-                    Is wage?
+                    <Form.Label>Credit</Form.Label>
+                </Col>
+                <Col xs={3}>
+                    <Form.Control />
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={2}>
+                    <Form.Label>Category</Form.Label>
+                </Col>
+                <Col xs={3}>
+                    <Form.Control />
+                </Col>
+                <Col xs={2}>
+                    <Form.Label>Is wage?</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Check />
@@ -47,13 +47,13 @@ function AddEdit({ operation }) {
             </Row>
             <Row>
                 <Col xs={2}>
-                    Item
+                    <Form.Label>Item</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Control />
                 </Col>
                 <Col xs={2}>
-                    Exclude?
+                    <Form.Label>Exclude?</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Check />

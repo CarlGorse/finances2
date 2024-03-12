@@ -54,25 +54,25 @@ function TransactionRow({ transaction, runningTotal }) {
       <Col xs={1}>
         <Form.Check checked={isSelected} onChange={() => onCheck()} />
       </Col>
-      <Col>
+      <Col xs={1}>
         {formatDateTimeAsDateDDMMYYYY(transaction.EffDate)}
       </Col>
-      <Col>
+      <Col xs={2}>
         {transaction.Category.Group.Name}
       </Col>
-      <Col>
+      <Col xs={2}>
         {transaction.Category.Name}
       </Col>
-      <Col>
+      <Col xs={2}>
         {transaction.Description}
       </Col>
-      <Col>
+      <Col xs={1}>
         {formatCurrency(transaction.Credit)}
       </Col>
-      <Col>
+      <Col xs={1}>
         {formatCurrency(transaction.Debit)}
       </Col>
-      <Col>
+      <Col xs={2}>
         {formatCurrency(runningTotal)}
       </Col>
     </Row>

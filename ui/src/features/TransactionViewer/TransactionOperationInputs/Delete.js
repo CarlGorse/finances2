@@ -1,4 +1,4 @@
-import { Button, Container } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import CancelButton from '../TransactionOperationButtons/CancelButton'
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
@@ -47,13 +47,13 @@ function Delete() {
     }
 
     return (
-        <Container>
+        <>
             <span>Do you wish to delete this transaction? </span>
             <Button size="sm" onClick={() => Delete()}>Yes</Button>
             <span style={{ marginLeft: "1px" }} >
                 <CancelButton />
             </span>
-        </Container>
+        </>
     );
 }
 
