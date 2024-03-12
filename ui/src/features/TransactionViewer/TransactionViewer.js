@@ -27,9 +27,11 @@ function TransactionViewer() {
         <TransactionOperationError />
       </div>
 
-      <div style={{ marginTop: "20px", backgroundColor: "cornsilk" }}>
+      <div style={{ marginTop: "20px", padding: "5px" }}>
         <Form>
-          <TransactionOperationInputs />
+          <div style={{ backgroundColor: "cornsilk" }}>
+            <TransactionOperationInputs />
+          </div>
         </Form>
       </div>
 

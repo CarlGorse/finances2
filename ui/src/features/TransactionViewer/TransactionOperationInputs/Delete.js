@@ -49,7 +49,9 @@ function Delete() {
     return (
         <>
             <span>Do you wish to delete this transaction? </span>
-            <Button size="sm" onClick={() => Delete()}>Yes</Button>
+            <span style={{ marginLeft: "10px" }} >
+                <Button size="sm" onClick={() => Delete()}>Yes</Button>
+            </span>
             <span style={{ marginLeft: "1px" }} >
                 <CancelButton />
             </span>
