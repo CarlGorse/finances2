@@ -2,7 +2,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { Row, Col } from 'react-bootstrap';
 import { useCallback, useEffect, useState } from 'react';
 
-function SearchItem({ defaultValue, onSelect, values }) {
+function FilterItem({ defaultValue, onSelect, values }) {
 
   const [title, setTitle] = useState("");
 
@@ -44,4 +44,4 @@ function SearchItem({ defaultValue, onSelect, values }) {
   );
 }
 
-export default SearchItem;
+export default FilterItem;

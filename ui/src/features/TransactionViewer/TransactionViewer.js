@@ -1,7 +1,7 @@
 import { Container, Form } from 'react-bootstrap';
 import BankAccountSelector from 'features/BankAccountSelector';
 import TransactionList from './TransactionList/TransactionList';
-import TransactionSearch from './TransactionSearch/TransactionSearch';
+import TransactionFilters from './TransactionFilters/TransactionFilters';
 import TransactionOperationButtons from './TransactionOperationButtons/Buttons';
 import TransactionOperationInputs from './TransactionOperationInputs/TransactionOperationInputs';
 import TransactionOperationError from './TransactionOperationError';
@@ -14,7 +14,7 @@ function TransactionViewer() {
       <BankAccountSelector />
 
       <div style={{ marginTop: "20px" }}>
-        <TransactionSearch />
+        <TransactionFilters />
       </div>
 
       <div style={{ marginTop: "20px" }}>

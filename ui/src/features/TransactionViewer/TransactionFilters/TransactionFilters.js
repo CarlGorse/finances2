@@ -1,5 +1,5 @@
 import { Row, Col } from 'react-bootstrap';
-import SearchItem from './SearchItem'
+import FilterItem from './FilterItem'
 import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useSetRecoilState } from "recoil";
 
@@ -18,10 +18,10 @@ function TransactionSearch() {
       <Row>
         <Col xs={1}>From:</Col>
         <Col xs={1}>
-          <SearchItem defaultValue="01" onSelect={value => UpdateTransactionSearch("StartPeriod", value)} values={periods} />
+          <FilterItem defaultValue="01" onSelect={value => UpdateTransactionSearch("StartPeriod", value)} values={periods} />
         </Col>
         <Col>
-          <SearchItem defaultValue="2024" onSelect={value => UpdateTransactionSearch("StartYear", value)} values={years} />
+          <FilterItem defaultValue="2024" onSelect={value => UpdateTransactionSearch("StartYear", value)} values={years} />
         </Col>
         <Col>
 
@@ -30,10 +30,10 @@ function TransactionSearch() {
       <Row>
         <Col xs={1}>To:</Col>
         <Col xs={1}>
-          <SearchItem defaultValue="03" onSelect={value => UpdateTransactionSearch("EndPeriod", value)} values={periods} />
+          <FilterItem defaultValue="03" onSelect={value => UpdateTransactionSearch("EndPeriod", value)} values={periods} />
         </Col>
         <Col>
-          <SearchItem defaultValue="2024" onSelect={value => UpdateTransactionSearch("EndYear", value)} values={years} />
+          <FilterItem defaultValue="2024" onSelect={value => UpdateTransactionSearch("EndYear", value)} values={years} />
         </Col>
         <Col>
         </Col>
