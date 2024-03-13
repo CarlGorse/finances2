@@ -23,6 +23,7 @@ function Add() {
     const showForm = transactionOperation === "Add"
 
     useClearError(!showForm);
+    useClearError(!error || !error?.Message);
     useSetError(error?.Message, error?.Variant, showForm && error?.Message);
 
     if (!showForm) {
