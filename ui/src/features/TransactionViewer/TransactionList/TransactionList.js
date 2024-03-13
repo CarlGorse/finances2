@@ -1,4 +1,5 @@
-import { baseUrl as apiBaseUrl, post as apiPost } from 'functions/api.js';
+import { apiBaseUrl } from 'functions/Api';
+import axios from 'axios';
 import { Table } from 'react-bootstrap';
 import TransactionHeader from './TransactionHeader';
 import TransactionRow from './TransactionRow';
@@ -28,27 +29,22 @@ function TransactionList() {
 
     setLoading(true);
 
-    apiPost(
-      {
-        url: apiBaseUrl + "/transactions/get",
-        payload: {
-          AccountId: transactionSearch.AccountId,
-          CategoryId: 0,
-          StartYear: transactionSearch.StartYear,
-          StartPeriod: transactionSearch.StartPeriod,
-          EndYear: transactionSearch.EndYear,
-          EndPeriod: transactionSearch.EndPeriod,
-          FilterType: 0,
-          StartEffDate: "09/03/2024",
-          EndEffDate: "09/03/2024",
-          TransactionId: 0
-        },
-        callback: (response => {
-          setTransactionTotals(response.data.transactions);
-          setLoading(false);;
-        })
-      }
-    )
+    axios.post(apiBaseUrl + "/transactions/get", {
+      AccountId: transactionSearch.AccountId,
+      CategoryId: 0,
+      StartYear: transactionSearch.StartYear,
+      StartPeriod: transactionSearch.StartPeriod,
+      EndYear: transactionSearch.EndYear,
+      EndPeriod: transactionSearch.EndPeriod,
+      FilterType: 0,
+      StartEffDate: "09/03/2024",
+      EndEffDate: "09/03/2024",
+      TransactionId: 0
+    })
+      .then(function (response) {
+        setTransactionTotals(response.data.transactions);
+        setLoading(false);;
+      })
   }, [transactionSearch])
 
   return (
