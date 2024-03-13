@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Finances.App.WebApp\Finances.App.WebApp.csproj" />
     <ProjectReference Include="..\Finances.Engine\Finances.Engine.csproj" />
   </ItemGroup>
 

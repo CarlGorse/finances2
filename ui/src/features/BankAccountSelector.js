@@ -44,9 +44,9 @@ function BankAccountSelector() {
         selectBankAccount(response.data.Accounts.find(bankAccount => bankAccount.Name === defaultAccountName));
         setError(null);
       })
-      .catch(function (error) {
+      .catch(
         setError("Unable to load bank accounts")
-      })
+      )
   }, [selectBankAccount, setError])
 
   if (bankAccounts === null) {

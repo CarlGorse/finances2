@@ -11,7 +11,6 @@ function TransactionOperationButtons() {
     const setClearSelectedTransactions = useSetRecoilState(clearSelectedTransactionsAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
 
-    useClearError(!transactionOperation === null);
 
     async function Clear() {
         await ClearSelectedTransactions()

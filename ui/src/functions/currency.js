@@ -6,7 +6,11 @@ function formatCurrency(currency) {
     if (currency === 0) {
         return '';
     }
-    return Number(currency).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    return stringToCurrency(currency).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
-export { formatCurrency };
+function stringToCurrency(currency) {
+    return Number(currency)
+}
+
+export { formatCurrency, stringToCurrency };

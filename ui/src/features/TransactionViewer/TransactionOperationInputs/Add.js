@@ -3,12 +3,12 @@ import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
+import { convertStringToDate, formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { useState } from 'react';
-import { useRecoilState, useRecoilValue } from "recoil";
 import { transactionSearchAtom as transactionSearchFiltersAtom } from 'recoil/atoms/TransactionSearchAtom';
-import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useSetError } from "hooks/useSetError";
+import { useState } from 'react';
 import { useClearError } from "hooks/useClearError";
 
 function Add() {
@@ -21,8 +21,7 @@ function Add() {
 
     const showForm = transactionOperation === "Add"
 
-    useClearError(!showForm);
-    useClearError(!error || !error?.Message);
+    useClearError(showForm && (!error || !error?.Message));
     useSetError(error?.Message, error?.Variant, showForm && error?.Message);
 
     if (!showForm) {
@@ -30,18 +29,20 @@ function Add() {
     }
 
     function Save() {
+        console.log(transactionToAdd);
         axios.post(
             apiBaseUrl + "/transactions/add",
             {
                 AccountId: transactionSearchFilters.AccountId,
-                CategoryId: transactionToAdd.CategoryId,
-                Credit: transactionToAdd.Credit,
-                Debit: transactionToAdd.Debit,
+                CategoryId: 1,
+                Credit: transactionToAdd.Credit ?? 0,
+                Debit: transactionToAdd.Debit ?? 0,
                 Description: transactionToAdd.Description,
                 EffDate: transactionToAdd.EffDate,
+                Exclude: false,
+                IsWage: transactionToAdd.IsWage ?? false,
                 Item: transactionToAdd.Item
-            }
-        )
+            })
             .then(function (response) {
                 setError({
                     Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
@@ -58,13 +59,12 @@ function Add() {
     }
 
     function CancelTransactionOperation() {
-        setError(null);
         setTransactionOperation(null)
     }
 
     return (
         <>
-            <AddEdit />
+            <AddEdit transactionOperation={transactionOperation} />
 
             <div style={{ marginTop: "20px" }}>
                 <Button size="sm" onClick={() => Save()}>Save</Button>

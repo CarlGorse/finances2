@@ -5,7 +5,7 @@ import { transactionOperationErrorAtom } from 'recoil/atoms/TransactionOperation
 function useSetError(message, variant, condition) {
 
     const setError = useSetRecoilState(transactionOperationErrorAtom);
-    console.log(condition)
+
     useEffect(() => {
         if (condition === undefined || condition == null || condition) {
             setError({

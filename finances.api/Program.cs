@@ -1,3 +1,5 @@
+using Finances.App.WebApp.Interfaces.Services;
+using Finances.App.WebApp.Services;
 using Finances.Engine.Data;
 using Finances.Engine.Data.Interfaces;
 using Finances.Engine.Data.Models;
@@ -30,6 +32,10 @@ builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IReportTotalRepository, ReportTotalRepository>();
 builder.Services.AddScoped<ISearchCriteriaService, SearchCriteriaService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped(typeof(IEditableItemControllerService<>), typeof(EditableItemControllerService<>));
+builder.Services.AddScoped<IEditableItemRepository<Category>, CategoryRepository>();
+builder.Services.AddScoped<IEditableItemRepository<CategoryGroup>, CategoryGroupRepository>();
+builder.Services.AddScoped<IEditableItemRepository<Transaction>, TransactionRepository>();
 
 builder.Services.AddScoped<IItemProperties<Account>>(serviceProvider => {
     var factory = serviceProvider.GetRequiredService<IItemPropertiesFactory>();

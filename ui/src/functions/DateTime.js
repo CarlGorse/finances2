@@ -43,4 +43,9 @@ function formatDay2Digits(day) {
 }
 
 
-export { formatDateTimeAsDateDDMMYYYY };
+export {
+    convertDateToString,
+    convertStringToDate,
+    formatDateDDMMYYYY,
+    formatDateTimeAsDateDDMMYYYY,
+};

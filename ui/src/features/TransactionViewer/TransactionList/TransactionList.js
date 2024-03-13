@@ -41,7 +41,7 @@ function TransactionList() {
       EndEffDate: "09/03/2024",
       TransactionId: 0
     })
-      .then(function (response) {
+      .then(response => {
         setTransactionTotals(response.data.transactions);
         setLoading(false);;
       })

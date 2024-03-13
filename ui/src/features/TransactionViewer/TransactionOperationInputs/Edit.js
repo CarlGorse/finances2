@@ -22,7 +22,6 @@ function Edit() {
     }
 
     function Edit() {
-
     }
 
     function CancelTransactionOperation() {
@@ -31,7 +30,8 @@ function Edit() {
 
     return (
         <>
-            <AddEdit />
+            <AddEdit transactionOperation={transactionOperation} />
+
             <div style={{ marginTop: "20px" }}>
                 <Button size="sm" onClick={() => Edit()}>Save</Button>
                 <Button style={{ marginLeft: "1px" }} size="sm" onClick={() => CancelTransactionOperation()}>Cancel</Button>
