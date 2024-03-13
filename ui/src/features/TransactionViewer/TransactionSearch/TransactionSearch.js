@@ -1,4 +1,4 @@
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import SearchItem from './SearchItem'
 import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useSetRecoilState } from "recoil";
@@ -14,7 +14,7 @@ function TransactionSearch() {
   }
 
   return (
-    <Container>
+    <>
       <Row>
         <Col xs={1}>From:</Col>
         <Col xs={1}>
@@ -38,7 +38,7 @@ function TransactionSearch() {
         <Col>
         </Col>
       </Row>
-    </Container>
+    </>
   );
 }
 

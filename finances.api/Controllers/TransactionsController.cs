@@ -80,7 +80,7 @@ namespace finances.api.Controllers {
                 return StatusCode(StatusCodes.Status406NotAcceptable, JsonSerializer.Serialize(new { transaction, validationErrors }));
             }
 
-            return Ok(transaction.TransactionId);
+            return Ok(transaction);
         }
     }
 }

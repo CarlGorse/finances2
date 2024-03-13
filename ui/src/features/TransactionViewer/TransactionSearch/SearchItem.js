@@ -1,5 +1,5 @@
 import Dropdown from 'react-bootstrap/Dropdown';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { useCallback, useEffect, useState } from 'react';
 
 function SearchItem({ defaultValue, onSelect, values }) {
@@ -17,7 +17,7 @@ function SearchItem({ defaultValue, onSelect, values }) {
   }, [defaultValue]);
 
   return (
-    <Container>
+    <>
       <Row>
         <Col>
           <Dropdown>
@@ -40,7 +40,7 @@ function SearchItem({ defaultValue, onSelect, values }) {
           </Dropdown>
         </Col>
       </Row>
-    </Container>
+    </>
   );
 }
 
