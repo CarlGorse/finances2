@@ -8,12 +8,10 @@ import { useClearError } from "hooks/useClearError";
 
 function Edit() {
 
-    const operation = "Edit";
-
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
 
-    const showForm = transactionOperation === operation
+    const showForm = transactionOperation === "Edit"
     const hasValidTransactionSelected = selectedTransactions?.length === 1
 
     useClearError(showForm && hasValidTransactionSelected);

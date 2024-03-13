@@ -8,13 +8,11 @@ import { useClearError } from "hooks/useClearError";
 
 function Delete() {
 
-    const operation = "Delete";
-
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
 
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
 
-    const showForm = transactionOperation === operation
+    const showForm = transactionOperation === "Delete"
     const hasValidTransactionSelected = selectedTransactions?.length === 1
 
     useClearError(showForm && hasValidTransactionSelected);
