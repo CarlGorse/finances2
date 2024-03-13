@@ -1,39 +1,24 @@
 import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { transactionOperationErrorAtom } from 'recoil/atoms/TransactionOperationErrorAtom';
-import { useEffect } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetError } from "hooks/useSetError";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useClearError } from "hooks/useClearError";
 
 function MoveWages() {
 
     const operation = "Move wages";
 
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
-    const setError = useSetRecoilState(transactionOperationErrorAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
 
-    const isValidForm = transactionOperation === operation
+    const showForm = transactionOperation === operation
     const hasValidTransactionSelected = selectedTransactions?.length === 2
 
-    useEffect(() => {
-        if (isValidForm) {
-            if (!hasValidTransactionSelected) {
-                setError({
-                    Message: `You must select two transactions`,
-                    Variant: "warning"
-                })
-            }
-            else {
-                setError({
-                    Message: "",
-                    Variant: ""
-                })
-            }
-        }
-    }, [isValidForm, hasValidTransactionSelected, setError]);
+    useClearError(showForm && hasValidTransactionSelected);
+    useSetError(`You must select two transactions`, "warning", showForm && !hasValidTransactionSelected);
 
-    if (!isValidForm || !hasValidTransactionSelected) {
+    if (!showForm || !hasValidTransactionSelected) {
         return null;
     }
 

@@ -4,33 +4,29 @@ import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { transactionOperationErrorAtom } from 'recoil/atoms/TransactionOperationErrorAtom';
-import { useEffect } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { baseUrl as apiBaseUrl } from 'functions/api.js';
+import { useState } from 'react';
+import { useRecoilState, useRecoilValue } from "recoil";
 import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
+import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
+import { useSetError } from "hooks/useSetError";
+import { useClearError } from "hooks/useClearError";
 
 function Add() {
 
     const operation = "Add";
 
     const addEditTransaction = useRecoilValue(addEditTransactionAtom);
-    const setError = useSetRecoilState(transactionOperationErrorAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
     const transactionSearch = useRecoilValue(transactionSearchAtom);
 
-    const isValidForm = transactionOperation === operation
+    const [error, setError] = useState(null);
 
-    useEffect(() => {
-        if (isValidForm) {
-            setError({
-                Message: "",
-                Variant: ""
-            })
-        }
-    }, [isValidForm, setError]);
+    const showForm = transactionOperation === operation
 
-    if (!isValidForm) {
+    useClearError(!showForm);
+    useSetError(error?.Message, error?.Variant, showForm && error?.Message);
+
+    if (!showForm) {
         return null
     }
 
@@ -40,12 +36,20 @@ function Add() {
             {
                 AccountId: transactionSearch.AccountId,
                 CategoryId: addEditTransaction.CategoryId,
+                Credit: addEditTransaction.Credit,
+                Debit: addEditTransaction.Debit,
                 Description: addEditTransaction.Description,
                 EffDate: addEditTransaction.EffDate,
                 Item: addEditTransaction.Item
             }
         )
-            .then(function (response) { CancelTransactionOperation() })
+            .then(function (response) {
+                setError({
+                    Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
+                    Variant: "success"
+                })
+                CancelTransactionOperation()
+            })
             .catch(function (error) {
                 setError({
                     Message: error.response.data.validationErrors[0],
@@ -55,6 +59,7 @@ function Add() {
     }
 
     function CancelTransactionOperation() {
+        setError(null);
         setTransactionOperation(null)
     }
 
