@@ -6,17 +6,16 @@ import { Button } from 'react-bootstrap';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from "recoil";
-import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
+import { transactionSearchAtom as transactionSearchFiltersAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { useSetError } from "hooks/useSetError";
 import { useClearError } from "hooks/useClearError";
 
 function Add() {
 
-
-    const addEditTransaction = useRecoilValue(addEditTransactionAtom);
+    const transactionToAdd = useRecoilValue(addEditTransactionAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
-    const transactionSearch = useRecoilValue(transactionSearchAtom);
+    const transactionSearchFilters = useRecoilValue(transactionSearchFiltersAtom);
 
     const [error, setError] = useState(null);
 
@@ -34,13 +33,13 @@ function Add() {
         axios.post(
             apiBaseUrl + "/transactions/add",
             {
-                AccountId: transactionSearch.AccountId,
-                CategoryId: addEditTransaction.CategoryId,
-                Credit: addEditTransaction.Credit,
-                Debit: addEditTransaction.Debit,
-                Description: addEditTransaction.Description,
-                EffDate: addEditTransaction.EffDate,
-                Item: addEditTransaction.Item
+                AccountId: transactionSearchFilters.AccountId,
+                CategoryId: transactionToAdd.CategoryId,
+                Credit: transactionToAdd.Credit,
+                Debit: transactionToAdd.Debit,
+                Description: transactionToAdd.Description,
+                EffDate: transactionToAdd.EffDate,
+                Item: transactionToAdd.Item
             }
         )
             .then(function (response) {
