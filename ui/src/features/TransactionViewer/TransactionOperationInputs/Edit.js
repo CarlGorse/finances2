@@ -1,10 +1,10 @@
 import AddEdit from './AddEdit';
 import { Button } from 'react-bootstrap';
+import { errorAtom } from 'recoil/atoms/ErrorAtom';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useSetError } from "hooks/useSetError";
-import { useClearError } from "hooks/useClearError";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useEffect } from 'react'
 
 function Edit() {
 
@@ -13,9 +13,18 @@ function Edit() {
 
     const showForm = transactionOperation === "Edit"
     const hasValidTransactionSelected = selectedTransactions?.length === 1
+    const setError = useSetRecoilState(errorAtom);
 
-    useClearError(showForm && hasValidTransactionSelected);
-    useSetError(`You must select a ${selectedTransactions?.length > 0 ? " single " : ""}transaction`, "warning", showForm && !hasValidTransactionSelected);
+    useEffect(() => {
+        if (showForm) {
+            if (!hasValidTransactionSelected) {
+                setError({ Message: `You must select a ${selectedTransactions?.length > 0 ? " single " : ""}transaction`, Variant: "warning" });
+            }
+            else {
+                setError(null);
+            }
+        }
+    })
 
     if (!showForm || !hasValidTransactionSelected) {
         return null

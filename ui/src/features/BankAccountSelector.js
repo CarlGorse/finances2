@@ -1,11 +1,10 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import { apiBaseUrl } from 'functions/Api';
 import { clearSelectedTransactionsAtom } from 'recoil/atoms/ClearSelectedTransactionsAtom';
+import { errorAtom } from 'recoil/atoms/ErrorAtom';
 import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useCallback, useEffect, useState } from 'react';
 import { useSetRecoilState } from "recoil";
-import { useSetError } from "hooks/useSetError";
-import { useClearError } from "hooks/useClearError";
 import axios from 'axios';
 
 function BankAccountSelector() {
@@ -16,8 +15,7 @@ function BankAccountSelector() {
   const defaultAccountName = "Cash";
   const setClearSelectedTransactions = useSetRecoilState(clearSelectedTransactionsAtom);
   const setTransactionSearch = useSetRecoilState(transactionSearchAtom);
-
-  const [error, setError] = useState(null);
+  const setError = useSetRecoilState(errorAtom);
 
   function UpdateTransactionSearch(propertyName, value) {
     setTransactionSearch(prevState => ({ ...prevState, [propertyName]: value }))
@@ -34,18 +32,15 @@ function BankAccountSelector() {
     setClearSelectedTransactions(false);
   }
 
-  useClearError(!error);
-  useSetError(error, "danger", error?.length > 0);
-
   useEffect(() => {
     axios.get(apiBaseUrl + "/bankAccounts/get")
       .then(response => {
         setBankAccounts(response.data.Accounts);
         selectBankAccount(response.data.Accounts.find(bankAccount => bankAccount.Name === defaultAccountName));
-        setError(null);
+        setError({ Error: null, Variant: null });
       })
       .catch(
-        setError("Unable to load bank accounts")
+        setError({ Message: "Unable to load bank accounts", Variant: "danger" })
       )
   }, [selectBankAccount, setError])
 

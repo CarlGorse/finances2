@@ -1,10 +1,12 @@
 import { Alert } from 'react-bootstrap';
-import { transactionOperationErrorAtom } from 'recoil/atoms/TransactionOperationErrorAtom';
+import { errorAtom } from 'recoil/atoms/ErrorAtom';
 import { useRecoilValue } from "recoil";
 
 function TransactionOperationError() {
 
-    const error = useRecoilValue(transactionOperationErrorAtom);
+    const error = useRecoilValue(errorAtom);
+
+    console.log(error)
 
     if (!error?.Message?.length > 0) {
         return null

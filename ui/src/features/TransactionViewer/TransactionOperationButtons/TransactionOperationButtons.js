@@ -1,16 +1,17 @@
 import { Button } from 'react-bootstrap';
 import { clearSelectedTransactionsAtom } from 'recoil/atoms/ClearSelectedTransactionsAtom';
-import TransactionOperationButton from "./Button";
+import TransactionOperationButton from "./TransactionOperationButton";
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useSetRecoilState } from "recoil";
-import { useClearError } from "hooks/useClearError";
+import { useRef, useState } from 'react';
 import { useRecoilState } from "recoil";
+import { useShowError } from "hooks/useShowError";
 
 function TransactionOperationButtons() {
 
     const setClearSelectedTransactions = useSetRecoilState(clearSelectedTransactionsAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
-
+    const [error, setError] = useState(null);
 
     async function Clear() {
         await ClearSelectedTransactions()
@@ -22,6 +23,22 @@ function TransactionOperationButtons() {
         setClearSelectedTransactions(false);
     }
 
+    const prevTransactionOperation = useRef();
+
+    //useShowError(error);
+    /*
+        useEffect(() => {
+            if (
+                prevTransactionOperation.current === transactionOperation ||
+                (prevTransactionOperation.current !== transactionOperation && transactionOperation)) {
+                setError({
+                    Message: null,
+                    Variant: null
+                })
+                prevTransactionOperation.current = transactionOperation
+            }
+        }, [setError, transactionOperation]);
+    */
     return (
         <>
             <span>

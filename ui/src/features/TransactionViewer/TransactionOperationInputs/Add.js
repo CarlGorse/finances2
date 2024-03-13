@@ -3,13 +3,12 @@ import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import { convertStringToDate, formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
+import { errorAtom } from 'recoil/atoms/ErrorAtom';
+import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { transactionSearchAtom as transactionSearchFiltersAtom } from 'recoil/atoms/TransactionSearchAtom';
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useSetError } from "hooks/useSetError";
-import { useState } from 'react';
-import { useClearError } from "hooks/useClearError";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useEffect } from 'react'
 
 function Add() {
 
@@ -17,19 +16,22 @@ function Add() {
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
     const transactionSearchFilters = useRecoilValue(transactionSearchFiltersAtom);
 
-    const [error, setError] = useState(null);
+    const setError = useSetRecoilState(errorAtom);
 
     const showForm = transactionOperation === "Add"
 
-    useClearError(showForm && (!error || !error?.Message));
-    useSetError(error?.Message, error?.Variant, showForm && error?.Message);
+    useEffect(() => {
+        if (showForm) {
+            setError(null);
+        }
+    })
 
     if (!showForm) {
         return null
     }
 
     function Save() {
-        console.log(transactionToAdd);
+
         axios.post(
             apiBaseUrl + "/transactions/add",
             {
