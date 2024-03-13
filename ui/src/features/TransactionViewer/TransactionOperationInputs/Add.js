@@ -13,7 +13,6 @@ import { useClearError } from "hooks/useClearError";
 
 function Add() {
 
-    const operation = "Add";
 
     const addEditTransaction = useRecoilValue(addEditTransactionAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
@@ -21,7 +20,7 @@ function Add() {
 
     const [error, setError] = useState(null);
 
-    const showForm = transactionOperation === operation
+    const showForm = transactionOperation === "Add"
 
     useClearError(!showForm);
     useSetError(error?.Message, error?.Variant, showForm && error?.Message);
