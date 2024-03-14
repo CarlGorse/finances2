@@ -4,25 +4,31 @@ import { Table } from 'react-bootstrap';
 import TransactionHeader from './TransactionHeader';
 import TransactionRow from './TransactionRow';
 import { transactionSearchAtom } from "recoil/atoms/TransactionSearchAtom";
+import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import MySpinner from 'components/MySpinner'
+
+function _isTransactionSearchValid(transactionSearch) {
+  return transactionSearch.AccountId !== null
+    || transactionSearch.StartPeriod !== null
+    || transactionSearch.StartYear !== null
+    || transactionSearch.EndPeriod !== null
+    || transactionSearch.EndYear !== null
+}
 
 function TransactionList() {
 
   const [transactionTotals, setTransactionTotals] = useState(null);
   const transactionSearch = useRecoilValue(transactionSearchAtom);
+  const refreshTransactions = useRecoilValue(refreshTransactionsAtom);
   const [loading, setLoading] = useState(null);
+  const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
 
   useEffect(() => {
 
-    if (
-      transactionSearch.AccountId === null
-      || transactionSearch.StartPeriod === null
-      || transactionSearch.StartYear === null
-      || transactionSearch.EndPeriod === null
-      || transactionSearch.EndYear === null
+    if (!_isTransactionSearchValid(transactionSearch)
     ) {
       return () => { };
     }
@@ -42,10 +48,11 @@ function TransactionList() {
       TransactionId: 0
     })
       .then(response => {
+        setRefreshTransactions(false);
         setTransactionTotals(response.data.transactions);
-        setLoading(false);;
+        setLoading(false);
       })
-  }, [transactionSearch])
+  }, [transactionSearch, refreshTransactions])
 
   return (
     <>

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import { errorAtom } from 'recoil/atoms/ErrorAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
+import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { transactionSearchAtom as transactionSearchFiltersAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -15,6 +16,7 @@ function Add() {
     const transactionToAdd = useRecoilValue(addEditTransactionAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
     const transactionSearchFilters = useRecoilValue(transactionSearchFiltersAtom);
+    const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
 
     const setError = useSetRecoilState(errorAtom);
 
@@ -46,6 +48,7 @@ function Add() {
                 Item: transactionToAdd.Item
             })
             .then(function (response) {
+                setRefreshTransactions(true);
                 setError({
                     Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
                     Variant: "success"
