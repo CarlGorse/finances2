@@ -1,10 +1,10 @@
 import { Container, Form } from 'react-bootstrap';
 import BankAccountSelector from 'features/BankAccountSelector';
-import TransactionList from './TransactionList/TransactionList';
-import TransactionFilters from './TransactionFilters/TransactionFilters';
-import TransactionOperationButtons from './TransactionOperationButtons/TransactionOperationButtons';
-import TransactionOperationInputs from './TransactionOperationInputs/TransactionOperationInputs';
-import SystemError from 'Components/SystemError';
+import TransactionList from './TransactionViewer/TransactionList/TransactionList';
+import TransactionFilters from './TransactionViewer/TransactionFilters/TransactionFilters';
+import TransactionOperationButtons from './TransactionViewer/TransactionOperationButtons/TransactionOperationButtons';
+import TransactionOperationInputs from './TransactionViewer/TransactionOperationInputs/TransactionOperationInputs';
+import SystemError from 'components/SystemError';
 
 function TransactionViewer() {
 

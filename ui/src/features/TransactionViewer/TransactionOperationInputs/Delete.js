@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap';
 import CancelButton from '../TransactionOperationButtons/CancelButton'
-import { errorAtom } from 'recoil/atoms/ErrorAtom';
+import { systemErrorAtom } from 'recoil/atoms/SystemErrorAtom';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -14,15 +14,15 @@ function Delete() {
 
     const showForm = transactionOperation === "Delete"
     const hasValidTransactionSelected = selectedTransactions?.length === 1
-    const setError = useSetRecoilState(errorAtom);
+    const setSystemError = useSetRecoilState(systemErrorAtom);
 
     useEffect(() => {
         if (showForm) {
             if (!hasValidTransactionSelected) {
-                setError({ Message: `You must select a${selectedTransactions?.length > 0 ? " single" : ""} transaction`, Variant: "warning" });
+                setSystemError({ Message: `You must select a${selectedTransactions?.length > 0 ? " single" : ""} transaction`, Variant: "warning" });
             }
             else {
-                setError(null);
+                setSystemError(null);
             }
         }
     }, [showForm, hasValidTransactionSelected])

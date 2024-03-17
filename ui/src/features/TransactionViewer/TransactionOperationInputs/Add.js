@@ -3,7 +3,7 @@ import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import { errorAtom } from 'recoil/atoms/ErrorAtom';
+import { systemErrorAtom } from 'recoil/atoms/SystemErrorAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
@@ -18,13 +18,13 @@ function Add() {
     const transactionSearchFilters = useRecoilValue(transactionSearchFiltersAtom);
     const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
 
-    const setError = useSetRecoilState(errorAtom);
+    const setSystemError = useSetRecoilState(systemErrorAtom);
 
     const showForm = transactionOperation === "Add"
 
     useEffect(() => {
         if (showForm) {
-            setError(null);
+            setSystemError(null);
         }
     })
 
@@ -49,14 +49,14 @@ function Add() {
             })
             .then(function (response) {
                 setRefreshTransactions(true);
-                setError({
+                setSystemError({
                     Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
                     Variant: "success"
                 })
                 CancelTransactionOperation()
             })
             .catch(function (error) {
-                setError({
+                setSystemError({
                     Message: error.response.data.validationErrors[0],
                     Variant: "danger"
                 })
