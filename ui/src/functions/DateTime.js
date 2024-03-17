@@ -42,7 +42,6 @@ function formatDay2Digits(day) {
     return ("0" + day).slice(-2);
 }
 
-
 export {
     convertDateToString,
     convertStringToDate,

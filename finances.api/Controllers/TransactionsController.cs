@@ -1,57 +1,37 @@
-﻿using Finances.Engine.Data.Interfaces;
-using Finances.Engine.Data.Models;
-using Finances.Engine.Data.Repositories.Interfaces;
-using Finances.Engine.Models;
-using Finances.Engine.Services;
-using Finances.Engine.Services.Interfaces;
+﻿using finances.api.Data.Models;
+using finances.api.Models;
+using finances.api.Repositories;
+using finances.api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-using System.Collections.Generic;
 using System.Text.Json;
 
 namespace finances.api.Controllers {
 
     public class TransactionsController : Controller {
 
-        public const string ControllerName = "Transactions";
-
-        public static class ActionNames {
-            public const string Add = "Add";
-            public const string Delete = "Delete";
-            public const string Edit = "Edit";
-            public const string Index = "Index";
-            public const string MoveWages = "_MoveWages";
-            public const string Search = "Search";
-        }
-
-        private readonly IFinancesDbContext _DbContext;
-        private readonly IReportService _ReportService;
-        private readonly ISearchCriteriaService _SearchCriteriaService;
-        private readonly ITransactionRepository _TransactionRepository;
+        private readonly IReportService _reportService;
+        private readonly ISearchCriteriaService _searchCriteriaService;
+        private readonly ITransactionRepository _transactionRepository;
 
         public TransactionsController(
             ITransactionRepository transactionRepository,
             ISearchCriteriaService searchCriteriaService,
-            IReportService reportService,
-            IFinancesDbContext dbContext) {
+            IReportService reportService) {
 
-            _TransactionRepository = transactionRepository;
-            _SearchCriteriaService = searchCriteriaService;
-            _ReportService = reportService;
-            _DbContext = dbContext;
+            _transactionRepository = transactionRepository;
+            _searchCriteriaService = searchCriteriaService;
+            _reportService = reportService;
         }
 
         [HttpPost]
         public IActionResult Get([FromBody] SearchCriteriaModel searchCriteria) {
 
-            var validationErrors = new List<string>();
-
-            if (!_SearchCriteriaService.ValidateSearchCriteria(searchCriteria, validationErrors)) {
+            if (!_searchCriteriaService.ValidateSearchCriteria(searchCriteria, out var validationErrors)) {
                 return StatusCode(StatusCodes.Status406NotAcceptable, JsonSerializer.Serialize(new { searchCriteria, validationErrors }));
             }
 
-            var transactionFilters = _SearchCriteriaService.CreateTransactionFiltersFromSearchCriteria(searchCriteria);
+            var transactionFilters = _searchCriteriaService.CreateTransactionFiltersFromSearchCriteria(searchCriteria);
 
             transactionFilters.AccountId = searchCriteria.AccountId;
 
@@ -59,10 +39,10 @@ namespace finances.api.Controllers {
                 transactionFilters.CategoryIds.Add(searchCriteria.CategoryId);
             }
 
-            var transactions = _ReportService.GetTransactionRunningTotals(transactionFilters);
+            var transactions = _reportService.GetTransactionRunningTotals(transactionFilters);
 
             foreach (var reportRow in transactions) {
-                _TransactionRepository.SetWageTotalForEffDate(reportRow.Transaction);
+                _transactionRepository.SetWageTotalForEffDate(reportRow.Transaction);
             }
 
             return Ok(new { searchCriteria, transactions });
@@ -71,10 +51,7 @@ namespace finances.api.Controllers {
         [HttpPost]
         public IActionResult Add([FromBody] Transaction transaction) {
 
-            ICollection<string> validationErrors = new List<string>();
-
-            var result = _TransactionRepository.Add(transaction, out validationErrors, saveChanges: false);
-            _DbContext.SaveChanges();
+            var result = _transactionRepository.Add(transaction, out var validationErrors);
 
             if (!result) {
                 return StatusCode(StatusCodes.Status406NotAcceptable, JsonSerializer.Serialize(new { transaction, validationErrors }));

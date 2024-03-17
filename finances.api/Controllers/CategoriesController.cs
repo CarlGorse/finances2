@@ -1,4 +1,4 @@
-﻿using Finances.Engine.Data.Repositories.Interfaces;
+﻿using finances.api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -6,25 +6,15 @@ namespace finances.api.Controllers {
 
     public class CategoriesController : Controller {
 
-        public const string ControllerName = "Categories";
-
-        public static class ActionNames {
-            public const string Index = "Index";
-            public const string Add = "Add";
-            public const string Delete = "Delete";
-            public const string Search = "Search";
-            public const string Edit = "Edit";
-        }
-
-        private readonly ICategoryRepository _CategoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
         public CategoriesController(ICategoryRepository categoryRepository) {
-            _CategoryRepository = categoryRepository;
+            _categoryRepository = categoryRepository;
         }
 
         [HttpGet]
         public IActionResult Get() {
-            return Ok(_CategoryRepository.Categories
+            return Ok(_categoryRepository.Categories
                     .OrderBy(x => x.Group.DisplayOrder)
                     .ThenBy(x => x.Group.Name)
                     .ThenBy(x => x.GroupDisplayOrder)

@@ -4,7 +4,7 @@ import TransactionList from './TransactionList/TransactionList';
 import TransactionFilters from './TransactionFilters/TransactionFilters';
 import TransactionOperationButtons from './TransactionOperationButtons/TransactionOperationButtons';
 import TransactionOperationInputs from './TransactionOperationInputs/TransactionOperationInputs';
-import SystemError from 'Components/SystemError';
+import SystemError from 'components/SystemError'
 
 function TransactionViewer() {
 

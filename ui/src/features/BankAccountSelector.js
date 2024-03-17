@@ -35,9 +35,9 @@ function BankAccountSelector() {
   useEffect(() => {
     axios.get(apiBaseUrl + "/bankAccounts/get")
       .then(response => {
+        setSystemError({ Error: null, Variant: null });
         setBankAccounts(response.data.Accounts);
         selectBankAccount(response.data.Accounts.find(bankAccount => bankAccount.Name === defaultAccountName));
-        setSystemError({ Error: null, Variant: null });
       })
       .catch(
         setSystemError({ Message: "Unable to load bank accounts", Variant: "danger" })

@@ -1,4 +1,4 @@
-﻿using Finances.Engine.Data.Repositories.Interfaces;
+﻿using finances.api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace finances.api.Controllers {
@@ -14,11 +14,6 @@ namespace finances.api.Controllers {
         [HttpGet]
         public IActionResult Get() {
             return new OkObjectResult(new { _bankAccountRepository.Accounts });
-        }
-
-        [HttpGet]
-        public string Getx() {
-            return "carl";
         }
     }
 }

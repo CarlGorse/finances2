@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Finances.App.WebApp": {
+    "finances.api": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
