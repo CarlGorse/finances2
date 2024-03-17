@@ -4,6 +4,7 @@ using finances.api.Repositories;
 using finances.api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Text.Json;
 
 namespace finances.api.Controllers {
@@ -11,8 +12,10 @@ namespace finances.api.Controllers {
     public class TransactionsController(
         ITransactionRepository transactionRepository,
         ISearchCriteriaService searchCriteriaService,
-        IReportService reportService) : Controller {
+        IReportService reportService,
+        IEditableItemControllerService<Transaction> controllerService) : Controller {
 
+        private readonly IEditableItemControllerService<Transaction> _controllerService = controllerService;
         private readonly IReportService _reportService = reportService;
         private readonly ISearchCriteriaService _searchCriteriaService = searchCriteriaService;
         private readonly ITransactionRepository _transactionRepository = transactionRepository;
@@ -37,14 +40,17 @@ namespace finances.api.Controllers {
 
         [HttpPost]
         public IActionResult Add([FromBody] Transaction transaction) {
+            return _controllerService.Add(transaction);
+        }
 
-            var result = _transactionRepository.Add(transaction, out var validationErrors);
+        [HttpPost]
+        public IActionResult Edit([FromBody] Transaction transaction) {
+            return _controllerService.Edit(transaction);
+        }
 
-            return result switch {
-                EditResult.Ok => Ok(transaction),
-                EditResult.Invalid => StatusCode(StatusCodes.Status400BadRequest, JsonSerializer.Serialize(new { transaction, validationErrors })),
-                _ => StatusCode(StatusCodes.Status500InternalServerError, JsonSerializer.Serialize(new { transaction, validationErrors })),
-            };
+        [HttpPost]
+        public IActionResult Delete([FromBody] IEnumerable<int> ids) {
+            return _controllerService.Delete(ids);
         }
     }
 }

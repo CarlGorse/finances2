@@ -46,6 +46,10 @@ function TransactionList() {
       StartEffDate: "09/03/2024",
       EndEffDate: "09/03/2024",
       TransactionId: 0
+    }, {
+      headers: {
+        "Content-Type": "application/json"
+      }
     })
       .then(response => {
         setRefreshTransactions(false);

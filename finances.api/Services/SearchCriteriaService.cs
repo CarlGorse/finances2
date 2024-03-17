@@ -7,18 +7,12 @@ using System.Collections.Generic;
 
 namespace finances.api.Services {
 
-    public class SearchCriteriaService : ISearchCriteriaService {
+    public class SearchCriteriaService(
+        IAccountRepository accountRepository,
+        ICategoryRepository categoryRepository) : ISearchCriteriaService {
 
-        private readonly IAccountRepository _AccountRepository;
-        private readonly ICategoryRepository _CategoryRepository;
-
-        public SearchCriteriaService(
-            IAccountRepository accountRepository,
-            ICategoryRepository categoryRepository) {
-
-            _AccountRepository = accountRepository;
-            _CategoryRepository = categoryRepository;
-        }
+        private readonly IAccountRepository _AccountRepository = accountRepository;
+        private readonly ICategoryRepository _CategoryRepository = categoryRepository;
 
         public SearchCriteriaModel CreateDefaultModelSearchCriteria(int periodsToDeductFromStart = 0, int periodsToAddToEnd = 0) {
 
@@ -41,7 +35,7 @@ namespace finances.api.Services {
 
         public bool ValidateSearchCriteria(SearchCriteriaModel searchCriteria, out List<string> validationErrors) {
 
-            validationErrors = new List<string>();
+            validationErrors = [];
 
             switch (searchCriteria.FilterType) {
 
@@ -60,7 +54,7 @@ namespace finances.api.Services {
 
                 case SearchCriteriaModel.FilterTypes.EffDate:
                     if ((searchCriteria.FilterType == SearchCriteriaModel.FilterTypes.EffDate) && (searchCriteria.StartEffDate > searchCriteria.EndEffDate)) {
-                        validationErrors.Add("End Eff Date must not be beforeStart Eff Date.");
+                        validationErrors.Add("End Eff Date must not be before Start Eff Date.");
                         return false;
                     }
 

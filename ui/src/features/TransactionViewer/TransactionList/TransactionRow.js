@@ -1,23 +1,19 @@
-import { clearSelectedTransactionsAtom } from 'recoil/atoms/ClearSelectedTransactionsAtom';
 import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime';
 import { formatCurrency } from 'functions/Currency';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 
 function TransactionRow({ transaction, runningTotal }) {
 
-  const clearSelectedTransactions = useRecoilValue(clearSelectedTransactionsAtom);
   const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
   const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {
-    if (clearSelectedTransactions) {
-      selectOrDeslectTransaction(false)
-    }
-  }, [clearSelectedTransactions]);
+    setIsSelected(selectedTransactions?.filter(x => x.TransactionId === transaction.TransactionId).length > 0 ? true : false);
+  }, [selectedTransactions]);
 
   function onCheck() {
     selectOrDeslectTransaction(!isSelected);
@@ -34,6 +30,7 @@ function TransactionRow({ transaction, runningTotal }) {
   }
 
   function selectTransaction() {
+    console.log(transaction);
     if (selectedTransactions === null || selectedTransactions === undefined) {
       setSelectedTransactions([transaction]);
     }

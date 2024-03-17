@@ -1,11 +1,12 @@
-import Dropdown from 'react-bootstrap/Dropdown';
+import axios from 'axios';
 import { apiBaseUrl } from 'functions/Api';
-import { clearSelectedTransactionsAtom } from 'recoil/atoms/ClearSelectedTransactionsAtom';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { selectedBankAccountAtom } from 'recoil/atoms/SelectedBankAccountAtom';
+import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { systemErrorAtom } from 'recoil/atoms/SystemErrorAtom';
-import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
+import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useCallback, useEffect, useState } from 'react';
 import { useSetRecoilState } from "recoil";
-import axios from 'axios';
 
 function BankAccountSelector() {
 
@@ -13,23 +14,20 @@ function BankAccountSelector() {
   const [bankAccounts, setBankAccounts] = useState(null);
 
   const defaultAccountName = "Cash";
-  const setClearSelectedTransactions = useSetRecoilState(clearSelectedTransactionsAtom);
-  const setTransactionSearch = useSetRecoilState(transactionSearchAtom);
+  const setSelectedBankAccount = useSetRecoilState(selectedBankAccountAtom);
+  const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
+  const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
   const setSystemError = useSetRecoilState(systemErrorAtom);
 
-  function UpdateTransactionSearch(propertyName, value) {
-    setTransactionSearch(prevState => ({ ...prevState, [propertyName]: value }))
-  }
-
   const selectBankAccount = useCallback((bankAccount) => {
-    ClearSelectedTransactions();
+    ClearSelectedTransactionsAndOperation();
     setTitle(bankAccount.Name);
-    UpdateTransactionSearch("AccountId", bankAccount.Id);
+    setSelectedBankAccount(bankAccount)
   }, []);
 
-  async function ClearSelectedTransactions() {
-    await setClearSelectedTransactions(true);
-    setClearSelectedTransactions(false);
+  function ClearSelectedTransactionsAndOperation() {
+    setSelectedTransactions(null);
+    setTransactionOperation(null);
   }
 
   useEffect(() => {

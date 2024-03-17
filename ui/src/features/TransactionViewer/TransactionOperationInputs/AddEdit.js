@@ -7,7 +7,7 @@ import { stringToCurrency } from 'functions/Currency';
 import { useEffect } from 'react'
 import { useRecoilState } from "recoil";
 
-function AddEdit(transactionOperation) {
+function AddEdit() {
 
     const [addEditTransaction, setAddEditTransaction] = useRecoilState(addEditTransactionAtom);
     const [categories, setCategories] = useRecoilState(categoriesAtom);
@@ -21,7 +21,7 @@ function AddEdit(transactionOperation) {
             .then(function (response) {
                 setCategories(response.data)
             })
-    }, [])
+    }, [setCategories])
 
     useEffect(() => {
         setAddEditTransaction({
@@ -36,7 +36,7 @@ function AddEdit(transactionOperation) {
             Item: null,
             Description: null
         });
-    }, [categories])
+    }, [categories, setAddEditTransaction])
 
     if (addEditTransaction == null) {
         return null;
@@ -46,7 +46,7 @@ function AddEdit(transactionOperation) {
         <>
             <Row>
                 <Col xs={2}>
-                    <Form.Label>EffDate</Form.Label>
+                    <Form.Label>Date:</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Control
@@ -56,7 +56,7 @@ function AddEdit(transactionOperation) {
                     />
                 </Col>
                 <Col xs={2}>
-                    <Form.Label>Debit</Form.Label>
+                    <Form.Label>Debit:</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Control
@@ -67,7 +67,7 @@ function AddEdit(transactionOperation) {
             </Row>
             <Row>
                 <Col xs={2}>
-                    <Form.Label>Description</Form.Label>
+                    <Form.Label>Description:</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Control
@@ -76,7 +76,7 @@ function AddEdit(transactionOperation) {
                     />
                 </Col>
                 <Col xs={2}>
-                    <Form.Label>Credit</Form.Label>
+                    <Form.Label>Credit:</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Control
@@ -87,7 +87,7 @@ function AddEdit(transactionOperation) {
             </Row>
             <Row>
                 <Col xs={2}>
-                    <Form.Label>Category</Form.Label>
+                    <Form.Label>Category:</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Select
@@ -101,7 +101,7 @@ function AddEdit(transactionOperation) {
                     </Form.Select>
                 </Col>
                 <Col xs={2}>
-                    <Form.Label>Is wage?</Form.Label>
+                    <Form.Label>Is wage?:</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Check
@@ -112,7 +112,7 @@ function AddEdit(transactionOperation) {
             </Row >
             <Row>
                 <Col xs={2}>
-                    <Form.Label>Item</Form.Label>
+                    <Form.Label>Item:</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Control
@@ -121,7 +121,7 @@ function AddEdit(transactionOperation) {
                     />
                 </Col>
                 <Col xs={2}>
-                    <Form.Label>Exclude?</Form.Label>
+                    <Form.Label>Exclude?:</Form.Label>
                 </Col>
                 <Col xs={3}>
                     <Form.Check

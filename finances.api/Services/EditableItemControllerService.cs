@@ -44,7 +44,7 @@ namespace finances.api.Services {
                 EditResult.Error => new ObjectResult(item) {
                     StatusCode = StatusCodes.Status500InternalServerError
                 },
-                _ => new OkObjectResult(new { item }),
+                _ => new OkObjectResult(item),
             };
         }
 
@@ -59,7 +59,7 @@ namespace finances.api.Services {
                 EditResult.Error => new ObjectResult(item) {
                     StatusCode = StatusCodes.Status500InternalServerError
                 },
-                _ => new OkObjectResult(new { item = updatedItem }),
+                _ => new OkObjectResult(updatedItem),
             };
         }
 
@@ -68,7 +68,7 @@ namespace finances.api.Services {
             var result = _editableItemRepository.Delete(ids, out var validationErrors);
 
             return result switch {
-                EditResult.Invalid => new ObjectResult(JsonSerializer.Serialize(new { ids, validationErrors })) {
+                EditResult.Invalid => new ObjectResult($"{string.Join(". ", validationErrors)}.") {
                     StatusCode = StatusCodes.Status400BadRequest
                 },
                 EditResult.Error => new ObjectResult(ids) {

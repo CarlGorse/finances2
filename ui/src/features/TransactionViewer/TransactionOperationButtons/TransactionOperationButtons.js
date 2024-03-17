@@ -1,23 +1,17 @@
 import { Button } from 'react-bootstrap';
-import { clearSelectedTransactionsAtom } from 'recoil/atoms/ClearSelectedTransactionsAtom';
-import TransactionOperationButton from "./TransactionOperationButton";
+import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
+import TransactionOperationButton from "./TransactionOperationButton";
 import { useSetRecoilState } from "recoil";
-import { useRecoilState } from "recoil";
 
 function TransactionOperationButtons() {
 
-    const setClearSelectedTransactions = useSetRecoilState(clearSelectedTransactionsAtom);
-    const [setTransactionOperation] = useRecoilState(transactionOperationAtom);
+    const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
+    const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
 
-    async function Clear() {
-        await ClearSelectedTransactions()
+    function Clear() {
+        setSelectedTransactions(null);
         setTransactionOperation(null);
-    }
-
-    async function ClearSelectedTransactions() {
-        await setClearSelectedTransactions(true);
-        setClearSelectedTransactions(false);
     }
 
     return (
