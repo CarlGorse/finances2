@@ -8,21 +8,14 @@ using System.Text.Json;
 
 namespace finances.api.Controllers {
 
-    public class TransactionsController : Controller {
+    public class TransactionsController(
+        ITransactionRepository transactionRepository,
+        ISearchCriteriaService searchCriteriaService,
+        IReportService reportService) : Controller {
 
-        private readonly IReportService _reportService;
-        private readonly ISearchCriteriaService _searchCriteriaService;
-        private readonly ITransactionRepository _transactionRepository;
-
-        public TransactionsController(
-            ITransactionRepository transactionRepository,
-            ISearchCriteriaService searchCriteriaService,
-            IReportService reportService) {
-
-            _transactionRepository = transactionRepository;
-            _searchCriteriaService = searchCriteriaService;
-            _reportService = reportService;
-        }
+        private readonly IReportService _reportService = reportService;
+        private readonly ISearchCriteriaService _searchCriteriaService = searchCriteriaService;
+        private readonly ITransactionRepository _transactionRepository = transactionRepository;
 
         [HttpPost]
         public IActionResult Get([FromBody] SearchCriteriaModel searchCriteria) {
@@ -47,11 +40,11 @@ namespace finances.api.Controllers {
 
             var result = _transactionRepository.Add(transaction, out var validationErrors);
 
-            if (!result) {
-                return StatusCode(StatusCodes.Status406NotAcceptable, JsonSerializer.Serialize(new { transaction, validationErrors }));
-            }
-
-            return Ok(transaction);
+            return result switch {
+                EditResult.Ok => Ok(transaction),
+                EditResult.Invalid => StatusCode(StatusCodes.Status400BadRequest, JsonSerializer.Serialize(new { transaction, validationErrors })),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, JsonSerializer.Serialize(new { transaction, validationErrors })),
+            };
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using finances.api.Data;
 using finances.api.Data.Models;
-using finances.api.Dtos;
 using finances.api.Logic;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -14,11 +13,9 @@ namespace finances.api.Repositories {
 
         public CategoryRepository(
             IFinancesDbContext dbContext,
-            ICategoryGroupRepository categoryGroupRepository,
-            IItemProperties<Category> itemProperties) : base(
+            ICategoryGroupRepository categoryGroupRepository) : base(
                 dbContext.Categories,
-                dbContext,
-                itemProperties) {
+                dbContext) {
 
             _CategoryGroupRepository = categoryGroupRepository;
         }

@@ -3,13 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace finances.api.Controllers {
 
-    public class BankAccountsController : Controller {
+    public class BankAccountsController(IAccountRepository bankAccountRepository) : Controller {
 
-        private readonly IAccountRepository _bankAccountRepository;
-
-        public BankAccountsController(IAccountRepository bankAccountRepository) {
-            _bankAccountRepository = bankAccountRepository;
-        }
+        private readonly IAccountRepository _bankAccountRepository = bankAccountRepository;
 
         [HttpGet]
         public IActionResult Get() {

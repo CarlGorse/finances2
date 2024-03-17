@@ -1,6 +1,5 @@
 ﻿using finances.api.Data;
 using finances.api.Data.Models;
-using finances.api.Dtos;
 using finances.api.Logic;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -14,32 +13,23 @@ namespace finances.api.Repositories {
         Error
     }
 
-    public abstract class EditableItemRepository<T> : GettableItemRepository<T>, IEditableItemRepository<T> where T : class, IEditableItem<T> {
+    public abstract class EditableItemRepository<T>(
+        DbSet<T> dbSet,
+        IFinancesDbContext dbContext) : GettableItemRepository<T>(), IEditableItemRepository<T> where T : class, IEditableItem<T> {
 
-        protected readonly IFinancesDbContext _DbContext;
-        private readonly DbSet<T> _DbSet;
-        private readonly IItemProperties<T> _ItemProperties;
-
-        public EditableItemRepository(
-            DbSet<T> dbSet,
-            IFinancesDbContext dbContext,
-            IItemProperties<T> itemProperties) : base(itemProperties) {
-
-            _DbSet = dbSet;
-            _DbContext = dbContext;
-            _ItemProperties = itemProperties;
-        }
+        protected readonly IFinancesDbContext _DbContext = dbContext;
+        private readonly DbSet<T> _DbSet = dbSet;
 
         public EditResult Add(T item, out ICollection<string> validationErrors, bool saveChanges = true) {
 
-            validationErrors = new List<string>();
+            validationErrors = [];
 
             var isValidResult = IsValid(item);
 
             if (!isValidResult.IsValid) {
                 _DbContext.CancelChanges();
                 validationErrors.Add(isValidResult.ValidationMessage);
-                return false;
+                return EditResult.Ok;
             }
 
             try {
@@ -51,7 +41,7 @@ namespace finances.api.Repositories {
             }
             catch {
                 _DbContext.CancelChanges();
-                validationErrors.Add($"Unable to add {_ItemProperties.DescriptionSingle}");
+                validationErrors.Add($"Unable to add {T.TypeDescription}");
                 return EditResult.Error;
             }
 
@@ -60,7 +50,7 @@ namespace finances.api.Repositories {
 
         public EditResult Edit(T newValues, out ICollection<string> validationErrors, out T item) {
 
-            validationErrors = new List<string>();
+            validationErrors = [];
 
             item = null;
 
@@ -78,7 +68,7 @@ namespace finances.api.Repositories {
 
             if (!isValidResult.IsValid) {
                 validationErrors.Add(isValidResult.ValidationMessage);
-                return EditResult.Failed;
+                return EditResult.Invalid;
             }
 
             try {
@@ -86,8 +76,8 @@ namespace finances.api.Repositories {
             }
             catch {
                 _DbContext.CancelChanges();
-                validationErrors.Add($"Unable to edit {_ItemProperties.DescriptionSingle}");
-                return EditResult.Failed;
+                validationErrors.Add($"Unable to edit {T.TypeDescription}");
+                return EditResult.Error;
             }
 
             return EditResult.Ok;
@@ -95,12 +85,12 @@ namespace finances.api.Repositories {
 
         public EditResult Delete(IEnumerable<int> ids, out ICollection<string> validationErrors) {
 
-            validationErrors = new List<string>();
+            validationErrors = [];
 
             var invalidIds = GetInvalidIds(ids);
 
             if (invalidIds.Any()) {
-                validationErrors.Add($"The following {nameof(ids)} are invalid: {string.Join(", ", ids)}");
+                validationErrors.Add($"Invalid {nameof(ids)}: {string.Join(", ", ids)}");
                 return EditResult.Invalid;
             }
 
@@ -111,7 +101,7 @@ namespace finances.api.Repositories {
             }
             catch {
                 _DbContext.CancelChanges();
-                validationErrors.Add($"Unable to delete {(ids.Count() == 1 ? _ItemProperties.DescriptionSingle : _ItemProperties.DescriptionPlural)}");
+                validationErrors.Add($"Unable to delete {(ids.Count() == 1 ? T.TypeDescription : T.TypeDescriptions)}");
                 return EditResult.Error;
             }
 

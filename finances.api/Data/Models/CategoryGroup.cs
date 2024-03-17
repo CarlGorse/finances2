@@ -20,5 +20,11 @@ namespace finances.api.Data.Models {
             get => CategoryGroupId;
             set => CategoryGroupId = value;
         }
+
+        public static string TypeDescriptions => "category groups";
+
+        public static string TypeDescription => "category group";
+
+        public static string TypeName => "CategoryGroup";
     }
 }

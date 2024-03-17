@@ -5,10 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace finances.api.Data.Models {
 
-    public class Account : IGettableItem<Account> {
+    public class Account(int accountId) : IGettableItem<Account> {
 
         [Key]
-        public int AccountId { get; private set; }
+        public int AccountId { get; private set; } = accountId;
 
         public string Name { get; set; }
 
@@ -17,14 +17,16 @@ namespace finances.api.Data.Models {
         [JsonIgnore]
         public IEnumerable<Transaction> Transactions { get; set; }
 
-        public Account(int accountId) {
-            AccountId = accountId;
-        }
-
         [NotMapped]
         public int Id {
             get => AccountId;
             set => AccountId = value;
         }
+
+        public static string TypeDescriptions => "accounts";
+
+        public static string TypeDescription => "account";
+
+        public static string TypeName => "Account";
     }
 }

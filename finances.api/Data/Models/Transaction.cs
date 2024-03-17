@@ -42,5 +42,11 @@ namespace finances.api.Data.Models {
 
         [NotMapped]
         public int Year => EffDate.Year;
+
+        public static string TypeDescriptions => "transactions";
+
+        public static string TypeDescription => "transaction";
+
+        public static string TypeName => "Transaction";
     }
 }

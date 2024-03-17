@@ -1,6 +1,5 @@
 ﻿using finances.api.Data;
 using finances.api.Data.Models;
-using finances.api.Dtos;
 using finances.api.Functions;
 using finances.api.Logic;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +17,9 @@ namespace finances.api.Repositories {
         public TransactionRepository(
             IFinancesDbContext dbContext,
             IAccountRepository accountRepository,
-            ICategoryRepository categoryRepository,
-            IItemProperties<Transaction> itemProperties) : base(
+            ICategoryRepository categoryRepository) : base(
                 dbContext.Transactions,
-                dbContext,
-                itemProperties) {
+                dbContext) {
 
             _AccountRepository = accountRepository;
             _CategoryRepository = categoryRepository;

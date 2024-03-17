@@ -1,6 +1,5 @@
 ﻿using finances.api.Data;
 using finances.api.Data.Models;
-using finances.api.Dtos;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,7 +9,7 @@ namespace finances.api.Repositories {
 
         private readonly IFinancesDbContext _DbContext;
 
-        public AccountRepository(IFinancesDbContext dbContext, IItemProperties<Account> itemProperties) : base(itemProperties) {
+        public AccountRepository(IFinancesDbContext dbContext) : base() {
             _DbContext = dbContext;
         }
 

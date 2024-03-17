@@ -1,5 +1,4 @@
 ﻿using finances.api.Data.Models;
-using finances.api.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +8,6 @@ using System.Linq.Expressions;
 namespace finances.api.Repositories {
 
     public abstract class GettableItemRepository<T> : IGettableItemRepository<T> where T : class, IGettableItem<T> {
-
-        private readonly IItemProperties<T> _ItemmProperties;
-
-        public GettableItemRepository(IItemProperties<T> itemProperties) {
-            _ItemmProperties = itemProperties;
-        }
 
         public T Get(int id) {
             return Get($"x => x.{IdPropertyName} == {id}").SingleOrDefault();
@@ -29,7 +22,7 @@ namespace finances.api.Repositories {
                 .Where(predicate);
         }
 
-        public string IdPropertyName => $"{_ItemmProperties.Name}Id";
+        public string IdPropertyName => $"{T.TypeName}Id";
 
         private IEnumerable<T> Get(string selector, params object[] args) {
             return ItemsQuery()
@@ -38,7 +31,7 @@ namespace finances.api.Repositories {
 
         protected abstract IQueryable<T> ItemsQuery();
 
-        public IEnumerable<T> Items => ItemsQuery().ToList();
+        public IEnumerable<T> Items => [.. ItemsQuery()];
 
         public bool Any(int id) {
             return Get(id) != null;

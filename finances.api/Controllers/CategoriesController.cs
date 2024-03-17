@@ -4,13 +4,9 @@ using System.Linq;
 
 namespace finances.api.Controllers {
 
-    public class CategoriesController : Controller {
+    public class CategoriesController(ICategoryRepository categoryRepository) : Controller {
 
-        private readonly ICategoryRepository _categoryRepository;
-
-        public CategoriesController(ICategoryRepository categoryRepository) {
-            _categoryRepository = categoryRepository;
-        }
+        private readonly ICategoryRepository _categoryRepository = categoryRepository;
 
         [HttpGet]
         public IActionResult Get() {

@@ -22,5 +22,11 @@ namespace finances.api.Data.Models {
 
         [NotMapped]
         public string NameWithGroup => true ? $"({Group.Name}) {Name}" : Name;
+
+        public static string TypeDescriptions => "categories";
+
+        public static string TypeDescription => "category";
+
+        public static string TypeName => "Category";
     }
 }

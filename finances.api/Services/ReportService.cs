@@ -8,27 +8,18 @@ using System.Linq;
 
 namespace finances.api.Services {
 
-    public class ReportService : IReportService {
+    public class ReportService(
+        IReportTotalRepository reportTotalsRepository,
+        IAccountRepository accountRepository,
+        ICategoryRepository categoryRepository,
+        ICategoryGroupRepository categoryGroupRepository,
+        ITransactionRepository transactionRepository) : IReportService {
 
-        private readonly IAccountRepository _AccountRepository;
-        private readonly ICategoryRepository _CategoryRepository;
-        private readonly ICategoryGroupRepository _CategoryGroupRepository;
-        private readonly IReportTotalRepository _ReportTotalRepository;
-        private readonly ITransactionRepository _TransactionRepository;
-
-        public ReportService(
-            IReportTotalRepository reportTotalsRepository,
-            IAccountRepository accountRepository,
-            ICategoryRepository categoryRepository,
-            ICategoryGroupRepository categoryGroupRepository,
-            ITransactionRepository transactionRepository) {
-
-            _ReportTotalRepository = reportTotalsRepository;
-            _AccountRepository = accountRepository;
-            _CategoryRepository = categoryRepository;
-            _CategoryGroupRepository = categoryGroupRepository;
-            _TransactionRepository = transactionRepository;
-        }
+        private readonly IAccountRepository _AccountRepository = accountRepository;
+        private readonly ICategoryRepository _CategoryRepository = categoryRepository;
+        private readonly ICategoryGroupRepository _CategoryGroupRepository = categoryGroupRepository;
+        private readonly IReportTotalRepository _ReportTotalRepository = reportTotalsRepository;
+        private readonly ITransactionRepository _TransactionRepository = transactionRepository;
 
         public IEnumerable<CategoryTotal> GetCategoryTotals(TransactionFilters transactionFilters) {
 
@@ -104,8 +95,8 @@ namespace finances.api.Services {
 
             var reportTotalFiltered = reportTotals
                 .Where(x =>
-                        transactionFilters.CategoryIds.Any()
-                        && transactionFilters.CategoryIds.Contains(x.Transaction.CategoryId)
+                        (transactionFilters.CategoryIds.Count != 0
+                        && transactionFilters.CategoryIds.Contains(x.Transaction.CategoryId))
                     || transactionFilters.CategoryIds.Count == 0);
 
             return reportTotalFiltered;

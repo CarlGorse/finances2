@@ -1,7 +1,5 @@
 using finances.api.Data;
 using finances.api.Data.Models;
-using finances.api.Dtos;
-using finances.api.Factories;
 using finances.api.Repositories;
 using finances.api.Services;
 using Microsoft.AspNetCore.Builder;
@@ -21,7 +19,6 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ICategoryGroupRepository, CategoryGroupRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IFinancesDbContext, FinancesDbContext>();
-builder.Services.AddScoped<IItemPropertiesFactory, ItemPropertiesFactory>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IReportTotalRepository, ReportTotalRepository>();
 builder.Services.AddScoped<ISearchCriteriaService, SearchCriteriaService>();
@@ -31,40 +28,16 @@ builder.Services.AddScoped<IEditableItemRepository<Category>, CategoryRepository
 builder.Services.AddScoped<IEditableItemRepository<CategoryGroup>, CategoryGroupRepository>();
 builder.Services.AddScoped<IEditableItemRepository<Transaction>, TransactionRepository>();
 
-builder.Services.AddScoped<IItemProperties<Account>>(serviceProvider => {
-    var factory = serviceProvider.GetRequiredService<IItemPropertiesFactory>();
-    return factory.Get<Account>();
-});
-
-builder.Services.AddScoped<IItemProperties<Category>>(serviceProvider => {
-    var factory = serviceProvider.GetRequiredService<IItemPropertiesFactory>();
-    return factory.Get<Category>();
-});
-
-builder.Services.AddScoped<IItemProperties<CategoryGroup>>(serviceProvider => {
-    var factory = serviceProvider.GetRequiredService<IItemPropertiesFactory>();
-    return factory.Get<CategoryGroup>();
-});
-
-builder.Services.AddScoped<IItemProperties<Transaction>>(serviceProvider => {
-    var factory = serviceProvider.GetRequiredService<IItemPropertiesFactory>();
-    return factory.Get<Transaction>();
-});
-
 builder.Services.AddCors(options => {
     var policyName = "MyAllowedOrigins";
     options.AddPolicy(name: policyName,
-                      builder => {
-                          builder
+                      builder => builder
                             .WithOrigins("http://localhost:3000")
                             .AllowAnyHeader()
-                            .AllowAnyMethod();
-                      });
+                            .AllowAnyMethod());
 });
 
-builder.Services.AddMvc().AddNewtonsoftJson(options => {
-    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-});
+builder.Services.AddMvc().AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -74,12 +47,8 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddDbContext<FinancesDbContext>(options =>
 options.UseSqlServer(configuration.GetConnectionString("Finances")));
 
-builder.Services.Configure<JsonSerializerSettings>(options => {
-    //options.SerializerOptions.PropertyNameCaseInsensitive = false;
-    options.ContractResolver = new DefaultContractResolver {
-        NamingStrategy = new CamelCaseNamingStrategy()
-    };
-    //options.ReferenceLoopHandling = ReferenceLoopHa  ndling.Ignore;
+builder.Services.Configure<JsonSerializerSettings>(options => options.ContractResolver = new DefaultContractResolver {
+    NamingStrategy = new CamelCaseNamingStrategy()
 });
 
 var app = builder.Build();

@@ -1,6 +1,5 @@
 ﻿using finances.api.Data;
 using finances.api.Data.Models;
-using finances.api.Dtos;
 using finances.api.Logic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -10,12 +9,9 @@ namespace finances.api.Repositories {
 
     public class CategoryGroupRepository : EditableItemRepository<CategoryGroup>, ICategoryGroupRepository {
 
-        public CategoryGroupRepository(
-            IFinancesDbContext dbContext,
-            IItemProperties<CategoryGroup> itemProperties) : base(
+        public CategoryGroupRepository(IFinancesDbContext dbContext) : base(
                 dbContext.CategoryGroups,
-                dbContext,
-                itemProperties) {
+                dbContext) {
         }
 
         public IEnumerable<CategoryGroup> CategoryGroups => Items;
