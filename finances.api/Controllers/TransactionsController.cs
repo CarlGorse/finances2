@@ -31,15 +31,9 @@ namespace finances.api.Controllers {
                 return StatusCode(StatusCodes.Status406NotAcceptable, JsonSerializer.Serialize(new { searchCriteria, validationErrors }));
             }
 
-            var transactionFilters = _searchCriteriaService.CreateTransactionFiltersFromSearchCriteria(searchCriteria);
+            var transactionFilters = _searchCriteriaService.CreateTransactionFilters(searchCriteria);
 
-            transactionFilters.AccountId = searchCriteria.AccountId;
-
-            if (searchCriteria.CategoryId > 0) {
-                transactionFilters.CategoryIds.Add(searchCriteria.CategoryId);
-            }
-
-            var transactions = _reportService.GetTransactionRunningTotals(transactionFilters);
+            var transactions = _reportService.GetTransactionTotals(transactionFilters);
 
             foreach (var reportRow in transactions) {
                 _transactionRepository.SetWageTotalForEffDate(reportRow.Transaction);

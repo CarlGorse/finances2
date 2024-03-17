@@ -83,7 +83,7 @@ namespace finances.api.Services {
             return reportTotalsOrdered;
         }
 
-        public IEnumerable<TransactionRunningTotal> GetTransactionRunningTotals(TransactionFilters transactionFilters) {
+        public IEnumerable<TransactionRunningTotal> GetTransactionTotals(TransactionFilters transactionFilters) {
 
             var parameters =
                 $"{FormatSpParameterValue(transactionFilters.AccountId.ToString())}," +

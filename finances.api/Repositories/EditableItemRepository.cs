@@ -8,6 +8,12 @@ using System.Linq;
 
 namespace finances.api.Repositories {
 
+    public enum EditResult {
+        Ok,
+        Invalid,
+        Error
+    }
+
     public abstract class EditableItemRepository<T> : GettableItemRepository<T>, IEditableItemRepository<T> where T : class, IEditableItem<T> {
 
         protected readonly IFinancesDbContext _DbContext;
@@ -24,7 +30,7 @@ namespace finances.api.Repositories {
             _ItemProperties = itemProperties;
         }
 
-        public bool Add(T item, out ICollection<string> validationErrors, bool saveChanges = true) {
+        public EditResult Add(T item, out ICollection<string> validationErrors, bool saveChanges = true) {
 
             validationErrors = new List<string>();
 
@@ -46,23 +52,25 @@ namespace finances.api.Repositories {
             catch {
                 _DbContext.CancelChanges();
                 validationErrors.Add($"Unable to add {_ItemProperties.DescriptionSingle}");
-                return false;
+                return EditResult.Error;
             }
 
-            return true;
+            return EditResult.Ok;
         }
 
-        public T Edit(T newValues, out ICollection<string> validationErrors) {
+        public EditResult Edit(T newValues, out ICollection<string> validationErrors, out T item) {
 
             validationErrors = new List<string>();
+
+            item = null;
 
             var isValidId = Any(newValues.Id);
             if (!isValidId) {
                 validationErrors.Add($"Id {newValues.Id} does not exist");
-                return null;
+                return EditResult.Invalid;
             }
 
-            var item = Get(newValues.Id);
+            item = Get(newValues.Id);
 
             CopyValues(item, newValues);
 
@@ -70,7 +78,7 @@ namespace finances.api.Repositories {
 
             if (!isValidResult.IsValid) {
                 validationErrors.Add(isValidResult.ValidationMessage);
-                return null;
+                return EditResult.Failed;
             }
 
             try {
@@ -79,13 +87,13 @@ namespace finances.api.Repositories {
             catch {
                 _DbContext.CancelChanges();
                 validationErrors.Add($"Unable to edit {_ItemProperties.DescriptionSingle}");
-                return null;
+                return EditResult.Failed;
             }
 
-            return item;
+            return EditResult.Ok;
         }
 
-        public bool Delete(IEnumerable<int> ids, out ICollection<string> validationErrors) {
+        public EditResult Delete(IEnumerable<int> ids, out ICollection<string> validationErrors) {
 
             validationErrors = new List<string>();
 
@@ -93,7 +101,7 @@ namespace finances.api.Repositories {
 
             if (invalidIds.Any()) {
                 validationErrors.Add($"The following {nameof(ids)} are invalid: {string.Join(", ", ids)}");
-                return false;
+                return EditResult.Invalid;
             }
 
             try {
@@ -104,10 +112,10 @@ namespace finances.api.Repositories {
             catch {
                 _DbContext.CancelChanges();
                 validationErrors.Add($"Unable to delete {(ids.Count() == 1 ? _ItemProperties.DescriptionSingle : _ItemProperties.DescriptionPlural)}");
-                return false;
+                return EditResult.Error;
             }
 
-            return true;
+            return EditResult.Ok;
         }
 
         public abstract IValidationResult IsValid(T item);

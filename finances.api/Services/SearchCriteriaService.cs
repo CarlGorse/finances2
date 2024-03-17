@@ -108,7 +108,7 @@ namespace finances.api.Services {
             return yearsAndPeriods;
         }
 
-        public TransactionFilters CreateTransactionFiltersFromSearchCriteria(SearchCriteriaModel searchCriteria) {
+        public TransactionFilters CreateTransactionFilters(SearchCriteriaModel searchCriteria) {
 
             var transactionFilters = new TransactionFilters();
             switch (searchCriteria.FilterType) {
@@ -132,6 +132,10 @@ namespace finances.api.Services {
             }
 
             transactionFilters.AccountId = searchCriteria.AccountId;
+
+            if (searchCriteria.CategoryId > 0) {
+                transactionFilters.CategoryIds.Add(searchCriteria.CategoryId);
+            }
 
             return transactionFilters;
         }

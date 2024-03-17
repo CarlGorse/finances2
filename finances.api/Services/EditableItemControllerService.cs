@@ -12,26 +12,26 @@ namespace finances.api.Services {
 
     public class EditableItemControllerService<T> : IEditableItemControllerService<T> where T : class, IEditableItem<T> {
 
-        private readonly IEditableItemRepository<T> _EditableItemRepository;
-        private readonly IItemProperties<T> _ItemProperties;
+        private readonly IEditableItemRepository<T> _editableItemRepository;
+        private readonly IItemProperties<T> _itemProperties;
 
         public EditableItemControllerService(
             IItemProperties<T> itemProperties,
             IEditableItemRepository<T> editableItemRepository) {
 
-            _ItemProperties = itemProperties;
-            _EditableItemRepository = editableItemRepository;
+            _itemProperties = itemProperties;
+            _editableItemRepository = editableItemRepository;
         }
 
         public IStatusCodeActionResult Get(IEnumerable<int> ids) {
 
-            var items = _EditableItemRepository.Get(ids);
+            var items = _editableItemRepository.Get(ids);
 
             if (!items.Any()) {
 
                 var value = JsonSerializer.Serialize(new {
                     ids,
-                    validationErrors = new List<string> { $"Unknown {_ItemProperties.DescriptionSingle}" }
+                    validationErrors = new List<string> { $"Unknown {_itemProperties.DescriptionSingle}" }
                 }
                 );
 
@@ -45,44 +45,59 @@ namespace finances.api.Services {
 
         public IStatusCodeActionResult Add(T item) {
 
-            var result = _EditableItemRepository.Add(item, out var validationErrors, saveChanges: true);
+            var result = _editableItemRepository.Add(item, out var validationErrors, saveChanges: true);
 
-            if (!result) {
-                var value = JsonSerializer.Serialize(new { item, validationErrors });
-                return new ObjectResult(value) {
-                    StatusCode = StatusCodes.Status406NotAcceptable
-                };
+            switch (result) {
+                case EditResult.Invalid:
+                    var value = JsonSerializer.Serialize(new { item, validationErrors });
+                    return new ObjectResult(item) {
+                        StatusCode = StatusCodes.Status400BadRequest
+                    };
+                case EditResult.Error:
+                    return new ObjectResult(item) {
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
+                default:
+                    return new OkObjectResult(new { item = item });
             }
-
-            return new OkObjectResult(item.Id);
         }
 
         public IStatusCodeActionResult Edit(T item) {
 
-            var updatedItem = _EditableItemRepository.Edit(item, out var validationErrors);
+            var result = _editableItemRepository.Edit(item, out var validationErrors, out var updatedItem);
 
-            if (validationErrors.Any()) {
-                var value = JsonSerializer.Serialize(new { item, validationErrors });
-                return new ObjectResult(value) {
-                    StatusCode = StatusCodes.Status406NotAcceptable
-                };
+            switch (result) {
+                case EditResult.Invalid:
+                    var value = JsonSerializer.Serialize(new { updatedItem, validationErrors });
+                    return new ObjectResult(item) {
+                        StatusCode = StatusCodes.Status400BadRequest
+                    };
+                case EditResult.Error:
+                    return new ObjectResult(item) {
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
+                default:
+                    return new OkObjectResult(new { item = updatedItem });
             }
-
-            return new OkObjectResult(new { item = updatedItem });
         }
 
         public IStatusCodeActionResult Delete(IEnumerable<int> ids) {
 
-            var result = _EditableItemRepository.Delete(ids, out var validationErrors);
+            var result = _editableItemRepository.Delete(ids, out var validationErrors);
 
-            if (!result) {
-                var value = JsonSerializer.Serialize(new { ids, validationErrors });
-                return new ObjectResult(value) {
-                    StatusCode = StatusCodes.Status406NotAcceptable
-                };
-            };
-
-            return new OkObjectResult(new { ids });
+            switch (result) {
+                case EditResult.Invalid:
+                    var value = JsonSerializer.Serialize(new { ids, validationErrors });
+                    return new ObjectResult(ids) {
+                        StatusCode = StatusCodes.Status400BadRequest
+                    };
+                case EditResult.Error:
+                    return new ObjectResult(ids) {
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
+                default:
+                    return new OkObjectResult(new { ids });
+            }
         }
     }
 }
