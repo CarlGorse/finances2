@@ -13,21 +13,22 @@ function MoveWages() {
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
 
     const showForm = transactionOperation === operation
-    const hasValidTransactionSelected = selectedTransactions?.length === 2
+    const hasValidTransactionsSelected = selectedTransactions && selectedTransactions.length === 2 && selectedTransactions.filter(x => x.IsWage === true).length === 2
+
     const setUserMessage = useSetRecoilState(userMessageAtom);
 
     useEffect(() => {
         if (showForm) {
-            if (!hasValidTransactionSelected) {
-                setUserMessage({ Message: `You must select two transactions`, Variant: "warning" });
+            if (!hasValidTransactionsSelected) {
+                setUserMessage({ Message: `You must select two wage transactions`, Variant: "warning" });
             }
             else {
                 setUserMessage(null);
             }
         }
-    }, [showForm, hasValidTransactionSelected, setUserMessage])
+    }, [showForm, hasValidTransactionsSelected, setUserMessage])
 
-    if (!showForm || !hasValidTransactionSelected) {
+    if (!showForm || !hasValidTransactionsSelected) {
         return null;
     }
 
