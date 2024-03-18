@@ -1,23 +1,12 @@
-import { Button } from 'react-bootstrap';
-import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
-import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
+import CancelButton from './CancelButton';
 import TransactionOperationButton from "./TransactionOperationButton";
-import { useSetRecoilState } from "recoil";
 
 function TransactionOperationButtons() {
-
-    const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
-    const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
-
-    function Clear() {
-        setSelectedTransactions(null);
-        setTransactionOperation(null);
-    }
 
     return (
         <>
             <span>
-                <Button onClick={() => Clear()}>Clear</Button>
+                <CancelButton />
             </span>
             <span style={{ marginLeft: "20px" }}>
                 <TransactionOperationButton operation="Add" />
