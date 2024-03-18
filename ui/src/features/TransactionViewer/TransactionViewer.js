@@ -4,7 +4,7 @@ import TransactionList from './TransactionList/TransactionList';
 import TransactionFilters from './TransactionFilters/TransactionFilters';
 import TransactionOperationButtons from './TransactionOperationButtons/TransactionOperationButtons';
 import TransactionOperationInputs from './TransactionOperationInputs/TransactionOperationInputs';
-import SystemError from 'components/SystemError'
+import UserMessage from 'components/UserMessage'
 
 function TransactionViewer() {
 
@@ -24,7 +24,7 @@ function TransactionViewer() {
       </div>
 
       <div style={{ marginTop: "20px" }}>
-        <SystemError />
+        <UserMessage />
       </div>
 
       <div style={{ marginTop: "20px", padding: "5px" }}>

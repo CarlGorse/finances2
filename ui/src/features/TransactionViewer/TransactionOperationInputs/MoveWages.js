@@ -1,9 +1,9 @@
 import { Button, Col, Form, Row, Table } from 'react-bootstrap';
-import { systemErrorAtom } from 'recoil/atoms/SystemErrorAtom';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from 'react'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
 function MoveWages() {
 
@@ -14,18 +14,18 @@ function MoveWages() {
 
     const showForm = transactionOperation === operation
     const hasValidTransactionSelected = selectedTransactions?.length === 2
-    const setSystemError = useSetRecoilState(systemErrorAtom);
+    const setUserMessage = useSetRecoilState(userMessageAtom);
 
     useEffect(() => {
         if (showForm) {
             if (!hasValidTransactionSelected) {
-                setSystemError({ Message: `You must select two transactions`, Variant: "warning" });
+                setUserMessage({ Message: `You must select two transactions`, Variant: "warning" });
             }
             else {
-                setSystemError(null);
+                setUserMessage(null);
             }
         }
-    }, [showForm, hasValidTransactionSelected, setSystemError])
+    }, [showForm, hasValidTransactionSelected, setUserMessage])
 
     if (!showForm || !hasValidTransactionSelected) {
         return null;

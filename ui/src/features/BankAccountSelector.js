@@ -3,9 +3,9 @@ import { apiBaseUrl } from 'functions/Api';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { selectedBankAccountAtom } from 'recoil/atoms/SelectedBankAccountAtom';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
-import { systemErrorAtom } from 'recoil/atoms/SystemErrorAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useCallback, useEffect, useState } from 'react';
+import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 import { useSetRecoilState } from "recoil";
 
 function BankAccountSelector() {
@@ -17,7 +17,7 @@ function BankAccountSelector() {
   const setSelectedBankAccount = useSetRecoilState(selectedBankAccountAtom);
   const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
   const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
-  const setSystemError = useSetRecoilState(systemErrorAtom);
+  const setUserMessage = useSetRecoilState(userMessageAtom);
 
   const selectBankAccount = useCallback((bankAccount) => {
     ClearSelectedTransactionsAndOperation();
@@ -33,14 +33,14 @@ function BankAccountSelector() {
   useEffect(() => {
     axios.get(apiBaseUrl + "/bankAccounts/get")
       .then(response => {
-        setSystemError({ Error: null, Variant: null });
+        setUserMessage({ Error: null, Variant: null });
         setBankAccounts(response.data.Accounts);
         selectBankAccount(response.data.Accounts.find(bankAccount => bankAccount.Name === defaultAccountName));
       })
       .catch(
-        setSystemError({ Message: "Unable to load bank accounts", Variant: "danger" })
+        setUserMessage({ Message: "Unable to load bank accounts", Variant: "danger" })
       )
-  }, [selectBankAccount, setSystemError])
+  }, [selectBankAccount, setUserMessage])
 
   if (bankAccounts === null) {
     return;

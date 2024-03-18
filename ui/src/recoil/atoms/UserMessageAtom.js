@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
-export const systemErrorAtom = atom({
-    key: "systemErrorState",
+export const userMessageAtom = atom({
+    key: "userMessageState",
     default: {
         Message: null,
         Variant: null

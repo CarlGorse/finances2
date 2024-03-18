@@ -1,16 +1,15 @@
-import AddEdit from './AddEdit';
+import AddEdit from './Components/AddEdit';
 import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
-import { systemErrorAtom } from 'recoil/atoms/SystemErrorAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from 'react'
+import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
 function Edit() {
 
@@ -18,20 +17,20 @@ function Edit() {
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
     const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
     const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
+    const setUserMessage = useSetRecoilState(userMessageAtom);
     const transactionToEdit = useRecoilValue(addEditTransactionAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
 
     const showForm = transactionOperation === "Edit"
     const hasValidTransactionSelected = selectedTransactions?.length === 1
-    const setSystemError = useSetRecoilState(systemErrorAtom);
 
     useEffect(() => {
         if (showForm) {
             if (!hasValidTransactionSelected) {
-                setSystemError({ Message: `You must select a ${selectedTransactions?.length > 0 ? " single " : ""}transaction`, Variant: "warning" });
+                setUserMessage({ Message: `You must select a ${selectedTransactions?.length > 0 ? " single " : ""}transaction`, Variant: "warning" });
             }
             else {
-                setSystemError(null);
+                setUserMessage(null);
             }
         }
     })
@@ -40,8 +39,7 @@ function Edit() {
         if (showForm && hasValidTransactionSelected) {
 
             const selectedTransaction = selectedTransactions[0];
-            console.log(99);
-            console.log(selectedTransaction);
+
             setAddEditTransaction({
                 AccountId: selectedTransaction.AccountId,
                 CategoryId: selectedTransaction.CategoryId,
@@ -55,7 +53,7 @@ function Edit() {
                 TransactionId: selectedTransaction.TransactionId
             });
         }
-    }, [categories, setAddEditTransaction])
+    }, [categories, setAddEditTransaction, showForm, hasValidTransactionSelected])
 
     if (!showForm || !hasValidTransactionSelected) {
         return null
@@ -81,20 +79,23 @@ function Edit() {
             }
         })
             .then(async function (response) {
-                setRefreshTransactions(true);
-                setSystemError({
+                await carl();
+                setUserMessage({
                     Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
                     Variant: "success"
                 })
-                CancelTransactionOperation()
-
+                await CancelTransactionOperation()
             })
             .catch(function (error) {
-                setSystemError({
+                setUserMessage({
                     Message: error.response.data.validationErrors[0],
                     Variant: "danger"
                 })
             })
+    }
+
+    async function carl() {
+        setRefreshTransactions(true);
     }
 
     function CancelTransactionOperation() {
@@ -103,12 +104,11 @@ function Edit() {
 
     return (
         <>
-            <AddEdit transactionOperation={transactionOperation} />
-
-            <div style={{ marginTop: "20px" }}>
-                <Button size="sm" onClick={() => Edit()}>Save</Button>
-                <Button style={{ marginLeft: "1px" }} size="sm" onClick={() => CancelTransactionOperation()}>Cancel</Button>
-            </div>
+            <AddEdit
+                transactionOperation={transactionOperation}
+                save={() => Edit()}
+                cancelTransactionOperation={() => CancelTransactionOperation()}
+            />
         </ >
     );
 }

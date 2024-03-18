@@ -1,18 +1,19 @@
 import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'functions/Api'
 import axios from 'axios'
+import { Button } from 'react-bootstrap';
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { Col, Form, Row } from 'react-bootstrap';
 import { stringToCurrency } from 'functions/Currency';
 import { useEffect } from 'react'
 import { useRecoilState } from "recoil";
 
-function AddEdit() {
+function AddEdit({ save, cancelTransactionOperation }) {
 
     const [addEditTransaction, setAddEditTransaction] = useRecoilState(addEditTransactionAtom);
     const [categories, setCategories] = useRecoilState(categoriesAtom);
 
-    async function updateAddEditTransaction(propertyName, value) {
+    async function updateTransactionPropertyValue(propertyName, value) {
         setAddEditTransaction(prevState => ({ ...prevState, [propertyName]: value }));
     }
 
@@ -22,21 +23,6 @@ function AddEdit() {
                 setCategories(response.data)
             })
     }, [setCategories])
-
-    useEffect(() => {
-        setAddEditTransaction({
-            TransactionId: null,
-            EffDate: new Date(),
-            AccountId: null,
-            CategoryId: categories[0]?.CategoryId,
-            Credit: null,
-            Debit: null,
-            IsWage: null,
-            Exclude: null,
-            Item: null,
-            Description: null
-        });
-    }, [categories, setAddEditTransaction])
 
     if (addEditTransaction == null) {
         return null;
@@ -52,7 +38,7 @@ function AddEdit() {
                     <Form.Control
                         type="date"
                         value={new Date(addEditTransaction.EffDate).toISOString().split('T')[0]}
-                        onChange={e => { updateAddEditTransaction("EffDate", e.target.value); }}
+                        onChange={e => { updateTransactionPropertyValue("EffDate", e.target.value); }}
                     />
                 </Col>
                 <Col xs={2}>
@@ -61,7 +47,7 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Control
                         value={addEditTransaction.Debit}
-                        onChange={e => updateAddEditTransaction("Debit", stringToCurrency(e.target.value))}
+                        onChange={e => updateTransactionPropertyValue("Debit", stringToCurrency(e.target.value))}
                     />
                 </Col>
             </Row>
@@ -72,7 +58,7 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Control
                         value={addEditTransaction.Description}
-                        onChange={e => updateAddEditTransaction("Description", e.target.value)}
+                        onChange={e => updateTransactionPropertyValue("Description", e.target.value)}
                     />
                 </Col>
                 <Col xs={2}>
@@ -81,7 +67,7 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Control
                         value={addEditTransaction.Credit}
-                        onChange={e => { updateAddEditTransaction("Credit", stringToCurrency(e.target.value)) }}
+                        onChange={e => { updateTransactionPropertyValue("Credit", stringToCurrency(e.target.value)) }}
                     />
                 </Col>
             </Row>
@@ -92,7 +78,7 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Select
                         value={addEditTransaction.CategoryId}
-                        onChange={e => updateAddEditTransaction("CategoryId", e.target.value)}>
+                        onChange={e => updateTransactionPropertyValue("CategoryId", e.target.value)}>
                         {
                             categories?.map(category => (
                                 <option value={category.Id}>{category.Name}</option>
@@ -106,7 +92,7 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Check
                         value={addEditTransaction.IsWage}
-                        onChange={e => { updateAddEditTransaction("IsWage", e.target.checked) }}
+                        onChange={e => { updateTransactionPropertyValue("IsWage", e.target.checked) }}
                     />
                 </Col>
             </Row >
@@ -117,7 +103,7 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Control
                         value={addEditTransaction.Item}
-                        onChange={e => updateAddEditTransaction("Item", e.target.value)}
+                        onChange={e => updateTransactionPropertyValue("Item", e.target.value)}
                     />
                 </Col>
                 <Col xs={2}>
@@ -126,10 +112,14 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Check
                         value={addEditTransaction.Exclude}
-                        onChange={e => updateAddEditTransaction("Exclude", e.target.checked)}
+                        onChange={e => updateTransactionPropertyValue("Exclude", e.target.checked)}
                     />
                 </Col>
             </Row>
+            <div style={{ marginTop: "20px" }}>
+                <Button size="sm" onClick={() => save()}>Save</Button>
+                <Button style={{ marginLeft: "1px" }} size="sm" onClick={() => cancelTransactionOperation()}>Cancel</Button>
+            </div>
         </>
     );
 }

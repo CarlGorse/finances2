@@ -2,31 +2,30 @@ import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import CancelButton from '../TransactionOperationButtons/CancelButton'
-import { systemErrorAtom } from 'recoil/atoms/SystemErrorAtom';
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from 'react'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
 function Delete() {
 
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
-
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
 
     const showForm = transactionOperation === "Delete"
     const hasValidTransactionSelected = selectedTransactions?.length >= 1
-    const setSystemError = useSetRecoilState(systemErrorAtom);
+    const setUserMessage = useSetRecoilState(userMessageAtom);
     const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
 
     useEffect(() => {
         if (showForm) {
             if (!hasValidTransactionSelected) {
-                setSystemError({ Message: `You must select at least one transaction.`, Variant: "warning" });
+                setUserMessage({ Message: `You must select at least one transaction.`, Variant: "warning" });
             }
             else {
-                setSystemError(null);
+                setUserMessage(null);
             }
         }
     })
@@ -48,14 +47,14 @@ function Delete() {
         )
             .then(function (response) {
                 setRefreshTransactions(true);
-                setSystemError({
+                setUserMessage({
                     Message: `${selectedTransactions.length} transaction${selectedTransactions.length === 1 ? '' : 's'} deleted`,
                     Variant: "success"
                 })
                 CancelTransactionOperation()
             })
             .catch(function (error) {
-                setSystemError({
+                setUserMessage({
                     Message: error.response.data,
                     Variant: "danger"
                 })
