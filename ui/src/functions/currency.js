@@ -13,4 +13,8 @@ function stringToCurrency(currency) {
     return Number(currency)
 }
 
-export { formatCurrency, stringToCurrency };
+function isValidCurrency(curency) {
+    return /^\d{0,4}(\.\d{0,2})?$/.test(Math.abs(curency));
+}
+
+export { formatCurrency, stringToCurrency, isValidCurrency };

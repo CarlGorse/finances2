@@ -52,5 +52,10 @@ namespace finances.api.Controllers {
         public IActionResult Delete([FromBody] IEnumerable<int> ids) {
             return _controllerService.Delete(ids);
         }
+
+        [HttpPost]
+        public IActionResult MoveWages([FromBody] MoveWagesModel model) {
+            return _controllerService.MoveWages(model.TransactionIdFrom, model.TransactionIdTo, model.CreditToMove);
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace finances.api.Services {
         IStatusCodeActionResult Delete(IEnumerable<int> ids);
         IStatusCodeActionResult Edit(T item);
         IStatusCodeActionResult Get(IEnumerable<int> ids);
+        IStatusCodeActionResult MoveWages(int transactionIdFrom, int transactionIdTo, decimal creditToMove);
     }
 }
