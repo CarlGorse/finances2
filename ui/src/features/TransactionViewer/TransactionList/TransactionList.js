@@ -1,12 +1,13 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
+import { selectedTransactionsAtom } from "recoil/atoms/SelectedTransactionsAtom";
 import { Table } from 'react-bootstrap';
 import TransactionHeader from './TransactionHeader';
 import TransactionRow from './TransactionRow';
 import { transactionSearchAtom } from "recoil/atoms/TransactionSearchAtom";
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import { useEffect, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 
 import MySpinner from 'components/MySpinner'
 
@@ -20,11 +21,10 @@ function _isTransactionSearchValid(transactionSearch) {
 
 function TransactionList() {
 
-  const [transactionTotals, setTransactionTotals] = useState(null);
-  const transactionSearch = useRecoilValue(transactionSearchAtom);
-  const refreshTransactions = useRecoilValue(refreshTransactionsAtom);
   const [loading, setLoading] = useState(null);
-  const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
+  const [refreshTransactions, setRefreshTransactions] = useRecoilState(refreshTransactionsAtom);
+  const [transactions, setTransactions] = useState(null);
+  const transactionSearch = useRecoilValue(transactionSearchAtom);
 
   useEffect(() => {
 
@@ -53,28 +53,27 @@ function TransactionList() {
     })
       .then(response => {
         setRefreshTransactions(false);
-        setTransactionTotals(response.data.transactions);
+        setTransactions(response.data.transactions);
         setLoading(false);
       })
-  }, [transactionSearch, refreshTransactions])
+  }, [transactionSearch, refreshTransactions, setRefreshTransactions])
 
   return (
-    <>
-      <Table>
-        <TransactionHeader />
+    <Table>
 
-        {loading && <MySpinner />}
+      <TransactionHeader />
 
-        {!loading && transactionTotals?.map(transactionTotal => (
-          <TransactionRow
-            key={transactionTotal.Transaction.TransactionId}
-            transaction={transactionTotal.Transaction}
-            runningTotal={transactionTotal.RunningTotal}
-          />
-        ))}
-      </Table>
+      {loading && <MySpinner />}
 
-    </>
+      {!loading && transactions?.map(transactionTotal => (
+        <TransactionRow
+          key={transactionTotal.Transaction.TransactionId}
+          transaction={transactionTotal.Transaction}
+          runningTotal={transactionTotal.RunningTotal}
+        />
+      ))}
+
+    </Table>
   )
 }
 

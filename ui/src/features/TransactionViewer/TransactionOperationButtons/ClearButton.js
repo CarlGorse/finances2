@@ -4,7 +4,7 @@ import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom'
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 import { useSetRecoilState } from "recoil";
 
-function CancelButton() {
+function ClearButton() {
 
     const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
     const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
@@ -17,8 +17,8 @@ function CancelButton() {
     }
 
     return (
-        <Button onClick={() => doCancel()}>Cancel</Button>
+        <Button onClick={() => doCancel()}>Clear</Button>
     );
 }
 
-export default CancelButton;
+export default ClearButton;

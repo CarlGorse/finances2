@@ -1,7 +1,7 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import CancelButton from '../TransactionOperationButtons/CancelButton'
+import CancelButton from '../TransactionOperationButtons/ClearButton'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';

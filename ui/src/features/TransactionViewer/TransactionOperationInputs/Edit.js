@@ -5,6 +5,7 @@ import axios from 'axios';
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
+import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -22,11 +23,11 @@ function Edit() {
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
 
     const showForm = transactionOperation === "Edit"
-    const hasValidTransactionSelected = selectedTransactions?.length === 1
+    const hasValidSelection = selectedTransactions?.length === 1
 
     useEffect(() => {
         if (showForm) {
-            if (!hasValidTransactionSelected) {
+            if (!hasValidSelection) {
                 setUserMessage({ Message: `You must select a ${selectedTransactions?.length > 0 ? " single " : ""}transaction`, Variant: "warning" });
             }
             else {
@@ -36,7 +37,7 @@ function Edit() {
     })
 
     useEffect(() => {
-        if (showForm && hasValidTransactionSelected) {
+        if (showForm && hasValidSelection) {
 
             const selectedTransaction = selectedTransactions[0];
 
@@ -53,13 +54,13 @@ function Edit() {
                 TransactionId: selectedTransaction.TransactionId
             });
         }
-    }, [categories, setAddEditTransaction, showForm, hasValidTransactionSelected])
+    }, [categories, setAddEditTransaction, showForm, hasValidSelection])
 
-    if (!showForm || !hasValidTransactionSelected) {
+    if (!showForm || !hasValidSelection) {
         return null
     }
 
-    function Edit() {
+    function Save() {
         axios.post(
             apiBaseUrl + "/transactions/edit",
             {
@@ -78,13 +79,13 @@ function Edit() {
                 "Content-Type": "application/json"
             }
         })
-            .then(async function (response) {
-                await carl();
+            .then(function (response) {
+                setRefreshTransactions(true); // to await this we'd have to know when the load finished
                 setUserMessage({
                     Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
                     Variant: "success"
                 })
-                await CancelTransactionOperation()
+                //CancelTransactionOperation()
             })
             .catch(function (error) {
                 setUserMessage({
@@ -94,19 +95,17 @@ function Edit() {
             })
     }
 
-    async function carl() {
-        setRefreshTransactions(true);
-    }
-
     function CancelTransactionOperation() {
         setTransactionOperation(null)
     }
 
     return (
         <>
-            <AddEdit
-                transactionOperation={transactionOperation}
-                save={() => Edit()}
+            <AddEdit transactionOperation={transactionOperation}
+            />
+
+            <SaveAndCancelButtons
+                save={() => Save()}
                 cancelTransactionOperation={() => CancelTransactionOperation()}
             />
         </ >

@@ -1,13 +1,13 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
-import { Button, Col, Form, Row, Table } from 'react-bootstrap';
-import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
-import { isValidCurrency } from 'functions/Currency';
+import { Col, Form, Row } from 'react-bootstrap';
+import { formatCurrency, isValidCurrency } from 'functions/currency';
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
+import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useEffect, useState } from 'react'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
 function MoveWages() {
@@ -15,8 +15,8 @@ function MoveWages() {
     const operation = "Move wages";
 
     const [creditToMove, setCreditToMove] = useState(0);
-    const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
     const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
+    const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
 
     const showForm = transactionOperation === operation
@@ -42,7 +42,7 @@ function MoveWages() {
         return null;
     }
 
-    function MoveWages() {
+    function Save() {
         axios.post(
             apiBaseUrl + "/transactions/moveWages",
             {
@@ -55,13 +55,13 @@ function MoveWages() {
             }
         })
             .then(function (response) {
-                console.log(response)
                 setRefreshTransactions(true); // to await this we'd have to know when the load finished
                 setUserMessage({
-                    Message: `Credit ${response.data.creditToMove} moved.`,
+                    Message: `Credit ${formatCurrency(Math.abs(response.data.creditToMove))} moved from ${response.data.transactionFrom.Category.Name} to ${response.data.transactionTo.Category.Name}.`,
                     Variant: "success"
                 })
-                CancelTransactionOperation()
+                //CancelTransactionOperation()
+                setSelectedTransactions([response.data.transactionFrom, response.data.transactionTo]);
             })
             .catch(function (error) {
                 setUserMessage({
@@ -100,76 +100,90 @@ function MoveWages() {
         setCreditToMove(credit);
     }
 
+    const transactionToMoveFrom = selectedTransactions[0];
+    const transactionToMoveTo = selectedTransactions[1];
+
     return (
         <>
-            <Table>
-                <Row>
-                    <Col xs={2}>
-                        <Form.Label>Credit to move:</Form.Label>
-                    </Col>
-                    <Col xs={2}>
-                        <Form.Control defaultValue={creditToMove} type="text" size="sm" style={{ backgroundColor: "white" }} onChange={e => validateAndSetCreditToMove(e.target.value)} />
-                    </Col>
-                </Row>
-            </Table>
+            <Row>
+                <Col xs={1} />
+                <Col xs={1}>
+                    <b>Date</b>
+                </Col>
+                <Col xs={2}>
+                    <b>Group</b>
+                </Col>
+                <Col xs={2}>
+                    <b>Category</b>
+                </Col>
+                <Col xs={2}>
+                    <b>Description</b>
+                </Col>
+                <Col xs={1}>
+                    <b>Credit</b>
+                </Col>
+                <Col xs={1}>
+                    <b>To move</b>
+                </Col>
+                <Col xs={1}>
+                    <b>New credit</b>
+                </Col>
+            </Row>
 
-            <Table>
-                <Row>
-                    <Col xs={1} />
-                    <Col xs={1}>
-                        <b>Date</b>
-                    </Col>
-                    <Col xs={2}>
-                        <b>Group</b>
-                    </Col>
-                    <Col xs={2}>
-                        <b>Category</b>
-                    </Col>
-                    <Col xs={2}>
-                        <b>Description</b>
-                    </Col>
-                    <Col xs={1}>
-                        <b>Credit</b>
-                    </Col>
-                    <Col xs={2}>
-                        <b>New credit</b>
-                    </Col>
-                    <Col xs={1}>
-                    </Col>
-                </Row>
-            </Table >
+            <Row>
+                <Col xs={1} />
+                <Col xs={1}>
+                    {new Date(transactionToMoveFrom.EffDate).toISOString().split('T')[0]}
+                </Col>
+                <Col xs={2}>
+                    {transactionToMoveFrom.Category.Group?.Name}
+                </Col>
+                <Col xs={2}>
+                    {transactionToMoveFrom.Category?.Name}
+                </Col>
+                <Col xs={2}>
+                    {transactionToMoveFrom.Description}
+                </Col>
+                <Col xs={1}>
+                    {transactionToMoveFrom.Credit}
+                </Col>
+                <Col xs={1}>
+                    <Form.Control defaultValue={creditToMove} type="text" size="sm" style={{ backgroundColor: "white" }} onChange={e => validateAndSetCreditToMove(e.target.value)} />
+                </Col>
+                <Col xs={1}>
+                    {transactionToMoveFrom.Credit - creditToMove}
+                </Col>
+            </Row>
 
-            <Table>
-                {selectedTransactions.map((x, index) =>
-                    <Row>
-                        <Col xs={1} />
-                        <Col xs={1}>
-                            {new Date(x.EffDate).toISOString().split('T')[0]}
-                        </Col>
-                        <Col xs={2}>
-                            {x.Category.Group?.Name}
-                        </Col>
-                        <Col xs={2}>
-                            {x.Category?.Name}
-                        </Col>
-                        <Col xs={2}>
-                            {x.Description}
-                        </Col>
-                        <Col xs={1}>
-                            {x.Credit}
-                        </Col>
-                        <Col xs={2}>
-                            {x.Credit - (index === 0 ? creditToMove : -creditToMove)}
-                        </Col>
-                        <Col xs={1}>
-                        </Col>
-                    </Row>
-                )}
-            </Table>
-            <div style={{ marginTop: "20px" }}>
-                <Button size="sm" onClick={() => MoveWages()}>Move</Button>
-                <Button style={{ marginLeft: "1px" }} size="sm" onClick={() => CancelTransactionOperation()}>Cancel</Button>
-            </div>
+            <Row>
+                <Col xs={1} />
+                <Col xs={1}>
+                    {new Date(transactionToMoveTo.EffDate).toISOString().split('T')[0]}
+                </Col>
+                <Col xs={2}>
+                    {transactionToMoveTo.Category.Group?.Name}
+                </Col>
+                <Col xs={2}>
+                    {transactionToMoveTo.Category?.Name}
+                </Col>
+                <Col xs={2}>
+                    {transactionToMoveTo.Description}
+                </Col>
+                <Col xs={1}>
+                    {transactionToMoveTo.Credit}
+                </Col>
+                <Col xs={1}>
+                </Col>
+                <Col xs={1}>
+                    {transactionToMoveTo.Credit + creditToMove}
+                </Col>
+            </Row>
+
+            <SaveAndCancelButtons
+                save={() => Save()}
+                cancelTransactionOperation={() => CancelTransactionOperation()}
+            />
+
         </>
     );
 }

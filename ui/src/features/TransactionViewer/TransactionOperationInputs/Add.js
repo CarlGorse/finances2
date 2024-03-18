@@ -5,6 +5,8 @@ import axios from 'axios';
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
+import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
+import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { transactionSearchAtom as transactionSearchFiltersAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -14,6 +16,7 @@ import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 function Add() {
 
     const categories = useRecoilValue(categoriesAtom);
+    const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
     const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
     const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
@@ -22,10 +25,16 @@ function Add() {
     const transactionSearchFilters = useRecoilValue(transactionSearchFiltersAtom);
 
     const showForm = transactionOperation === "Add"
+    const hasValidSelection = !selectedTransactions || selectedTransactions?.length === 0
 
     useEffect(() => {
         if (showForm) {
-            setUserMessage(null);
+            if (!hasValidSelection) {
+                setUserMessage({ Message: `You must deselect all transactions.`, Variant: "warning" });
+            }
+            else {
+                setUserMessage(null);
+            }
         }
     })
 
@@ -44,7 +53,7 @@ function Add() {
         });
     }, [categories, setAddEditTransaction])
 
-    if (!showForm) {
+    if (!showForm || !hasValidSelection) {
         return null
     }
 
@@ -72,7 +81,7 @@ function Add() {
                     Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
                     Variant: "success"
                 })
-                CancelTransactionOperation()
+                //CancelTransactionOperation()
             })
             .catch(function (error) {
                 setUserMessage({
@@ -88,8 +97,9 @@ function Add() {
 
     return (
         <>
-            <AddEdit
-                transactionOperation={transactionOperation}
+            <AddEdit transactionOperation={transactionOperation} />
+
+            <SaveAndCancelButtons
                 save={() => Save()}
                 cancelTransactionOperation={() => CancelTransactionOperation()}
             />

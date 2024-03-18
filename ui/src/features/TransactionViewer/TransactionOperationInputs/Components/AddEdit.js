@@ -1,10 +1,9 @@
 import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'functions/Api'
 import axios from 'axios'
-import { Button } from 'react-bootstrap';
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { Col, Form, Row } from 'react-bootstrap';
-import { stringToCurrency } from 'functions/Currency';
+import { stringToCurrency } from 'functions/currency';
 import { useEffect } from 'react'
 import { useRecoilState } from "recoil";
 
@@ -116,10 +115,6 @@ function AddEdit({ save, cancelTransactionOperation }) {
                     />
                 </Col>
             </Row>
-            <div style={{ marginTop: "20px" }}>
-                <Button size="sm" onClick={() => save()}>Save</Button>
-                <Button style={{ marginLeft: "1px" }} size="sm" onClick={() => cancelTransactionOperation()}>Cancel</Button>
-            </div>
         </>
     );
 }

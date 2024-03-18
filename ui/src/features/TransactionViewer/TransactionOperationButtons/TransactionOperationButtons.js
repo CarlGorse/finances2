@@ -1,4 +1,4 @@
-import CancelButton from './CancelButton';
+import CancelButton from './ClearButton';
 import TransactionOperationButton from "./TransactionOperationButton";
 
 function TransactionOperationButtons() {
