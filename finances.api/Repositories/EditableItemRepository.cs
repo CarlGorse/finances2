@@ -79,7 +79,7 @@ namespace finances.api.Repositories {
 
             validationErrors = [];
 
-            if (ids == null || ids.Any()) {
+            if (ids == null || !ids.Any()) {
                 validationErrors.Add($"No {nameof(ids)} provided");
                 return ServiceResult.Invalid;
             }
