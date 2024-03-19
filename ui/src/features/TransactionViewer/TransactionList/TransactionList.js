@@ -1,6 +1,6 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
-import { selectedTransactionsAtom } from "recoil/atoms/SelectedTransactionsAtom";
+import Spinner from 'components/Spinner'
 import { Table } from 'react-bootstrap';
 import TransactionHeader from './TransactionHeader';
 import TransactionRow from './TransactionRow';
@@ -8,8 +8,6 @@ import { transactionSearchAtom } from "recoil/atoms/TransactionSearchAtom";
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import { useEffect, useState } from 'react';
 import { useRecoilValue, useRecoilState } from "recoil";
-
-import MySpinner from 'components/MySpinner'
 
 function _isTransactionSearchValid(transactionSearch) {
   return transactionSearch.AccountId !== null
@@ -63,7 +61,7 @@ function TransactionList() {
 
       <TransactionHeader />
 
-      {loading && <MySpinner />}
+      {loading && <Spinner />}
 
       {!loading && transactions?.map(transactionTotal => (
         <TransactionRow
