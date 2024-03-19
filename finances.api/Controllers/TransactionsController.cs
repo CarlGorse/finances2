@@ -61,7 +61,7 @@ namespace finances.api.Controllers {
             return _returnActionForServiceResult(result, new { model }, new { model, validationErrors });
         }
 
-        private IActionResult _returnActionForServiceResult(ServiceResult result, object successPayload, object failurePayload) {
+        private ObjectResult _returnActionForServiceResult(ServiceResult result, object successPayload, object failurePayload) {
             return result switch {
                 ServiceResult.Invalid => StatusCode(
                     StatusCodes.Status406NotAcceptable,
