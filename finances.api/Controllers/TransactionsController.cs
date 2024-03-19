@@ -56,9 +56,9 @@ namespace finances.api.Controllers {
         [HttpPost]
         public IActionResult MoveWages([FromBody] MoveWagesModel model) {
 
-            var result = _transactionManagementService.MoveWages(model, out var validationErrors);
+            var result = _transactionManagementService.MoveWages(model, out var validationErrors, out var transactionFrom, out var transactionTo);
 
-            return _returnActionForServiceResult(result, new { model }, new { model, validationErrors });
+            return _returnActionForServiceResult(result, new { transactionFrom, transactionTo, model.CreditToMove }, new { validationErrors });
         }
 
         private ObjectResult _returnActionForServiceResult(ServiceResult result, object successPayload, object failurePayload) {

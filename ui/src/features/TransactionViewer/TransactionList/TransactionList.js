@@ -1,13 +1,14 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
+import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
+import { selectedTransactionsAtom } from "recoil/atoms/SelectedTransactionsAtom";
 import Spinner from 'components/Spinner'
 import { Table } from 'react-bootstrap';
 import TransactionHeader from './TransactionHeader';
 import TransactionRow from './TransactionRow';
 import { transactionSearchAtom } from "recoil/atoms/TransactionSearchAtom";
-import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import { useEffect, useState } from 'react';
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
 function _isTransactionSearchValid(transactionSearch) {
   return transactionSearch.AccountId !== null
@@ -23,6 +24,7 @@ function TransactionList() {
   const [refreshTransactions, setRefreshTransactions] = useRecoilState(refreshTransactionsAtom);
   const [transactions, setTransactions] = useState(null);
   const transactionSearch = useRecoilValue(transactionSearchAtom);
+  const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
 
   useEffect(() => {
 
@@ -52,6 +54,7 @@ function TransactionList() {
       .then(response => {
         setRefreshTransactions(false);
         setTransactions(response.data.transactions);
+        //setSelectedTransactions(null);
         setLoading(false);
       })
   }, [transactionSearch, refreshTransactions, setRefreshTransactions])

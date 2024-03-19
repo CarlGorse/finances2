@@ -40,11 +40,9 @@ namespace finances.api.Repositories {
             return ServiceResult.Ok;
         }
 
-        public ServiceResult Edit(T newValues, out ICollection<string> validationErrors, out T item) {
+        public ServiceResult Edit(T newValues, out ICollection<string> validationErrors) {
 
             validationErrors = [];
-
-            item = null;
 
             var isValidId = Any(newValues.Id);
             if (!isValidId) {
@@ -52,11 +50,11 @@ namespace finances.api.Repositories {
                 return ServiceResult.Invalid;
             }
 
-            item = Get(newValues.Id);
+            var updatedItem = Get(newValues.Id);
 
-            CopyValues(item, newValues);
+            CopyValues(updatedItem, newValues);
 
-            var isValidResult = IsValid(item);
+            var isValidResult = IsValid(updatedItem);
 
             if (!isValidResult.IsValid) {
                 validationErrors.Add(isValidResult.ValidationMessage);

@@ -9,6 +9,6 @@ namespace finances.api.Services {
         ServiceResult Add(Transaction transaction, out ICollection<string> validationErrors);
         ServiceResult Delete(IEnumerable<int> ids, out ICollection<string> validationErrors);
         ServiceResult Edit(Transaction transaction, out ICollection<string> validationErrors);
-        ServiceResult MoveWages(MoveWagesModel model, out ICollection<string> validationErrors);
+        ServiceResult MoveWages(MoveWagesModel model, out ICollection<string> validationErrors, out Transaction transactionFrom, out Transaction transactionDo);
     }
 }
