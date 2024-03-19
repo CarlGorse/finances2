@@ -13,7 +13,7 @@ function TransactionRow({ transaction, runningTotal }) {
 
   useEffect(() => {
     setIsSelected(selectedTransactions?.filter(x => x.TransactionId === transaction.TransactionId).length > 0 ? true : false);
-  }, [selectedTransactions]);
+  }, [selectedTransactions, transaction]);
 
   function onCheck() {
     selectOrDeslectTransaction(!isSelected);

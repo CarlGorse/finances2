@@ -54,7 +54,7 @@ function Edit() {
                 TransactionId: selectedTransaction.TransactionId
             });
         }
-    }, [categories, setAddEditTransaction, showForm, hasValidSelection])
+    }, [categories, setAddEditTransaction, showForm, hasValidSelection, selectedTransactions])
 
     if (!showForm || !hasValidSelection) {
         return null
