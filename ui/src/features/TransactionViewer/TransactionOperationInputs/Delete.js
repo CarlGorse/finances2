@@ -67,7 +67,7 @@ function Delete() {
 
     return (
         <>
-            <span>{`Do you wish to delete ${selectedTransactions.length === 1 ? 'this' : 'these'} ${selectedTransactions.length} transaction${selectedTransactions.length === 1 ? "" : "s"}?`}</span>
+            <span>{`Do you wish to delete ${selectedTransactions.length === 1 ? 'this transaction' : `these ${selectedTransactions.length} transactions`}?`}</span>
             <span style={{ marginLeft: "1px" }} >
                 <SaveAndCancelButtons
                     save={() => Delete()}
