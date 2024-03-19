@@ -14,33 +14,27 @@ function FilterItem({ defaultValue, onSelect, values }) {
   useEffect(() => {
     setTitle(defaultValue)
     onSelect(defaultValue);
-  }, [defaultValue]);
+  }, [defaultValue, onSelect]);
 
   return (
-    <>
-      <Row>
-        <Col>
-          <Dropdown>
-            <Dropdown.Toggle variant="light">
-              {title}
-            </Dropdown.Toggle>
+    <Dropdown>
+      <Dropdown.Toggle variant="light">
+        {title}
+      </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              {values.map(value =>
-                <Dropdown.Item key={value}>
-                  <div onClick={(e) => {
-                    selectValue(e.target.textContent)
-                  }}>
-                    {value}
-                  </div>
+      <Dropdown.Menu>
+        {values.map(value =>
+          <Dropdown.Item key={value}>
+            <div onClick={(e) => {
+              selectValue(e.target.textContent)
+            }}>
+              {value}
+            </div>
 
-                </Dropdown.Item>
-              )}
-            </Dropdown.Menu>
-          </Dropdown>
-        </Col>
-      </Row>
-    </>
+          </Dropdown.Item>
+        )}
+      </Dropdown.Menu>
+    </Dropdown>
   );
 }
 
