@@ -17,7 +17,7 @@ namespace finances.api.Repositories {
         public IEnumerable<CategoryGroup> CategoryGroups => Items;
 
         protected override IIncludableQueryable<CategoryGroup, IEnumerable<Category>> ItemsQuery() {
-            return _DbContext.CategoryGroups
+            return _dbContext.CategoryGroups
                 .Include(x => x.Categories);
         }
 

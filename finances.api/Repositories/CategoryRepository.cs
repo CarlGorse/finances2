@@ -23,7 +23,7 @@ namespace finances.api.Repositories {
         public IEnumerable<Category> Categories => Items;
 
         protected override IQueryable<Category> ItemsQuery() {
-            return _DbContext.Categories
+            return _dbContext.Categories
                 .Include(x => x.Group);
         }
 

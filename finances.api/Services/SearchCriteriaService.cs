@@ -1,41 +1,11 @@
-﻿using finances.api.Extensions;
-using finances.api.Logic;
-using finances.api.Models;
-using finances.api.Repositories;
-using System;
+﻿using finances.api.Models;
 using System.Collections.Generic;
 
 namespace finances.api.Services {
 
-    public class SearchCriteriaService(
-        IAccountRepository accountRepository,
-        ICategoryRepository categoryRepository) : ISearchCriteriaService {
+    public class SearchCriteriaService() : ISearchCriteriaService {
 
-        private readonly IAccountRepository _AccountRepository = accountRepository;
-        private readonly ICategoryRepository _CategoryRepository = categoryRepository;
-
-        public SearchCriteriaModel CreateDefaultModelSearchCriteria(int periodsToDeductFromStart = 0, int periodsToAddToEnd = 0) {
-
-            var defaultAccount = _AccountRepository.Get(2);
-
-            return new SearchCriteriaModel(
-                accounts: _AccountRepository.Accounts,
-                categories: _CategoryRepository.Categories) {
-
-                StartYear = DateTime.Today.AddMonths(-periodsToDeductFromStart).Year,
-                StartPeriod = DateTime.Today.AddMonths(periodsToDeductFromStart).Period(),
-                EndYear = DateTime.Today.AddMonths(periodsToAddToEnd).Year,
-                EndPeriod = DateTime.Today.AddMonths(periodsToAddToEnd).Period(),
-                AccountId = defaultAccount.AccountId,
-                StartEffDate = DateTime.Today,
-                EndEffDate = DateTime.Today,
-                FilterType = SearchCriteriaModel.FilterTypes.YearAndPeriod
-            };
-        }
-
-        public bool ValidateSearchCriteria(SearchCriteriaModel searchCriteria, out List<string> validationErrors) {
-
-            validationErrors = [];
+        public bool ValidateSearchCriteria(SearchCriteriaModel searchCriteria, ICollection<string> validationErrors) {
 
             switch (searchCriteria.FilterType) {
 
@@ -67,71 +37,9 @@ namespace finances.api.Services {
                     }
 
                     break;
-
             }
 
             return true;
-        }
-
-        public IEnumerable<(int Year, int Period)> CalculateYearsAndPeriodsWithInSearchCriteria(SearchCriteriaModel searchCriteria) {
-            var yearsAndPeriods = new List<(int, int)>();
-
-            return searchCriteria.FilterType switch {
-                SearchCriteriaModel.FilterTypes.EffDate => yearsAndPeriods,
-                SearchCriteriaModel.FilterTypes.YearAndPeriod => CalculateYearsAndPeriodsBetweenStartAndEnd(
-                    searchCriteria.StartYearAndPeriod / 12,
-                    (searchCriteria.StartYearAndPeriod % 12) + 1,
-                    searchCriteria.EndYearAndPeriod / 12,
-                    (searchCriteria.EndYearAndPeriod % 12) + 1),
-                _ => yearsAndPeriods,
-            };
-        }
-
-        public IEnumerable<(int Year, int Period)> CalculateYearsAndPeriodsBetweenStartAndEnd(int startYear, int startPeriod, int endYear, int endPeriod) {
-            var yearsAndPeriods = new List<(int, int)>();
-
-            var startYearAndPeriod = (startYear * 12) + startPeriod - 1;
-            var endYearAndPeriod = (endYear * 12) + endPeriod - 1;
-
-            for (var yearAndPeriod = startYearAndPeriod; yearAndPeriod <= endYearAndPeriod; yearAndPeriod++) {
-                var year = yearAndPeriod / 12;
-                var period = yearAndPeriod - (year * 12) + 1;
-                yearsAndPeriods.Add((year, period));
-            }
-
-            return yearsAndPeriods;
-        }
-
-        public TransactionFilters CreateTransactionFilters(SearchCriteriaModel searchCriteria) {
-
-            var transactionFilters = new TransactionFilters();
-            switch (searchCriteria.FilterType) {
-
-                case SearchCriteriaModel.FilterTypes.EffDate:
-                    transactionFilters.StartEffDate = searchCriteria.StartEffDate;
-                    transactionFilters.EndEffDate = searchCriteria.EndEffDate;
-                    break;
-
-                case SearchCriteriaModel.FilterTypes.YearAndPeriod:
-                    transactionFilters.StartYear = searchCriteria.StartYear;
-                    transactionFilters.StartPeriod = searchCriteria.StartPeriod;
-                    transactionFilters.EndYear = searchCriteria.EndYear;
-                    transactionFilters.EndPeriod = searchCriteria.EndPeriod;
-                    break;
-
-                case SearchCriteriaModel.FilterTypes.TransactionId:
-                    transactionFilters.TransactionId = searchCriteria.TransactionId;
-                    break;
-
-            }
-
-            transactionFilters.AccountId = searchCriteria.AccountId;
-
-            if (searchCriteria.CategoryId > 0) {
-                transactionFilters.CategoryIds.Add(searchCriteria.CategoryId);
-            }
-
-            return transactionFilters;
         }
     }
 }
