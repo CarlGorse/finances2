@@ -26,7 +26,7 @@ namespace finances.api.Repositories {
         }
 
         protected override IQueryable<Transaction> ItemsQuery() {
-            return _DbContext.Transactions
+            return _dbContext.Transactions
                 .Include(x => x.Category)
                 .Include(x => x.Category.Group)
                 .Include(x => x.Account);

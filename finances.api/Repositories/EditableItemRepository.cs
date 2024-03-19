@@ -1,5 +1,6 @@
 ﻿using finances.api.Data;
 using finances.api.Data.Models;
+using finances.api.Enums;
 using finances.api.Logic;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -7,48 +8,39 @@ using System.Linq;
 
 namespace finances.api.Repositories {
 
-    public enum EditResult {
-        Ok,
-        Invalid,
-        Error
-    }
-
     public abstract class EditableItemRepository<T>(
         DbSet<T> dbSet,
         IFinancesDbContext dbContext) : GettableItemRepository<T>(), IEditableItemRepository<T> where T : class, IEditableItem<T> {
 
-        protected readonly IFinancesDbContext _DbContext = dbContext;
-        private readonly DbSet<T> _DbSet = dbSet;
+        protected readonly IFinancesDbContext _dbContext = dbContext;
+        private readonly DbSet<T> _dbSet = dbSet;
 
-        public EditResult Add(T item, out ICollection<string> validationErrors, bool saveChanges = true) {
+        public ServiceResult Add(T item, out ICollection<string> validationErrors) {
 
             validationErrors = [];
 
             var isValidResult = IsValid(item);
 
             if (!isValidResult.IsValid) {
-                _DbContext.CancelChanges();
+                _dbContext.CancelChanges();
                 validationErrors.Add(isValidResult.ValidationMessage);
-                return EditResult.Ok;
+                return ServiceResult.Ok;
             }
 
             try {
-                _DbSet.Add(item);
-
-                if (saveChanges) {
-                    _DbContext.SaveChanges();
-                }
+                _dbSet.Add(item);
+                _dbContext.SaveChanges();
             }
             catch {
-                _DbContext.CancelChanges();
+                _dbContext.CancelChanges();
                 validationErrors.Add($"Unable to add {T.TypeDescription}");
-                return EditResult.Error;
+                return ServiceResult.Error;
             }
 
-            return EditResult.Ok;
+            return ServiceResult.Ok;
         }
 
-        public EditResult Edit(T newValues, out ICollection<string> validationErrors, out T item) {
+        public ServiceResult Edit(T newValues, out ICollection<string> validationErrors, out T item) {
 
             validationErrors = [];
 
@@ -57,7 +49,7 @@ namespace finances.api.Repositories {
             var isValidId = Any(newValues.Id);
             if (!isValidId) {
                 validationErrors.Add($"Id {newValues.Id} does not exist");
-                return EditResult.Invalid;
+                return ServiceResult.Invalid;
             }
 
             item = Get(newValues.Id);
@@ -68,49 +60,49 @@ namespace finances.api.Repositories {
 
             if (!isValidResult.IsValid) {
                 validationErrors.Add(isValidResult.ValidationMessage);
-                return EditResult.Invalid;
+                return ServiceResult.Invalid;
             }
 
             try {
-                _DbContext.SaveChanges();
+                _dbContext.SaveChanges();
             }
             catch {
-                _DbContext.CancelChanges();
+                _dbContext.CancelChanges();
                 validationErrors.Add($"Unable to edit {T.TypeDescription}");
-                return EditResult.Error;
+                return ServiceResult.Error;
             }
 
-            return EditResult.Ok;
+            return ServiceResult.Ok;
         }
 
-        public EditResult Delete(IEnumerable<int> ids, out ICollection<string> validationErrors) {
+        public ServiceResult Delete(IEnumerable<int> ids, out ICollection<string> validationErrors) {
 
             validationErrors = [];
 
             if (ids == null || ids.Any()) {
                 validationErrors.Add($"No {nameof(ids)} provided");
-                return EditResult.Invalid;
+                return ServiceResult.Invalid;
             }
 
             var invalidIds = GetInvalidIds(ids);
 
             if (invalidIds.Any()) {
                 validationErrors.Add($"Invalid {nameof(ids)}: {string.Join(", ", ids)}");
-                return EditResult.Invalid;
+                return ServiceResult.Invalid;
             }
 
             try {
                 var items = Get(ids);
-                _DbSet.RemoveRange(items);
-                _DbContext.SaveChanges();
+                _dbSet.RemoveRange(items);
+                _dbContext.SaveChanges();
             }
             catch {
-                _DbContext.CancelChanges();
+                _dbContext.CancelChanges();
                 validationErrors.Add($"Unable to delete {(ids.Count() == 1 ? T.TypeDescription : T.TypeDescriptions)}");
-                return EditResult.Error;
+                return ServiceResult.Error;
             }
 
-            return EditResult.Ok;
+            return ServiceResult.Ok;
         }
 
         public abstract IValidationResult IsValid(T item);

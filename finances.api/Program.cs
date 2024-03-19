@@ -27,6 +27,7 @@ builder.Services.AddScoped(typeof(IEditableItemControllerService<>), typeof(Edit
 builder.Services.AddScoped<IEditableItemRepository<Category>, CategoryRepository>();
 builder.Services.AddScoped<IEditableItemRepository<CategoryGroup>, CategoryGroupRepository>();
 builder.Services.AddScoped<IEditableItemRepository<Transaction>, TransactionRepository>();
+builder.Services.AddScoped<ITransactionManagementService, TransactionManagementService>();
 
 builder.Services.AddCors(options => {
     var policyName = "MyAllowedOrigins";
