@@ -25,7 +25,7 @@ function Add() {
     const transactionSearchFilters = useRecoilValue(transactionSearchFiltersAtom);
 
     const showForm = transactionOperation === "Add"
-    const hasValidSelection = !selectedTransactions || selectedTransactions?.length === 0
+    const hasValidSelection = true//!selectedTransactions || selectedTransactions?.length === 0
 
     useEffect(() => {
         if (showForm) {
