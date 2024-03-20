@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap'
 
-function NavigationButtons() {
+function NavigationButtons({ pageNo, pageCount, onClickFirst, onClickPrev, onClickNext, onClickLast }) {
 
   return (
     <>
