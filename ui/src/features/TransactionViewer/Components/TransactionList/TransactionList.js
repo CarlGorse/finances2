@@ -62,9 +62,23 @@ function TransactionList() {
 
   return (
     <>
+
       <Table className="table-bordered">
 
-        <TransactionHeader />
+        <div style={{ paddingLeft: "10px", paddingTop: "10px" }}>
+          <NavigationButtons
+            pageNo={pageNo}
+            pageCount={pageCount.current}
+            onClickFirst={() => onClickFirst()}
+            onClickPrev={() => onClickPrev()}
+            onClickNext={() => onClickNext()}
+            onClickLast={() => onClickLast()}
+          />
+        </div>
+
+        <div style={{ paddingTop: "10px" }}>
+          <TransactionHeader />
+        </div>
 
         {loading && <Spinner />}
 
@@ -77,8 +91,6 @@ function TransactionList() {
         ))}
 
       </Table>
-
-      <NavigationButtons />
     </>
   )
 }

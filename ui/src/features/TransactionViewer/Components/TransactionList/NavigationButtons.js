@@ -4,15 +4,35 @@ function NavigationButtons() {
 
   return (
     <>
-      <Button size="sm">{"<<"}</Button>
+      <Button
+        disabled={pageCount <= 1 || pageNo === 1} onClick={() => onClickFirst()} size="sm">{"<<"}
+      </Button>
 
-      <Button size="sm" style={{ marginLeft: "1px" }}>{"<"}</Button>
+      <Button
+        disabled={pageCount <= 1 || pageNo === 1}
+        onClick={() => onClickPrev()}
+        size="sm"
+        style={{ marginLeft: "1px" }}>{"<"}
+      </Button>
 
-      <span style={{ marginLeft: "10px" }}>Page 1 of 10</span>
+      <span
+        style={{ marginLeft: "10px" }}>
+        Page {pageNo} of {pageCount}
+      </span>
 
-      <Button size="sm" style={{ marginLeft: "10px" }}>{">"}</Button>
+      <Button
+        disabled={pageCount <= 1 || pageNo === pageCount}
+        onClick={() => onClickNext()}
+        size="sm"
+        style={{ marginLeft: "10px" }}>{">"}
+      </Button>
 
-      <Button size="sm" style={{ marginLeft: "1px" }}>{">>"}</Button>
+      <Button
+        disabled={pageCount <= 1 || pageNo === pageCount}
+        onClick={() => onClickLast()}
+        size="sm"
+        style={{ marginLeft: "1px" }}>{">>"}
+      </Button>
     </>
   )
 }
