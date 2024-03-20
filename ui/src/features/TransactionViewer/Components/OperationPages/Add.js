@@ -6,6 +6,7 @@ import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
+import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { transactionSearchAtom as transactionSearchFiltersAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -17,6 +18,7 @@ function Add() {
     const categories = useRecoilValue(categoriesAtom);
     const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
     const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
+    const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const transactionToAdd = useRecoilValue(addEditTransactionAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
@@ -75,8 +77,9 @@ function Add() {
         })
             .then(function (response) {
                 setRefreshTransactions(prevValue => !prevValue); // to await this we'd have to know when the load finished
+                setSelectedTransactions([response.data.transaction]);
                 setUserMessage({
-                    Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
+                    Message: `Transaction saved: Account: ${response.data.transaction.Account.Name}, Category: ${response.data.transaction.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.transaction.EffDate)}`,
                     Variant: "success"
                 })
                 //CancelTransactionOperation()
