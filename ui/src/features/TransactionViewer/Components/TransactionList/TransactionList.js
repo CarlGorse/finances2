@@ -1,6 +1,7 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
+import NavigationButtons from './NavigationButtons'
 import { selectedTransactionsAtom } from "recoil/atoms/SelectedTransactionsAtom";
 import Spinner from 'components/Spinner'
 import { Table } from 'react-bootstrap';
@@ -60,21 +61,25 @@ function TransactionList() {
   }, [transactionSearch, refreshTransactions, setRefreshTransactions])
 
   return (
-    <Table className="table-bordered">
+    <>
+      <Table className="table-bordered">
 
-      <TransactionHeader />
+        <TransactionHeader />
 
-      {loading && <Spinner />}
+        {loading && <Spinner />}
 
-      {!loading && transactions?.map(transactionTotal => (
-        <TransactionRow
-          key={transactionTotal.Transaction.TransactionId}
-          transaction={transactionTotal.Transaction}
-          runningTotal={transactionTotal.RunningTotal}
-        />
-      ))}
+        {!loading && transactions?.map(transactionTotal => (
+          <TransactionRow
+            key={transactionTotal.Transaction.TransactionId}
+            transaction={transactionTotal.Transaction}
+            runningTotal={transactionTotal.RunningTotal}
+          />
+        ))}
 
-    </Table>
+      </Table>
+
+      <NavigationButtons />
+    </>
   )
 }
 
