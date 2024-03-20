@@ -60,7 +60,7 @@ function TransactionList() {
   }, [transactionSearch, refreshTransactions, setRefreshTransactions])
 
   return (
-    <Table>
+    <Table className="table-bordered">
 
       <TransactionHeader />
 

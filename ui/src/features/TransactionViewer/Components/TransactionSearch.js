@@ -1,5 +1,5 @@
 import { selectedBankAccountAtom } from 'recoil/atoms/SelectedBankAccountAtom';
-import FilterItem from './FilterItem'
+import FilterItem from './TransactionSearch/FilterItem'
 import { Row, Col } from 'react-bootstrap';
 import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useEffect } from "react";
