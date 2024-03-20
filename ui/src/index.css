@@ -12,3 +12,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.tableCell {
+  border-left: 1px solid;
+  border-right: 1px solid;
+}
