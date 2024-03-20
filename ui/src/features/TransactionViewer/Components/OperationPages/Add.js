@@ -6,7 +6,6 @@ import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
-import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { transactionSearchAtom as transactionSearchFiltersAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -16,7 +15,6 @@ import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 function Add() {
 
     const categories = useRecoilValue(categoriesAtom);
-    const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
     const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
     const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);

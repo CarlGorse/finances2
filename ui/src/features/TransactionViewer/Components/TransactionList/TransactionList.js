@@ -1,15 +1,16 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
-import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import NavigationButtons from './NavigationButtons'
-import { selectedTransactionsAtom } from "recoil/atoms/SelectedTransactionsAtom";
+import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
+import { selectedBankAccountAtom } from "recoil/atoms/SelectedBankAccountAtom";
 import Spinner from 'components/Spinner'
 import { Table } from 'react-bootstrap';
 import TransactionHeader from './TransactionHeader';
 import TransactionRow from './TransactionRow';
 import { transactionSearchAtom } from "recoil/atoms/TransactionSearchAtom";
-import { useEffect, useState } from 'react';
-import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { useEffect, useRef, useState } from 'react';
+import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 function _isTransactionSearchValid(transactionSearch) {
   return transactionSearch.AccountId !== null
@@ -23,9 +24,16 @@ function TransactionList() {
 
   const [loading, setLoading] = useState(null);
   const [refreshTransactions, setRefreshTransactions] = useRecoilState(refreshTransactionsAtom);
+  const setUserMessage = useSetRecoilState(userMessageAtom);
   const [transactions, setTransactions] = useState(null);
   const transactionSearch = useRecoilValue(transactionSearchAtom);
-  const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
+  const [pageNo, setPageNo] = useState(1);
+
+  const pageCount = useRef(0);
+
+  useEffect(() => {
+    setPageNo(1);
+  }, [transactionSearch])
 
   useEffect(() => {
 
@@ -46,7 +54,8 @@ function TransactionList() {
       FilterType: 0,
       StartEffDate: "09/03/2024",
       EndEffDate: "09/03/2024",
-      TransactionId: 0
+      TransactionId: 0,
+      PageNo: pageNo
     }, {
       headers: {
         "Content-Type": "application/json"
@@ -55,10 +64,36 @@ function TransactionList() {
       .then(response => {
         setRefreshTransactions(false);
         setTransactions(response.data.transactions);
+        pageCount.current = response.data.pageCount;
         //setSelectedTransactions(null);
         setLoading(false);
       })
-  }, [transactionSearch, refreshTransactions, setRefreshTransactions])
+      .catch(function (error) {
+        pageCount.current = 0;
+        setUserMessage({
+          Message: error.response.data.validationErrors[0],
+          Variant: "danger"
+        })
+      })
+  }, [transactionSearch, refreshTransactions, setRefreshTransactions, pageNo])
+
+  function onClickFirst() {
+    setPageNo(1)
+  }
+
+  function onClickPrev() {
+    setPageNo(prevValue => Math.max(prevValue - 1, 0))
+  }
+
+  function onClickNext() {
+    setPageNo(prevValue => {
+      return Math.min(prevValue + 1, pageCount.current)
+    })
+  }
+
+  function onClickLast() {
+    setPageNo(pageCount.current)
+  }
 
   return (
     <>
