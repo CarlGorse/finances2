@@ -61,7 +61,6 @@ function TransactionList() {
       }
     })
       .then(response => {
-        setRefreshTransactions(false);
         setTransactions(response.data.transactions);
         pageCount.current = response.data.pageCount;
         setLoading(false);
@@ -73,7 +72,7 @@ function TransactionList() {
           Variant: "danger"
         })
       })
-  }, [transactionSearch, refreshTransactions, setRefreshTransactions, pageNo])
+  }, [transactionSearch, refreshTransactions, pageNo])
 
   function onClickFirst() {
     setPageNo(1)

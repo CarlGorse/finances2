@@ -74,7 +74,7 @@ function Add() {
             }
         })
             .then(function (response) {
-                setRefreshTransactions(true); // to await this we'd have to know when the load finished
+                setRefreshTransactions(prevValue => !prevValue); // to await this we'd have to know when the load finished
                 setUserMessage({
                     Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
                     Variant: "success"
