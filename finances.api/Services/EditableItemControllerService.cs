@@ -14,7 +14,7 @@ namespace finances.api.Services {
 
         public ServiceResult Get(IEnumerable<int> ids, out ICollection<string> validationErrors) {
 
-            validationErrors = new List<string>();
+            validationErrors = [];
 
             var items = _editableItemRepository.Get(ids);
 
@@ -32,7 +32,7 @@ namespace finances.api.Services {
         }
 
         public ServiceResult Edit(T item, out ICollection<string> validationErrors) {
-            return _editableItemRepository.Edit(item, out validationErrors, out var updatedItem);
+            return _editableItemRepository.Edit(item, out validationErrors);
         }
 
         public ServiceResult Delete(IEnumerable<int> ids, out ICollection<string> validationErrors) {

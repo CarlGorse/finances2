@@ -5,7 +5,6 @@ using finances.api.Logic;
 using finances.api.Models;
 using finances.api.Repositories;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace finances.api.Services {
 
@@ -56,18 +55,22 @@ namespace finances.api.Services {
             return _controllerService.Delete(ids, out validationErrors);
         }
 
-        public ServiceResult MoveWages(MoveWagesModel model, out ICollection<string> validationErrors) {
+        public ServiceResult MoveWages(
+            MoveWagesModel model,
+            out ICollection<string> validationErrors,
+            out Transaction transactionFrom,
+            out Transaction transactionTo) {
 
-            validationErrors = new List<string>();
+            validationErrors = [];
 
             _validateTransactionsToMove(
                 model.TransactionIdFrom,
                 model.TransactionIdTo,
                 validationErrors,
-                out var transactionFrom,
-                out var transactionTo);
+                out transactionFrom,
+                out transactionTo);
 
-            if (validationErrors.Any()) {
+            if (validationErrors.Count > 0) {
                 return ServiceResult.Invalid;
             }
 
@@ -93,7 +96,7 @@ namespace finances.api.Services {
             ValidateTransactionToMove(transactionIdFrom, "from", validationErrors, out transactionFrom);
             ValidateTransactionToMove(transactionIdTo, "to", validationErrors, out transactionTo);
 
-            if (validationErrors.Any()) {
+            if (validationErrors.Count == 0) {
                 return;
             }
 
@@ -130,7 +133,7 @@ namespace finances.api.Services {
             }
         }
 
-        private TransactionFilters _createTransactionFilters(SearchCriteriaModel searchCriteria) {
+        private static TransactionFilters _createTransactionFilters(SearchCriteriaModel searchCriteria) {
 
             var transactionFilters = new TransactionFilters();
             switch (searchCriteria.FilterType) {

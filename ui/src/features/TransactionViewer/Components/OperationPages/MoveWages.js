@@ -1,7 +1,7 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { Col, Form, Row } from 'react-bootstrap';
-import { formatCurrency, isValidCurrency } from 'functions/currency';
+import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/currency';
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
@@ -55,13 +55,14 @@ function MoveWages() {
             }
         })
             .then(function (response) {
-                setRefreshTransactions(true); // to await this we'd have to know when the load finished
+                setRefreshTransactions(true);
                 setUserMessage({
-                    Message: `Credit ${formatCurrency(Math.abs(response.data.creditToMove))} moved from ${response.data.transactionFrom.Category.Name} to ${response.data.transactionTo.Category.Name}.`,
+                    Message: `Credit ${formatCurrency(Math.abs(response.data.CreditToMove))} moved from ${response.data.transactionFrom.Category.Name} to ${response.data.transactionTo.Category.Name}.`,
                     Variant: "success"
                 })
                 //CancelTransactionOperation()
                 setSelectedTransactions([response.data.transactionFrom, response.data.transactionTo]);
+                setCreditToMove(0);
             })
             .catch(function (error) {
                 setUserMessage({
@@ -175,7 +176,7 @@ function MoveWages() {
                 <Col xs={1}>
                 </Col>
                 <Col xs={1}>
-                    {transactionToMoveTo.Credit + creditToMove}
+                    {transactionToMoveTo.Credit + stringToCurrency(creditToMove)}
                 </Col>
             </Row>
 

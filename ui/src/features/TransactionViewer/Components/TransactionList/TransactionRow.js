@@ -6,6 +6,8 @@ import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom'
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
+import styles from './TransactionRow.css';
+
 function TransactionRow({ transaction, runningTotal }) {
 
   const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
@@ -13,7 +15,7 @@ function TransactionRow({ transaction, runningTotal }) {
 
   useEffect(() => {
     setIsSelected(selectedTransactions?.filter(x => x.TransactionId === transaction.TransactionId).length > 0 ? true : false);
-  }, [selectedTransactions]);
+  }, [selectedTransactions, transaction]);
 
   function onCheck() {
     selectOrDeslectTransaction(!isSelected);
@@ -48,28 +50,28 @@ function TransactionRow({ transaction, runningTotal }) {
 
   return (
     <Row>
-      <Col xs={1}>
+      <Col className="tableCell" xs={1}>
         <Form.Check checked={isSelected} onChange={() => onCheck()} />
       </Col>
-      <Col xs={1}>
+      <Col className="tableCell" xs={1}>
         {formatDateTimeAsDateDDMMYYYY(transaction.EffDate)}
       </Col>
-      <Col xs={2}>
+      <Col className="tableCell" xs={2}>
         {transaction.Category.Group.Name}
       </Col>
-      <Col xs={2}>
+      <Col className="tableCell" xs={2}>
         {transaction.Category.Name}
       </Col>
-      <Col xs={2}>
+      <Col className="tableCell" xs={2}>
         {transaction.Description}
       </Col>
-      <Col xs={1}>
+      <Col className="tableCell" xs={1}>
         {formatCurrency(transaction.Credit)}
       </Col>
-      <Col xs={1}>
+      <Col className="tableCell" xs={1}>
         {formatCurrency(transaction.Debit)}
       </Col>
-      <Col xs={2}>
+      <Col className="tableCell" xs={2}>
         {formatCurrency(runningTotal)}
       </Col>
     </Row>

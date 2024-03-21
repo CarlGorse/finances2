@@ -1,9 +1,9 @@
-import {Spinner as ReactSpinner} from 'react-bootstrap/Spinner';
+import Spinner from 'react-bootstrap/Spinner';
 
 function MySpinner() {
     return (
-        <ReactSpinner animation="border">
-        </ReactSpinner>
+        <Spinner animation="border">
+        </Spinner>
     );
 }
 

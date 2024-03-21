@@ -1,4 +1,4 @@
-import CancelButton from './ClearButton';
+import ClearButton from './ClearButton';
 import TransactionOperationButton from "./TransactionOperationButton";
 
 function TransactionOperationButtons() {
@@ -6,7 +6,7 @@ function TransactionOperationButtons() {
     return (
         <>
             <span>
-                <CancelButton />
+                <ClearButton />
             </span>
             <span style={{ marginLeft: "20px" }}>
                 <TransactionOperationButton operation="Add" />

@@ -1,9 +1,9 @@
 import { Container, Form } from 'react-bootstrap';
-import BankAccountSelector from 'features/BankAccountSelector';
-import TransactionList from './TransactionList/TransactionList';
-import TransactionFilters from './TransactionFilters/TransactionFilters';
-import TransactionOperationButtons from './TransactionOperationButtons/TransactionOperationButtons';
-import TransactionOperationInputs from './TransactionOperationInputs/TransactionOperationInputs';
+import BankAccountSelector from './Components/BankAccountSelector';
+import TransactionList from './Components/TransactionList/TransactionList';
+import TransactionFilters from './Components/TransactionSearch';
+import TransactionOperationButtons from './Components/OperationButtons/TransactionOperationButtons';
+import TransactionOperationInputs from './Components/OperationPages/TransactionOperationInputs';
 import UserMessage from 'components/UserMessage'
 
 function TransactionViewer() {

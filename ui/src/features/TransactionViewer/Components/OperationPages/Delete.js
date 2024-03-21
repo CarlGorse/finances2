@@ -1,13 +1,13 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import CancelButton from '../TransactionOperationButtons/ClearButton'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
+import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
 
 function Delete() {
 
@@ -67,12 +67,14 @@ function Delete() {
 
     return (
         <>
-            <span>{`Do you wish to delete ${selectedTransactions.length === 1 ? 'this' : 'these'} ${selectedTransactions.length} transaction${selectedTransactions.length === 1 ? "" : "s"}?`}</span>
-            <span style={{ marginLeft: "10px" }} >
-                <Button size="sm" onClick={() => Delete()}>Yes</Button>
-            </span>
+            <span>{`Do you wish to delete ${selectedTransactions.length === 1 ? 'this transaction' : `these ${selectedTransactions.length} transactions`}?`}</span>
             <span style={{ marginLeft: "1px" }} >
-                <CancelButton />
+                <SaveAndCancelButtons
+                    save={() => Delete()}
+                    cancelTransactionOperation={() => CancelTransactionOperation()}
+                    saveButtonText="Yes"
+                    cancelButtonText="No"
+                />
             </span>
         </>
     );

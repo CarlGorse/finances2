@@ -18,15 +18,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ICategoryGroupRepository, CategoryGroupRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped(typeof(IEditableItemControllerService<>), typeof(EditableItemControllerService<>));
+builder.Services.AddScoped<IEditableItemRepository<Category>, CategoryRepository>();
+builder.Services.AddScoped<IEditableItemRepository<CategoryGroup>, CategoryGroupRepository>();
+builder.Services.AddScoped<IEditableItemRepository<Transaction>, TransactionRepository>();
 builder.Services.AddScoped<IFinancesDbContext, FinancesDbContext>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IReportTotalRepository, ReportTotalRepository>();
 builder.Services.AddScoped<ISearchCriteriaService, SearchCriteriaService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
-builder.Services.AddScoped(typeof(IEditableItemControllerService<>), typeof(EditableItemControllerService<>));
-builder.Services.AddScoped<IEditableItemRepository<Category>, CategoryRepository>();
-builder.Services.AddScoped<IEditableItemRepository<CategoryGroup>, CategoryGroupRepository>();
-builder.Services.AddScoped<IEditableItemRepository<Transaction>, TransactionRepository>();
+builder.Services.AddScoped<ITransactionManagementService, TransactionManagementService>();
 
 builder.Services.AddCors(options => {
     var policyName = "MyAllowedOrigins";

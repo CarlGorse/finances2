@@ -38,6 +38,6 @@ namespace finances.api.Models {
         public int StartYearAndPeriod => DateTimeFunctions.CalculateYearAndPeriod(StartYear, StartPeriod);
 
         public int EndYearAndPeriod => DateTimeFunctions.CalculateYearAndPeriod(EndYear, EndPeriod);
-
+        public int PageNo { get; set; }
     }
 }

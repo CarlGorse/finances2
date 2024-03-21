@@ -5,6 +5,7 @@ using finances.api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 namespace finances.api.Controllers {
@@ -13,20 +14,29 @@ namespace finances.api.Controllers {
 
         private readonly ITransactionManagementService _transactionManagementService = transactionManagementService;
 
+        private const int _pageSize = 15;
+
         [HttpPost]
         public IActionResult Get([FromBody] SearchCriteriaModel searchCriteria) {
 
             var result = _transactionManagementService.Get(searchCriteria, out var validationErrors, out var transactions);
 
-            return result switch {
-                ServiceResult.Invalid => StatusCode(
-                    StatusCodes.Status406NotAcceptable,
-                    JsonSerializer.Serialize(new { searchCriteria, validationErrors })),
-                ServiceResult.Error => StatusCode(
+            if (result == ServiceResult.Invalid) {
+                return StatusCode(
+                        StatusCodes.Status406NotAcceptable,
+                        JsonSerializer.Serialize(new { searchCriteria, validationErrors }));
+            }
+
+            if (result == ServiceResult.Error) {
+                return StatusCode(
                     StatusCodes.Status500InternalServerError,
-                    JsonSerializer.Serialize(new { searchCriteria, validationErrors })),
-                _ => Ok(new { searchCriteria, transactions })
-            };
+                    JsonSerializer.Serialize(new { searchCriteria, validationErrors }));
+            }
+
+            var pageCount = (int)System.Math.Ceiling((decimal)((transactions.Count() - 1) / _pageSize)) + 1;
+            var pagedTransactions = transactions.Skip(System.Math.Max((pageCount - 1) * _pageSize, 0)).Take(_pageSize);
+
+            return Ok(new { searchCriteria, transactions = pagedTransactions, searchCriteria.PageNo, pageCount });
         }
 
         [HttpPost]
@@ -56,12 +66,12 @@ namespace finances.api.Controllers {
         [HttpPost]
         public IActionResult MoveWages([FromBody] MoveWagesModel model) {
 
-            var result = _transactionManagementService.MoveWages(model, out var validationErrors);
+            var result = _transactionManagementService.MoveWages(model, out var validationErrors, out var transactionFrom, out var transactionTo);
 
-            return _returnActionForServiceResult(result, new { model }, new { model, validationErrors });
+            return _returnActionForServiceResult(result, new { transactionFrom, transactionTo, model.CreditToMove }, new { validationErrors });
         }
 
-        private IActionResult _returnActionForServiceResult(ServiceResult result, object successPayload, object failurePayload) {
+        private ObjectResult _returnActionForServiceResult(ServiceResult result, object successPayload, object failurePayload) {
             return result switch {
                 ServiceResult.Invalid => StatusCode(
                     StatusCodes.Status406NotAcceptable,
