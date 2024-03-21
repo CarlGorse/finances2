@@ -1,8 +1,7 @@
 import Dropdown from 'react-bootstrap/Dropdown';
-import { Row, Col } from 'react-bootstrap';
 import { useCallback, useEffect, useState } from 'react';
 
-function FilterItem({ defaultValue, onSelect, values }) {
+function DropdownFilter({ defaultValue, onSelect, values }) {
 
   const [title, setTitle] = useState("");
 
@@ -38,4 +37,4 @@ function FilterItem({ defaultValue, onSelect, values }) {
   );
 }
 
-export default FilterItem;
+export default DropdownFilter;

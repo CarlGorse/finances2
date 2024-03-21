@@ -1,9 +1,9 @@
 import { Container, Form } from 'react-bootstrap';
 import BankAccountSelector from './Components/BankAccountSelector';
 import TransactionList from './Components/TransactionList/TransactionList';
-import TransactionFilters from './Components/TransactionSearch';
-import TransactionOperationButtons from './Components/OperationButtons/TransactionOperationButtons';
-import TransactionOperationInputs from './Components/OperationPages/TransactionOperationInputs';
+import TransactionFilters from './Components/TransactionSearch/TransactionSearch';
+import TransactionOperationButtons from './Components/OperationButtons/OperationButtons';
+import OperationPages from './Components/OperationPages/OperationPages';
 import UserMessage from 'components/UserMessage'
 
 function TransactionViewer() {
@@ -30,7 +30,7 @@ function TransactionViewer() {
       <div style={{ marginTop: "20px", padding: "5px" }}>
         <Form>
           <div style={{ backgroundColor: "cornsilk" }}>
-            <TransactionOperationInputs />
+            <OperationPages />
           </div>
         </Form>
       </div>

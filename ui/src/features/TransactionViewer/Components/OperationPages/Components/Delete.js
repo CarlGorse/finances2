@@ -7,7 +7,7 @@ import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom'
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
-import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
+import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 
 function Delete() {
 

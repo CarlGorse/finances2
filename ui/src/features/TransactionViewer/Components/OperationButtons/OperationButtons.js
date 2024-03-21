@@ -1,5 +1,5 @@
 import ClearButton from './ClearButton';
-import TransactionOperationButton from "./TransactionOperationButton";
+import TransactionOperationButton from "./OperationButton";
 
 function TransactionOperationButtons() {
 
