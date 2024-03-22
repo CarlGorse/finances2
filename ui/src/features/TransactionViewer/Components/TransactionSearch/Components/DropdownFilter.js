@@ -6,11 +6,13 @@ function DropdownFilter({ defaultValue, onSelect, values }) {
   const [title, setTitle] = useState("");
 
   const selectValue = useCallback((value) => {
+    alert(1);
     setTitle(value);
     onSelect(value);
   }, [onSelect]);
 
   useEffect(() => {
+    alert(2);
     setTitle(defaultValue)
     onSelect(defaultValue);
   }, [defaultValue, onSelect]);

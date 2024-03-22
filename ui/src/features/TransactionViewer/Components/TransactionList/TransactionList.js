@@ -62,11 +62,14 @@ function TransactionList() {
     })
       .then(response => {
         setTransactions(response.data.transactions);
+
         pageCount.current = response.data.pageCount;
+
         setLoading(false);
       })
       .catch(function (error) {
         pageCount.current = 0;
+
         setUserMessage({
           Message: error.response.data.validationErrors[0],
           Variant: "danger"

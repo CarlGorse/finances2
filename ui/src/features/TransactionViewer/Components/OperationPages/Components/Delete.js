@@ -45,8 +45,8 @@ function Delete() {
                 }
             }
         )
-            .then(function (response) {
-                setRefreshTransactions(true);
+            .then(function () {
+                setRefreshTransactions(prevValue => !prevValue);
                 setUserMessage({
                     Message: `${selectedTransactions.length} transaction${selectedTransactions.length === 1 ? '' : 's'} deleted`,
                     Variant: "success"
