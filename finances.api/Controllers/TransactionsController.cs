@@ -1,5 +1,6 @@
 ﻿using finances.api.Data.Models;
 using finances.api.Enums;
+using finances.api.Logic;
 using finances.api.Models;
 using finances.api.Services;
 using Microsoft.AspNetCore.Http;
@@ -33,8 +34,9 @@ namespace finances.api.Controllers {
                     JsonSerializer.Serialize(new { searchCriteria, validationErrors }));
             }
 
-            var pageCount = (int)System.Math.Ceiling((decimal)((transactions.Count() - 1) / _pageSize)) + 1;
-            var pagedTransactions = transactions.Skip(System.Math.Max((pageCount - 1) * _pageSize, 0)).Take(_pageSize);
+            var pagedTransactions = PagingLogic.GetPagedItems(transactions.ToList(), _pageSize, searchCriteria.PageNo);
+
+            var pageCount = PagingLogic.GetPageCount(transactions.Count(), _pageSize);
 
             return Ok(new { searchCriteria, transactions = pagedTransactions, searchCriteria.PageNo, pageCount });
         }
