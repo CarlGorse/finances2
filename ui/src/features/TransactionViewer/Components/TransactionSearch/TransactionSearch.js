@@ -1,6 +1,6 @@
+import { Col, Row } from 'react-bootstrap';
+import DropdownFilter from './Components/DropdownFilter'
 import { selectedBankAccountAtom } from 'recoil/atoms/SelectedBankAccountAtom';
-import FilterItem from './TransactionSearch/FilterItem'
-import { Row, Col } from 'react-bootstrap';
 import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
@@ -26,10 +26,10 @@ function TransactionSearch() {
       <Row>
         <Col xs={1}>From:</Col>
         <Col xs={1}>
-          <FilterItem defaultValue="01" onSelect={value => UpdateTransactionSearch("StartPeriod", value)} values={periods} />
+          <DropdownFilter defaultValue="01" onSelect={value => UpdateTransactionSearch("StartPeriod", value)} values={periods} />
         </Col>
         <Col>
-          <FilterItem defaultValue="2024" onSelect={value => UpdateTransactionSearch("StartYear", value)} values={years} />
+          <DropdownFilter defaultValue="2024" onSelect={value => UpdateTransactionSearch("StartYear", value)} values={years} />
         </Col>
         <Col>
 
@@ -38,10 +38,10 @@ function TransactionSearch() {
       <Row>
         <Col xs={1}>To:</Col>
         <Col xs={1}>
-          <FilterItem defaultValue="03" onSelect={value => UpdateTransactionSearch("EndPeriod", value)} values={periods} />
+          <DropdownFilter defaultValue="03" onSelect={value => UpdateTransactionSearch("EndPeriod", value)} values={periods} />
         </Col>
         <Col>
-          <FilterItem defaultValue="2024" onSelect={value => UpdateTransactionSearch("EndYear", value)} values={years} />
+          <DropdownFilter defaultValue="2024" onSelect={value => UpdateTransactionSearch("EndYear", value)} values={years} />
         </Col>
         <Col>
         </Col>

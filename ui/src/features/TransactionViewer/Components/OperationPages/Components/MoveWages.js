@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Col, Form, Row } from 'react-bootstrap';
 import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/currency';
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
-import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
+import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useEffect, useState } from 'react'
