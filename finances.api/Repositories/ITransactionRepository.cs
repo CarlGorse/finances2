@@ -7,7 +7,7 @@ namespace finances.api.Repositories {
     public interface ITransactionRepository : IEditableItemRepository<Transaction> {
         IEnumerable<Transaction> GetMatchingWageTransactions(Transaction transaction);
         decimal GetTotalCreditForWageTransaction(Transaction transaction);
-        IEnumerable<Transaction> GetTransactionsByFilters(TransactionFilters transactionFilters);
+        IEnumerable<Transaction> Get(TransactionFilters transactionFilters);
         void SetWageTotalForEffDate(Transaction transaction);
     }
 }

@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 
 //import styles from './TransactionRow.css';
 
-function TransactionRow({ transaction, runningTotal }) {
+function TransactionRow({ transaction }) {
 
   const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
   const [isSelected, setIsSelected] = useState(false);
@@ -72,7 +72,7 @@ function TransactionRow({ transaction, runningTotal }) {
         {formatCurrency(transaction.Debit)}
       </Col>
       <Col className="tableCell" xs={2}>
-        {formatCurrency(runningTotal)}
+        {formatCurrency(transaction.RunningTotal.RunningTotal)}
       </Col>
     </Row>
   )

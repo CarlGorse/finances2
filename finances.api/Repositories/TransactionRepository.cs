@@ -9,21 +9,15 @@ using System.Linq;
 
 namespace finances.api.Repositories {
 
-    public class TransactionRepository : EditableItemRepository<Transaction>, ITransactionRepository {
+    public class TransactionRepository(
+        IFinancesDbContext dbContext,
+        IAccountRepository accountRepository,
+        ICategoryRepository categoryRepository) : EditableItemRepository<Transaction>(
+            dbContext.Transactions,
+            dbContext), ITransactionRepository {
 
-        private readonly IAccountRepository _AccountRepository;
-        private readonly ICategoryRepository _CategoryRepository;
-
-        public TransactionRepository(
-            IFinancesDbContext dbContext,
-            IAccountRepository accountRepository,
-            ICategoryRepository categoryRepository) : base(
-                dbContext.Transactions,
-                dbContext) {
-
-            _AccountRepository = accountRepository;
-            _CategoryRepository = categoryRepository;
-        }
+        private readonly IAccountRepository _AccountRepository = accountRepository;
+        private readonly ICategoryRepository _CategoryRepository = categoryRepository;
 
         protected override IQueryable<Transaction> ItemsQuery() {
             return _dbContext.Transactions
@@ -52,7 +46,7 @@ namespace finances.api.Repositories {
             return transactions;
         }
 
-        public IEnumerable<Transaction> GetTransactionsByFilters(TransactionFilters transactionFilters) {
+        public IEnumerable<Transaction> Get(TransactionFilters transactionFilters) {
 
             var query = Transactions
 
@@ -66,12 +60,6 @@ namespace finances.api.Repositories {
                 .Where(t => transactionFilters.StartPeriod == null || transactionFilters.StartPeriod <= t.Period)
                 .Where(t => transactionFilters.EndYear == null || transactionFilters.EndYear >= t.Year)
                 .Where(t => transactionFilters.EndPeriod == null || transactionFilters.EndPeriod >= t.Period)
-                .Where(t => transactionFilters.StartEffDate == null || transactionFilters.StartEffDate <= t.EffDate)
-                .Where(t => transactionFilters.EndEffDate == null || transactionFilters.EndEffDate >= t.EffDate)
-                .Where(t => transactionFilters.Exclude == null || transactionFilters.Exclude == t.Exclude)
-                .Where(t => transactionFilters.IsWage == null || transactionFilters.IsWage == t.IsWage)
-                .Where(t => transactionFilters.DateModifiedFrom == null || transactionFilters.DateModifiedFrom <= t.DateModified)
-                .Where(t => transactionFilters.DateModifiedTo == null || transactionFilters.DateModifiedTo >= t.DateModified)
             ;
 
             var transactions = query.ToList();

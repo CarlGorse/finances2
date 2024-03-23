@@ -23,7 +23,7 @@ namespace finances.api.Services {
 
         public ServiceResult Get(SearchCriteriaModel searchCriteria,
             out ICollection<string> validationErrors,
-            out IEnumerable<TransactionRunningTotal> transactions) {
+            out IEnumerable<Transaction> transactions) {
 
             validationErrors = [];
             transactions = [];
@@ -34,10 +34,10 @@ namespace finances.api.Services {
 
             var transactionFilters = CreateTransactionFilters(searchCriteria);
 
-            transactions = _reportService.GetTransactionTotals(transactionFilters);
+            transactions = _reportService.GetTransactionsWithRunningTotals(transactionFilters);
 
-            foreach (var reportRow in transactions) {
-                _transactionRepository.SetWageTotalForEffDate(reportRow.Transaction);
+            foreach (var transaction in transactions) {
+                _transactionRepository.SetWageTotalForEffDate(transaction);
             }
 
             return ServiceResult.Ok;
@@ -45,32 +45,13 @@ namespace finances.api.Services {
 
         private static TransactionFilters CreateTransactionFilters(SearchCriteriaModel searchCriteria) {
 
-            var transactionFilters = new TransactionFilters();
-            switch (searchCriteria.FilterType) {
-
-                case SearchCriteriaModel.FilterTypes.EffDate:
-                    transactionFilters.StartEffDate = searchCriteria.StartEffDate;
-                    transactionFilters.EndEffDate = searchCriteria.EndEffDate;
-                    break;
-
-                case SearchCriteriaModel.FilterTypes.YearAndPeriod:
-                    transactionFilters.StartYear = searchCriteria.StartYear;
-                    transactionFilters.StartPeriod = searchCriteria.StartPeriod;
-                    transactionFilters.EndYear = searchCriteria.EndYear;
-                    transactionFilters.EndPeriod = searchCriteria.EndPeriod;
-                    break;
-
-                case SearchCriteriaModel.FilterTypes.TransactionId:
-                    transactionFilters.TransactionId = searchCriteria.TransactionId;
-                    break;
-
-            }
-
-            transactionFilters.AccountId = searchCriteria.AccountId;
-
-            if (searchCriteria.CategoryId > 0) {
-                transactionFilters.CategoryIds.Add(searchCriteria.CategoryId);
-            }
+            var transactionFilters = new TransactionFilters {
+                AccountId = searchCriteria.AccountId,
+                StartYear = searchCriteria.StartYear,
+                StartPeriod = searchCriteria.StartPeriod,
+                EndYear = searchCriteria.EndYear,
+                EndPeriod = searchCriteria.EndPeriod
+            };
 
             return transactionFilters;
         }

@@ -48,5 +48,6 @@ namespace finances.api.Data.Models {
         public static string TypeDescription => "transaction";
 
         public static string TypeName => "Transaction";
+        public TransactionRunningTotal RunningTotal { get; set; }
     }
 }

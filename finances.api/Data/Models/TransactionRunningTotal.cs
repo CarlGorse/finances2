@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace finances.api.Data.Models {
 
@@ -13,8 +12,5 @@ namespace finances.api.Data.Models {
         public decimal RunningCredit { get; set; }
 
         public decimal RunningDebit { get; set; }
-
-        [ForeignKey("TransactionId")]
-        public Transaction Transaction { get; set; }
     }
 }

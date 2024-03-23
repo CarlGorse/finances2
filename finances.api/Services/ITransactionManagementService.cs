@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace finances.api.Services {
     public interface ITransactionManagementService {
-        ServiceResult Get(SearchCriteriaModel searchCriteria, out ICollection<string> validationErrors, out IEnumerable<TransactionRunningTotal> transactions);
+        ServiceResult Get(SearchCriteriaModel searchCriteria, out ICollection<string> validationErrors, out IEnumerable<Transaction> transactions);
         ServiceResult Add(Transaction transaction, out ICollection<string> validationErrors);
         ServiceResult Delete(IEnumerable<int> ids, out ICollection<string> validationErrors);
         ServiceResult Edit(Transaction transaction, out ICollection<string> validationErrors);

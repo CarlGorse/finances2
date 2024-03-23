@@ -91,11 +91,10 @@ function TransactionList() {
 
         {loading && <Spinner />}
 
-        {!loading && transactions?.map(transactionTotal => (
+        {!loading && transactions?.map(transaction => (
           <TransactionRow
-            key={transactionTotal.Transaction.TransactionId}
-            transaction={transactionTotal.Transaction}
-            runningTotal={transactionTotal.RunningTotal}
+            key={transaction.TransactionId}
+            transaction={transaction}
           />
         ))}
 

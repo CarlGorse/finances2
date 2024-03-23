@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace finances.api.Logic {
 
@@ -14,18 +13,12 @@ namespace finances.api.Logic {
         public int? StartPeriod { get; set; }
         public int? EndYear { get; set; }
         public int? EndPeriod { get; set; }
-        public DateTime? StartEffDate { get; set; }
-        public DateTime? EndEffDate { get; set; }
-        public bool? IsWage { get; set; }
-        public bool? Exclude { get; set; }
-        public DateTime? DateModifiedFrom { get; set; }
-        public DateTime? DateModifiedTo { get; set; }
         public int? TransactionId { get; set; }
 
         public TransactionFilters() {
-            CategoryIds = new List<int>();
-            Descriptions = new List<string>();
-            Items = new List<string>();
+            CategoryIds = [];
+            Descriptions = [];
+            Items = [];
         }
     }
 }

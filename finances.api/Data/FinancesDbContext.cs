@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace finances.api.Data {
 
-    public class FinancesDbContext : DbContext, IFinancesDbContext {
+    public class FinancesDbContext(DbContextOptions<FinancesDbContext> options) : DbContext(options), IFinancesDbContext {
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -14,9 +14,6 @@ namespace finances.api.Data {
         public DbSet<CategoryTotal> ReportTotalsByCategory { get; set; }
         public DbSet<TransactionRunningTotal> ReportTransactionRunningTotals { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-
-        public FinancesDbContext(DbContextOptions<FinancesDbContext> options) : base(options) {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
 

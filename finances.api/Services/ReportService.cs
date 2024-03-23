@@ -74,32 +74,31 @@ namespace finances.api.Services {
             return reportTotalsOrdered;
         }
 
-        public IEnumerable<TransactionRunningTotal> GetTransactionTotals(TransactionFilters transactionFilters) {
+        public IEnumerable<Transaction> GetTransactionsWithRunningTotals(TransactionFilters transactionFilters) {
 
-            var parameters =
+            var transactions = _TransactionRepository.Get(transactionFilters);
+
+            var runningTotalQueryParams =
                 $"{FormatSpParameterValue(transactionFilters.AccountId.ToString())}," +
                 $"{FormatSpParameterValue(transactionFilters.StartYear.ToString())}," +
                 $"{FormatSpParameterValue(transactionFilters.StartPeriod.ToString())}," +
                 $"{FormatSpParameterValue(transactionFilters.EndYear.ToString())}," +
-                $"{FormatSpParameterValue(transactionFilters.EndPeriod.ToString())}," +
-                $"{FormatSpParameterValue(transactionFilters.StartEffDate.ToString())}," +
-                $"{FormatSpParameterValue(transactionFilters.EndEffDate.ToString())}";
+                $"{FormatSpParameterValue(transactionFilters.EndPeriod.ToString())}";
 
-            var reportTotals = (from rta in _ReportTotalRepository.ReportTransactionRunningTotals(parameters)
-                                select rta)
-                                .ToList();
+            var reportTotals = (from rta in _ReportTotalRepository.ReportTransactionRunningTotals(runningTotalQueryParams)
+                                select rta).ToList();
 
-            foreach (var reportTotal in reportTotals) {
-                reportTotal.Transaction = _TransactionRepository.Get(reportTotal.TransactionId);
+            foreach (var transaction in transactions) {
+                transaction.RunningTotal = reportTotals.Single(x => x.TransactionId == transaction.TransactionId);
             }
 
-            var reportTotalFiltered = reportTotals
-                .Where(x =>
-                        (transactionFilters.CategoryIds.Count != 0
-                        && transactionFilters.CategoryIds.Contains(x.Transaction.CategoryId))
-                    || transactionFilters.CategoryIds.Count == 0);
-
-            return reportTotalFiltered;
+            return transactions
+                    .OrderByDescending(x => x.Year)
+                    .ThenByDescending(x => x.Period)
+                    .ThenByDescending(x => x.EffDate)
+                    .ThenByDescending(x => !x.IsWage)
+                    .ThenBy(x => x.Category.Group.Name)
+                    .ThenBy(x => x.Category.Name);
         }
 
         private static string FormatSpParameterValue(string text) {
