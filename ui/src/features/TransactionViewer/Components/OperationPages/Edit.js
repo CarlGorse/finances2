@@ -1,15 +1,15 @@
-import AddEdit from './Shared/AddEdit';
+import AddEdit from './Components/AddEdit';
 import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
-import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
+import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from 'react'
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
 function Edit() {
@@ -80,7 +80,7 @@ function Edit() {
             }
         })
             .then(function (response) {
-                setRefreshTransactions(prevValue => !prevValue); // to await this we'd have to know when the load finished
+                setRefreshTransactions(true); // to await this we'd have to know when the load finished
                 setUserMessage({
                     Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
                     Variant: "success"
@@ -100,7 +100,6 @@ function Edit() {
             <AddEdit transactionOperation={transactionOperation} />
 
             <SaveAndCancelButtons save={() => Save()} />
-
         </ >
     );
 }

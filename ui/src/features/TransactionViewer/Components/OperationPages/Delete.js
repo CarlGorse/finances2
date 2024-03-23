@@ -1,12 +1,13 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
+import { Button } from 'react-bootstrap';
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
-import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
+import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
 
 function Delete() {
 
@@ -44,8 +45,8 @@ function Delete() {
                 }
             }
         )
-            .then(function () {
-                setRefreshTransactions(prevValue => !prevValue);
+            .then(function (response) {
+                setRefreshTransactions(true);
                 setUserMessage({
                     Message: `${selectedTransactions.length} transaction${selectedTransactions.length === 1 ? '' : 's'} deleted`,
                     Variant: "success"

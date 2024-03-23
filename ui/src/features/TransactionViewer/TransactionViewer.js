@@ -1,14 +1,15 @@
-import { Container, Form } from 'react-bootstrap';
 import BankAccountSelector from './Components/BankAccountSelector';
-import TransactionList from './Components/TransactionList/TransactionList';
-import TransactionOperationButtons from './Components/OperationButtons/OperationButtons';
+import { Container, Form } from 'react-bootstrap';
+import OperationButtons from './Components/OperationButtons/OperationButtons';
 import OperationPages from './Components/OperationPages/OperationPages';
+import TransactionList from './Components/TransactionList/TransactionList';
 import UserMessage from 'components/UserMessage'
 import YearAndPeriodSelector from './Components/YearAndPeriodSelector/YearAndPeriodSelector';
 
 function TransactionViewer() {
 
   return (
+
     <Container>
 
       <BankAccountSelector />
@@ -19,7 +20,7 @@ function TransactionViewer() {
 
       <div style={{ marginTop: "20px" }}>
         <Form>
-          <TransactionOperationButtons />
+          <OperationButtons />
         </Form>
       </div>
 

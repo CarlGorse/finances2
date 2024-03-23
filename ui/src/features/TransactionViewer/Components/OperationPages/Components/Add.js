@@ -9,7 +9,7 @@ import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { transactionSearchAtom as transactionSearchFiltersAtom } from 'recoil/atoms/TransactionSearchAtom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from 'react'
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
@@ -21,7 +21,7 @@ function Add() {
     const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const transactionToAdd = useRecoilValue(addEditTransactionAtom);
-    const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
+    const transactionOperation = useRecoilValue(transactionOperationAtom);
     const transactionSearchFilters = useRecoilValue(transactionSearchFiltersAtom);
 
     const showForm = transactionOperation === "Add"
@@ -92,18 +92,11 @@ function Add() {
             })
     }
 
-    function CancelTransactionOperation() {
-        setTransactionOperation(null)
-    }
-
     return (
         <>
             <AddEdit transactionOperation={transactionOperation} />
 
-            <SaveAndCancelButtons
-                save={() => Save()}
-                cancelTransactionOperation={() => CancelTransactionOperation()}
-            />
+            <SaveAndCancelButtons save={() => Save()} />
         </>
     );
 }

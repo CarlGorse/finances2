@@ -1,34 +1,36 @@
-import AddEdit from './Shared/AddEdit';
+import AddEdit from './Components/AddEdit';
 import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
-import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
+import SaveAndCancelButtons from './Components/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
+import { transactionSearchAtom as transactionSearchFiltersAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from 'react'
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
-function Edit() {
+function Add() {
 
     const categories = useRecoilValue(categoriesAtom);
-    const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
     const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
     const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
+    const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
-    const transactionToEdit = useRecoilValue(addEditTransactionAtom);
+    const transactionToAdd = useRecoilValue(addEditTransactionAtom);
     const transactionOperation = useRecoilValue(transactionOperationAtom);
+    const transactionSearchFilters = useRecoilValue(transactionSearchFiltersAtom);
 
-    const showForm = transactionOperation === "Edit"
-    const hasValidSelection = selectedTransactions?.length === 1
+    const showForm = transactionOperation === "Add"
+    const hasValidSelection = true//!selectedTransactions || selectedTransactions?.length === 0
 
     useEffect(() => {
         if (showForm) {
             if (!hasValidSelection) {
-                setUserMessage({ Message: `You must select a ${selectedTransactions?.length > 0 ? " single " : ""}transaction`, Variant: "warning" });
+                setUserMessage({ Message: `You must deselect all transactions.`, Variant: "warning" });
             }
             else {
                 setUserMessage(null);
@@ -37,24 +39,19 @@ function Edit() {
     })
 
     useEffect(() => {
-        if (showForm && hasValidSelection) {
-
-            const selectedTransaction = selectedTransactions[0];
-
-            setAddEditTransaction({
-                AccountId: selectedTransaction.AccountId,
-                CategoryId: selectedTransaction.CategoryId,
-                Credit: selectedTransaction.Credit,
-                Debit: selectedTransaction.Debit,
-                Description: selectedTransaction.Description,
-                EffDate: selectedTransaction.EffDate,
-                Exclude: selectedTransaction.Exclude,
-                IsWage: selectedTransaction.IsWage,
-                Item: selectedTransaction.Item,
-                TransactionId: selectedTransaction.TransactionId
-            });
-        }
-    }, [categories, setAddEditTransaction, showForm, hasValidSelection, selectedTransactions])
+        setAddEditTransaction({
+            TransactionId: null,
+            EffDate: new Date(),
+            AccountId: null,
+            CategoryId: categories[0]?.CategoryId,
+            Credit: null,
+            Debit: null,
+            IsWage: null,
+            Exclude: null,
+            Item: null,
+            Description: null
+        });
+    }, [categories, setAddEditTransaction])
 
     if (!showForm || !hasValidSelection) {
         return null
@@ -62,18 +59,17 @@ function Edit() {
 
     function Save() {
         axios.post(
-            apiBaseUrl + "/transactions/edit",
+            apiBaseUrl + "/transactions/add",
             {
-                AccountId: transactionToEdit.AccountId,
-                CategoryId: transactionToEdit.CategoryId,
-                Credit: transactionToEdit.Credit,
-                Debit: transactionToEdit.Debit,
-                Description: transactionToEdit.Description,
-                EffDate: transactionToEdit.EffDate,
-                Exclude: transactionToEdit.Exclude,
-                IsWage: transactionToEdit.IsWage,
-                Item: transactionToEdit.Item,
-                TransactionId: transactionToEdit.TransactionId
+                AccountId: transactionSearchFilters.AccountId,
+                CategoryId: 1,
+                Credit: transactionToAdd.Credit ?? 0,
+                Debit: transactionToAdd.Debit ?? 0,
+                Description: transactionToAdd.Description,
+                EffDate: transactionToAdd.EffDate,
+                Exclude: transactionToAdd.Exclude ?? false,
+                IsWage: transactionToAdd.IsWage ?? false,
+                Item: transactionToAdd.Item
             }, {
             headers: {
                 "Content-Type": "application/json"
@@ -81,8 +77,9 @@ function Edit() {
         })
             .then(function (response) {
                 setRefreshTransactions(prevValue => !prevValue); // to await this we'd have to know when the load finished
+                setSelectedTransactions([response.data.transaction]);
                 setUserMessage({
-                    Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
+                    Message: `Transaction saved: Account: ${response.data.transaction.Account.Name}, Category: ${response.data.transaction.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.transaction.EffDate)}`,
                     Variant: "success"
                 })
                 //CancelTransactionOperation()
@@ -100,9 +97,8 @@ function Edit() {
             <AddEdit transactionOperation={transactionOperation} />
 
             <SaveAndCancelButtons save={() => Save()} />
-
-        </ >
+        </>
     );
 }
 
-export default Edit;
+export default Add;

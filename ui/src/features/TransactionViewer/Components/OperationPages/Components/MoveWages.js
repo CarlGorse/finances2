@@ -7,7 +7,7 @@ import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useEffect, useState } from 'react'
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
 function MoveWages() {
@@ -17,7 +17,7 @@ function MoveWages() {
     const [creditToMove, setCreditToMove] = useState(0);
     const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
     const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
-    const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
+    const transactionOperation = useRecoilValue(transactionOperationAtom);
 
     const showForm = transactionOperation === operation
     const hasValidTransactionsSelected = selectedTransactions
@@ -70,10 +70,6 @@ function MoveWages() {
                     Variant: "danger"
                 })
             })
-    }
-
-    function CancelTransactionOperation() {
-        setTransactionOperation(null)
     }
 
     function validateAndSetCreditToMove(credit) {
@@ -180,10 +176,7 @@ function MoveWages() {
                 </Col>
             </Row>
 
-            <SaveAndCancelButtons
-                save={() => Save()}
-                cancelTransactionOperation={() => CancelTransactionOperation()}
-            />
+            <SaveAndCancelButtons save={() => Save()} />
 
         </>
     );
