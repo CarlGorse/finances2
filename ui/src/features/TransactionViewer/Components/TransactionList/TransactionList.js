@@ -28,7 +28,7 @@ function TransactionList() {
   const transactionSearch = useRecoilValue(transactionSearchAtom);
   const [pageNo, setPageNo] = useState(1);
 
-  const pageCount = useRef(0);
+  const pageCount = useRef(1);
 
   useEffect(() => {
     setPageNo(1);
@@ -45,15 +45,10 @@ function TransactionList() {
 
     axios.post(apiBaseUrl + "/transactions/get", {
       AccountId: transactionSearch.AccountId,
-      CategoryId: 0,
       StartYear: transactionSearch.StartYear,
       StartPeriod: transactionSearch.StartPeriod,
       EndYear: transactionSearch.EndYear,
       EndPeriod: transactionSearch.EndPeriod,
-      FilterType: 0,
-      StartEffDate: "09/03/2024",
-      EndEffDate: "09/03/2024",
-      TransactionId: 0,
       PageNo: pageNo
     }, {
       headers: {
@@ -77,24 +72,6 @@ function TransactionList() {
       })
   }, [transactionSearch, refreshTransactions, pageNo, setUserMessage])
 
-  function onClickFirst() {
-    setPageNo(1)
-  }
-
-  function onClickPrev() {
-    setPageNo(prevValue => Math.max(prevValue - 1, 0))
-  }
-
-  function onClickNext() {
-    setPageNo(prevValue => {
-      return Math.min(prevValue + 1, pageCount.current)
-    })
-  }
-
-  function onClickLast() {
-    setPageNo(pageCount.current)
-  }
-
   return (
     <>
 
@@ -104,10 +81,7 @@ function TransactionList() {
           <NavigationButtons
             pageNo={pageNo}
             pageCount={pageCount.current}
-            onClickFirst={() => onClickFirst()}
-            onClickPrev={() => onClickPrev()}
-            onClickNext={() => onClickNext()}
-            onClickLast={() => onClickLast()}
+            onClick={(pageNo) => setPageNo(pageNo)}
           />
         </div>
 

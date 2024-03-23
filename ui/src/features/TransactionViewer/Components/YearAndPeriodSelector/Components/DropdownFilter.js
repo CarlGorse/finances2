@@ -5,22 +5,19 @@ function DropdownFilter({ defaultValue, onSelect, values }) {
 
   const [title, setTitle] = useState("");
 
-  const selectValue = useCallback((value) => {
-    alert(1);
+  const selectValue = (value) => {
     setTitle(value);
     onSelect(value);
-  }, [onSelect]);
+  };
 
   useEffect(() => {
-    alert(2);
-    setTitle(defaultValue)
-    onSelect(defaultValue);
-  }, [defaultValue, onSelect]);
+    setTitle(defaultValue);
+  }, [defaultValue]);
 
   return (
     <Dropdown>
       <Dropdown.Toggle variant="light">
-        {title}
+        {String(title).padStart(2, '0')}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>

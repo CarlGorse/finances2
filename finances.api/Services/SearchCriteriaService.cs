@@ -1,6 +1,5 @@
 ﻿using finances.api.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace finances.api.Services {
 
@@ -13,8 +12,8 @@ namespace finances.api.Services {
                 return false;
             }
 
-            if (searchCriteria.PageNo == null) {
-                validationErrors.Add($"{nameof(searchCriteria.PageNo)} must be provided.");
+            if (searchCriteria.PageNo <= 0) {
+                validationErrors.Add($"{nameof(searchCriteria.PageNo)} must be greter than zero.");
             }
 
             switch (searchCriteria.FilterType) {
@@ -45,7 +44,7 @@ namespace finances.api.Services {
                     break;
             }
 
-            if (validationErrors.Any()) {
+            if (validationErrors.Count > 0) {
                 return false;
             }
 

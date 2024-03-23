@@ -1,6 +1,24 @@
 import { Button } from 'react-bootstrap'
 
-function NavigationButtons({ pageNo, pageCount, onClickFirst, onClickPrev, onClickNext, onClickLast }) {
+function NavigationButtons({ pageNo, pageCount, onClick }) {
+
+  function onClickFirst() {
+    onClick(1)
+  }
+
+  function onClickPrev() {
+    onClick(prevValue => Math.max(prevValue - 1, 0))
+  }
+
+  function onClickNext() {
+    onClick(prevValue => {
+      return Math.min(prevValue + 1, pageCount)
+    })
+  }
+
+  function onClickLast() {
+    onClick(pageCount)
+  }
 
   return (
     <>

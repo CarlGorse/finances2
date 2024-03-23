@@ -1,7 +1,7 @@
 import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime';
-import { formatCurrency } from 'functions/currency';
+import { formatCurrency } from 'functions/Currency';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";

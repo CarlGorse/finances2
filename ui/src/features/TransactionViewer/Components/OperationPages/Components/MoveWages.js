@@ -1,7 +1,7 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { Col, Form, Row } from 'react-bootstrap';
-import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/currency';
+import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/Currency';
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';

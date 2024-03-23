@@ -3,11 +3,11 @@ import { apiBaseUrl } from 'functions/Api'
 import axios from 'axios'
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { Col, Form, Row } from 'react-bootstrap';
-import { stringToCurrency } from 'functions/currency';
+import { stringToCurrency } from 'functions/Currency';
 import { useEffect } from 'react'
 import { useRecoilState } from "recoil";
 
-function AddEdit({ save, cancelTransactionOperation }) {
+function AddEdit() {
 
     const [addEditTransaction, setAddEditTransaction] = useRecoilState(addEditTransactionAtom);
     const [categories, setCategories] = useRecoilState(categoriesAtom);
