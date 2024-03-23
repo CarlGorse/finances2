@@ -6,7 +6,7 @@ import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom'
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import styles from './TransactionRow.css';
+//import styles from './TransactionRow.css';
 
 function TransactionRow({ transaction, runningTotal }) {
 

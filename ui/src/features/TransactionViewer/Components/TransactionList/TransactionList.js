@@ -1,15 +1,15 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
-import NavigationButtons from './NavigationButtons'
+import NavigationButtons from './Components/NavigationButtons'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import Spinner from 'components/Spinner'
 import { Table } from 'react-bootstrap';
-import TransactionHeader from './TransactionHeader';
-import TransactionRow from './TransactionRow';
+import TransactionHeader from './Components/TransactionHeader';
+import TransactionRow from './Components/TransactionRow';
 import { transactionSearchAtom } from "recoil/atoms/TransactionSearchAtom";
 import { useEffect, useRef, useState } from 'react';
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 function _isTransactionSearchValid(transactionSearch) {
   return transactionSearch.AccountId !== null
@@ -22,7 +22,7 @@ function _isTransactionSearchValid(transactionSearch) {
 function TransactionList() {
 
   const [loading, setLoading] = useState(null);
-  const [refreshTransactions, setRefreshTransactions] = useRecoilState(refreshTransactionsAtom);
+  const refreshTransactions = useRecoilValue(refreshTransactionsAtom);
   const setUserMessage = useSetRecoilState(userMessageAtom);
   const [transactions, setTransactions] = useState(null);
   const transactionSearch = useRecoilValue(transactionSearchAtom);
@@ -75,7 +75,7 @@ function TransactionList() {
           Variant: "danger"
         })
       })
-  }, [transactionSearch, refreshTransactions, pageNo])
+  }, [transactionSearch, refreshTransactions, pageNo, setUserMessage])
 
   function onClickFirst() {
     setPageNo(1)

@@ -6,6 +6,7 @@ import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
+import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { transactionSearchAtom as transactionSearchFiltersAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";

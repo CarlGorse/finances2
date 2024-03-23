@@ -1,15 +1,15 @@
-import { Col, Row } from 'react-bootstrap';
-import DropdownFilter from './Components/DropdownFilter'
 import { selectedBankAccountAtom } from 'recoil/atoms/SelectedBankAccountAtom';
-//import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
+import FilterItem from './TransactionSearch/FilterItem'
+import { Row, Col } from 'react-bootstrap';
+import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
 import { useEffect } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 function TransactionSearch() {
 
   const periods = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
   const years = ["2023", "2024"]
-  //const [transactionSearch, setTransactionSearch] = useRecoilState(transactionSearchAtom);
+  const [transactionSearch, setTransactionSearch] = useRecoilState(transactionSearchAtom);
   const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
 
   function UpdateTransactionSearch(propertyName, value) {
@@ -25,10 +25,10 @@ function TransactionSearch() {
       <Row>
         <Col xs={1}>From:</Col>
         <Col xs={1}>
-          <DropdownFilter defaultValue="01" onSelect={value => UpdateTransactionSearch("StartPeriod", value)} values={periods} />
+          <FilterItem defaultValue={transactionSearch?.StartPeriod} onSelect={value => UpdateTransactionSearch("StartPeriod", value)} values={periods} />
         </Col>
         <Col>
-          <DropdownFilter defaultValue="2024" onSelect={value => UpdateTransactionSearch("StartYear", value)} values={years} />
+          <FilterItem defaultValue={transactionSearch?.StartYear} onSelect={value => UpdateTransactionSearch("StartYear", value)} values={years} />
         </Col>
         <Col>
 
@@ -37,10 +37,10 @@ function TransactionSearch() {
       <Row>
         <Col xs={1}>To:</Col>
         <Col xs={1}>
-          <DropdownFilter defaultValue="03" onSelect={value => UpdateTransactionSearch("EndPeriod", value)} values={periods} />
+          <FilterItem defaultValue={transactionSearch?.EndPeriod} onSelect={value => UpdateTransactionSearch("EndPeriod", value)} values={periods} />
         </Col>
         <Col>
-          <DropdownFilter defaultValue="2024" onSelect={value => UpdateTransactionSearch("EndYear", value)} values={years} />
+          <FilterItem defaultValue={transactionSearch?.EndYear} onSelect={value => UpdateTransactionSearch("EndYear", value)} values={years} />
         </Col>
         <Col>
         </Col>

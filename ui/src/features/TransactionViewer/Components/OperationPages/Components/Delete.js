@@ -1,13 +1,12 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
 import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
+import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
-import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 
 function Delete() {
 

@@ -27,7 +27,7 @@ function BankAccountSelector() {
       .catch(
         setUserMessage({ Message: "Unable to load bank accounts", Variant: "danger" })
       )
-  }, [])
+  }, [setUserMessage])
 
   const selectBankAccount = (bankAccount) => {
     ClearSelectedTransactionsAndOperation();
