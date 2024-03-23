@@ -46,7 +46,7 @@ namespace finances.api.Controllers {
 
             var result = _transactionManagementService.Add(transaction, out var validationErrors);
 
-            return _returnActionForServiceResult(result, new { transaction }, new { transaction, validationErrors });
+            return ReturnActionForServiceResult(result, new { transaction }, new { transaction, validationErrors });
         }
 
         [HttpPost]
@@ -54,7 +54,7 @@ namespace finances.api.Controllers {
 
             var result = _transactionManagementService.Edit(transaction, out var validationErrors);
 
-            return _returnActionForServiceResult(result, new { transaction }, new { transaction, validationErrors });
+            return ReturnActionForServiceResult(result, new { transaction }, new { transaction, validationErrors });
         }
 
         [HttpPost]
@@ -62,7 +62,7 @@ namespace finances.api.Controllers {
 
             var result = _transactionManagementService.Delete(ids, out var validationErrors);
 
-            return _returnActionForServiceResult(result, new { ids }, new { ids, validationErrors });
+            return ReturnActionForServiceResult(result, new { ids }, new { ids, validationErrors });
         }
 
         [HttpPost]
@@ -70,10 +70,10 @@ namespace finances.api.Controllers {
 
             var result = _transactionManagementService.MoveWages(model, out var validationErrors, out var transactionFrom, out var transactionTo);
 
-            return _returnActionForServiceResult(result, new { transactionFrom, transactionTo, model.CreditToMove }, new { validationErrors });
+            return ReturnActionForServiceResult(result, new { transactionFrom, transactionTo, model.CreditToMove }, new { validationErrors });
         }
 
-        private ObjectResult _returnActionForServiceResult(ServiceResult result, object successPayload, object failurePayload) {
+        private ObjectResult ReturnActionForServiceResult(ServiceResult result, object successPayload, object failurePayload) {
             return result switch {
                 ServiceResult.Invalid => StatusCode(
                     StatusCodes.Status406NotAcceptable,
