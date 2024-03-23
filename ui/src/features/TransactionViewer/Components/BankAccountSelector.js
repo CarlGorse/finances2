@@ -29,8 +29,9 @@ function BankAccountSelector() {
         setBankAccounts(response.data.Accounts);
         selectBankAccount(response.data.Accounts.filter(x => x.AccountId === transactionSearch.AccountId)[0])
       })
-      .catch(
+      .catch(() => {
         setUserMessage({ Message: "Unable to load bank accounts", Variant: "danger" })
+      }
       )
   }, [setUserMessage, transactionSearch.AccountId])
 
