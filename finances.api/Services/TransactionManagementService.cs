@@ -24,7 +24,7 @@ namespace finances.api.Services {
         private readonly ISearchCriteriaService _searchCriteriaService = searchCriteriaService;
         private readonly ITransactionRepository _transactionRepository = transactionRepository;
 
-        private const int _pageSize = 15;
+        private const int _pageSize = 30;
 
         public TransactionSearchResult Get(SearchCriteriaModel searchCriteria) {
 
