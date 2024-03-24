@@ -156,10 +156,10 @@ namespace finances.api.Repositories {
                 return;
             }
 
-            transaction.WageTotalForEffDate = GetTotalCreditForWageTransaction(transaction);
+            transaction.WageTotal = GetTotalCreditForWageTransaction(transaction);
 
             if (!Any(transaction.TransactionId)) {
-                transaction.WageTotalForEffDate += transaction.Credit;
+                transaction.WageTotal += transaction.Credit;
             }
         }
     }

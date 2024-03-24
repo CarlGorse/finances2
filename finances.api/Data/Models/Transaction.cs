@@ -25,7 +25,7 @@ namespace finances.api.Data.Models {
         public string Description { get; set; }
 
         [NotMapped]
-        public decimal WageTotalForEffDate { get; set; }
+        public decimal WageTotal { get; set; }
 
         public Account Account { get; set; }
 

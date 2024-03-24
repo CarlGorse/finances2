@@ -23,8 +23,10 @@ function TransactionHeader() {
       <Col xs={1}>
         <b>Debit</b>
       </Col>
-      <Col xs={2}>
+      <Col xs={1}>
         <b>Balance</b>
+      </Col>
+      <Col xs={1}>
       </Col>
     </Row>
   )

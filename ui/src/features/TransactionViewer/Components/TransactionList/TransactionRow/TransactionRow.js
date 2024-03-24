@@ -3,15 +3,17 @@ import Form from 'react-bootstrap/Form';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime';
 import { formatCurrency } from 'functions/Currency';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
+import TransactionItemBadge from './ItemBadge';
+import TransactionWageTotalBadge from './WageTotalBadge';
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-
 //import styles from './TransactionRow.css';
 
 function TransactionRow({ transaction, backgroundColor }) {
 
   const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
   const [isSelected, setIsSelected] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {
     setIsSelected(selectedTransactions?.filter(x => x.TransactionId === transaction.TransactionId).length > 0 ? true : false);
@@ -32,7 +34,6 @@ function TransactionRow({ transaction, backgroundColor }) {
   }
 
   function selectTransaction() {
-    console.log(transaction);
     if (selectedTransactions === null || selectedTransactions === undefined) {
       setSelectedTransactions([transaction]);
     }
@@ -51,7 +52,7 @@ function TransactionRow({ transaction, backgroundColor }) {
   return (
 
     <div style={{ backgroundColor: backgroundColor }}>
-      <Row>
+      <Row onClick={() => setShowDetail(prevValue => !prevValue)}>
         <Col className="tableCell" xs={1}>
           <Form.Check checked={isSelected} onChange={() => onCheck()} />
         </Col>
@@ -73,8 +74,12 @@ function TransactionRow({ transaction, backgroundColor }) {
         <Col className="tableCell" xs={1}>
           {formatCurrency(transaction.Debit)}
         </Col>
-        <Col className="tableCell" xs={2}>
+        <Col className="tableCell" xs={1}>
           {formatCurrency(transaction.RunningTotal.RunningTotal)}
+        </Col>
+        <Col>
+          <TransactionItemBadge transaction={transaction} />
+          <TransactionWageTotalBadge transaction={transaction} />
         </Col>
       </Row>
     </div>

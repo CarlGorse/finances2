@@ -5,7 +5,7 @@ import NavigationButtons from './Components/NavigationButtons'
 import Spinner from 'components/Spinner'
 import { Table } from 'react-bootstrap';
 import TransactionHeader from './Components/TransactionHeader';
-import TransactionRow from './Components/TransactionRow';
+import TransactionRow from './TransactionRow/TransactionRow';
 import { transactionSearchAtom } from "recoil/atoms/TransactionSearchAtom";
 import { useEffect, useRef, useState } from 'react';
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
