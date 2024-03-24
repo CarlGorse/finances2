@@ -27,6 +27,27 @@ function AddEdit() {
         return null;
     }
 
+    const categoriesForSort = [...categories]
+    const sortedCategories = categoriesForSort?.sort(function (a, b) {
+        if ((a.Group.Name < b.Group.Name)) {
+            return -1;
+        }
+        else if (a.Group.Name === b.Group.Name) {
+            if (a.Name < b.Name) {
+                return -1;
+            }
+            else if (a.Name > b.Name) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        else {
+            return 1;
+        }
+    });
+
     return (
         <>
             <Row>
@@ -79,7 +100,7 @@ function AddEdit() {
                         defaultValue={addEditTransaction.CategoryId}
                         onBlur={e => updateTransactionPropertyValue("CategoryId", e.target.value)}>
                         {
-                            categories?.map(category => (
+                            sortedCategories.map(category => (
                                 <option value={category.Id}>{`${category.Group.Name} | ${category.Name}`}</option>
                             ))
                         }
