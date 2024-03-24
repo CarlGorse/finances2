@@ -1,6 +1,6 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
-import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
+import { doRefreshTransactionsAtom } from "recoil/atoms/DoRefreshTransactionsAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
@@ -16,7 +16,7 @@ function Delete() {
     const showForm = transactionOperation === "Delete"
     const hasValidTransactionSelected = selectedTransactions?.length >= 1
     const setUserMessage = useSetRecoilState(userMessageAtom);
-    const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
+    const setDoRefreshTransactions = useSetRecoilState(doRefreshTransactionsAtom);
 
     useEffect(() => {
         if (showForm) {
@@ -45,7 +45,7 @@ function Delete() {
             }
         )
             .then(function () {
-                setRefreshTransactions(prevValue => !prevValue);
+                setDoRefreshTransactions(prevValue => !prevValue);
                 setUserMessage({
                     Message: `${selectedTransactions.length} transaction${selectedTransactions.length === 1 ? '' : 's'} deleted`,
                     Variant: "success"

@@ -1,7 +1,7 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
+import { doRefreshTransactionsAtom } from "recoil/atoms/DoRefreshTransactionsAtom";
 import NavigationButtons from './Components/NavigationButtons'
-import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import Spinner from 'components/Spinner'
 import { Table } from 'react-bootstrap';
 import TransactionHeader from './Components/TransactionHeader';
@@ -21,12 +21,12 @@ function _isTransactionSearchValid(transactionSearch) {
 
 function TransactionList() {
 
+  const doRefreshTransactions = useRecoilValue(doRefreshTransactionsAtom);
   const [loading, setLoading] = useState(null);
-  const refreshTransactions = useRecoilValue(refreshTransactionsAtom);
+  const [pageNo, setPageNo] = useState(1);
   const setUserMessage = useSetRecoilState(userMessageAtom);
   const [transactions, setTransactions] = useState(null);
   const transactionSearch = useRecoilValue(transactionSearchAtom);
-  const [pageNo, setPageNo] = useState(1);
 
   const pageCount = useRef(1);
 
@@ -58,7 +58,7 @@ function TransactionList() {
       .then(response => {
         setTransactions(response.data.transactions);
 
-        pageCount.current = response.data.pageCount;
+        pageCount.current = response.data.PageCount;
 
         setLoading(false);
       })
@@ -66,11 +66,11 @@ function TransactionList() {
         pageCount.current = 0;
 
         setUserMessage({
-          Message: error.response.data.validationErrors[0],
+          Message: error.response.data.errors[0],
           Variant: "danger"
         })
       })
-  }, [transactionSearch, refreshTransactions, pageNo, setUserMessage])
+  }, [transactionSearch, doRefreshTransactions, pageNo, setUserMessage])
 
   return (
     <>

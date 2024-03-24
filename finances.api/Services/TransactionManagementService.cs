@@ -1,10 +1,13 @@
 ﻿using finances.api.Data;
 using finances.api.Data.Models;
+using finances.api.Dto;
 using finances.api.Enums;
 using finances.api.Logic;
 using finances.api.Models;
 using finances.api.Repositories;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace finances.api.Services {
 
@@ -21,39 +24,45 @@ namespace finances.api.Services {
         private readonly ISearchCriteriaService _searchCriteriaService = searchCriteriaService;
         private readonly ITransactionRepository _transactionRepository = transactionRepository;
 
-        public ServiceResult Get(SearchCriteriaModel searchCriteria,
-            out ICollection<string> validationErrors,
-            out IEnumerable<Transaction> transactions) {
+        private const int _pageSize = 15;
 
-            validationErrors = [];
-            transactions = [];
+        public TransactionSearchResult Get(SearchCriteriaModel searchCriteria) {
 
-            if (!_searchCriteriaService.ValidateSearchCriteria(searchCriteria, validationErrors)) {
-                return ServiceResult.Invalid;
+            var errors = new List<string>();
+            var pageCount = 0;
+            IEnumerable<Transaction> pagedTransactions = [];
+            ServiceResult serviceResult;
+
+            try {
+                if (!_searchCriteriaService.ValidateSearchCriteria(searchCriteria, errors)) {
+                    serviceResult = ServiceResult.Invalid;
+                }
+                else {
+
+                    var transactions = _reportService.GetTransactionsWithRunningTotals(searchCriteria);
+
+                    foreach (var transaction in transactions) {
+                        _transactionRepository.SetWageTotalForEffDate(transaction);
+                    }
+
+                    pagedTransactions = PagingLogic.GetPagedItems(transactions.ToList(), _pageSize, searchCriteria.PageNo);
+
+                    pageCount = PagingLogic.GetPageCount(transactions.Count(), _pageSize);
+
+                    serviceResult = ServiceResult.Ok;
+                }
+            }
+            catch (Exception ex) {
+                serviceResult = ServiceResult.Error;
+                errors.Add(ex.Message);
             }
 
-            var transactionFilters = CreateTransactionFilters(searchCriteria);
-
-            transactions = _reportService.GetTransactionsWithRunningTotals(transactionFilters);
-
-            foreach (var transaction in transactions) {
-                _transactionRepository.SetWageTotalForEffDate(transaction);
-            }
-
-            return ServiceResult.Ok;
-        }
-
-        private static TransactionFilters CreateTransactionFilters(SearchCriteriaModel searchCriteria) {
-
-            var transactionFilters = new TransactionFilters {
-                AccountId = searchCriteria.AccountId,
-                StartYear = searchCriteria.StartYear,
-                StartPeriod = searchCriteria.StartPeriod,
-                EndYear = searchCriteria.EndYear,
-                EndPeriod = searchCriteria.EndPeriod
+            return new TransactionSearchResult {
+                PageCount = pageCount,
+                SearchCriteria = searchCriteria,
+                Result = serviceResult,
+                Transactions = pagedTransactions
             };
-
-            return transactionFilters;
         }
 
         public ServiceResult Add(Transaction transaction, out ICollection<string> validationErrors) {

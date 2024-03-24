@@ -3,8 +3,8 @@ import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
+import { doRefreshTransactionsAtom } from "recoil/atoms/DoRefreshTransactionsAtom";
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
-import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
@@ -17,7 +17,7 @@ function Add() {
 
     const categories = useRecoilValue(categoriesAtom);
     const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
-    const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
+    const setRefreshTransactions = useSetRecoilState(doRefreshTransactionsAtom);
     const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const transactionToAdd = useRecoilValue(addEditTransactionAtom);

@@ -6,13 +6,9 @@ using System.Collections.Generic;
 
 namespace finances.api.Repositories {
 
-    public class ReportTotalRepository : IReportTotalRepository {
+    public class ReportTotalRepository(FinancesDbContext financesDbContext) : IReportTotalRepository {
 
-        private readonly FinancesDbContext _FinancesDbContext;
-
-        public ReportTotalRepository(FinancesDbContext financesDbContext) {
-            _FinancesDbContext = financesDbContext ?? throw new ArgumentNullException(nameof(financesDbContext));
-        }
+        private readonly FinancesDbContext _FinancesDbContext = financesDbContext ?? throw new ArgumentNullException(nameof(financesDbContext));
 
         public IEnumerable<CategoryTotal> ReportTotalsByCategory(string parameters) {
             return _FinancesDbContext.ReportTotalsByCategory

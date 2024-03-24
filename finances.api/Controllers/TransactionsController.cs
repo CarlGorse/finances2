@@ -1,12 +1,10 @@
 ﻿using finances.api.Data.Models;
 using finances.api.Enums;
-using finances.api.Logic;
 using finances.api.Models;
 using finances.api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 
 namespace finances.api.Controllers {
@@ -15,30 +13,24 @@ namespace finances.api.Controllers {
 
         private readonly ITransactionManagementService _transactionManagementService = transactionManagementService;
 
-        private const int _pageSize = 15;
-
         [HttpPost]
         public IActionResult Get([FromBody] SearchCriteriaModel searchCriteria) {
 
-            var result = _transactionManagementService.Get(searchCriteria, out var validationErrors, out var transactions);
+            var result = _transactionManagementService.Get(searchCriteria);
 
-            if (result == ServiceResult.Invalid) {
+            if (result.Result == ServiceResult.Invalid) {
                 return StatusCode(
                         StatusCodes.Status406NotAcceptable,
-                        JsonSerializer.Serialize(new { searchCriteria, validationErrors }));
+                        JsonSerializer.Serialize(new { searchCriteria, result.Errors }));
             }
 
-            if (result == ServiceResult.Error) {
+            if (result.Result == ServiceResult.Error) {
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
-                    JsonSerializer.Serialize(new { searchCriteria, validationErrors }));
+                    JsonSerializer.Serialize(new { searchCriteria, result.Errors }));
             }
 
-            var pagedTransactions = PagingLogic.GetPagedItems(transactions.ToList(), _pageSize, searchCriteria.PageNo);
-
-            var pageCount = PagingLogic.GetPageCount(transactions.Count(), _pageSize);
-
-            return Ok(new { searchCriteria, transactions = pagedTransactions, searchCriteria.PageNo, pageCount });
+            return Ok(new { searchCriteria, transactions = result.Transactions, result.PageCount });
         }
 
         [HttpPost]

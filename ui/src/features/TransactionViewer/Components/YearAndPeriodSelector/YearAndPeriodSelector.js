@@ -10,6 +10,7 @@ function YearAndPeriodSelector() {
   const years = ["2023", "2024"]
 
   function UpdateTransactionSearch(propertyName, value) {
+
     setTransactionSearch(prevState => ({ ...prevState, [propertyName]: value }))
   }
 

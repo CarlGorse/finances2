@@ -4,7 +4,7 @@ import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
-import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
+import { doRefreshTransactionsAtom } from "recoil/atoms/DoRefreshTransactionsAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
@@ -17,7 +17,7 @@ function Edit() {
     const categories = useRecoilValue(categoriesAtom);
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
     const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
-    const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
+    const setDoRefreshTransactions = useSetRecoilState(doRefreshTransactionsAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const transactionToEdit = useRecoilValue(addEditTransactionAtom);
     const transactionOperation = useRecoilValue(transactionOperationAtom);
@@ -80,7 +80,7 @@ function Edit() {
             }
         })
             .then(function (response) {
-                setRefreshTransactions(prevValue => !prevValue); // to await this we'd have to know when the load finished
+                setDoRefreshTransactions(prevValue => !prevValue); // to await this we'd have to know when the load finished
                 setUserMessage({
                     Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
                     Variant: "success"

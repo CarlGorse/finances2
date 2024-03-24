@@ -1,8 +1,8 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { Col, Form, Row } from 'react-bootstrap';
+import { doRefreshTransactionsAtom } from "recoil/atoms/DoRefreshTransactionsAtom";
 import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/Currency';
-import { refreshTransactionsAtom } from "recoil/atoms/RefreshTransactionsAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
@@ -15,7 +15,7 @@ function MoveWages() {
     const operation = "Move wages";
 
     const [creditToMove, setCreditToMove] = useState(0);
-    const setRefreshTransactions = useSetRecoilState(refreshTransactionsAtom);
+    const setRefreshTransactions = useSetRecoilState(doRefreshTransactionsAtom);
     const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
     const transactionOperation = useRecoilValue(transactionOperationAtom);
 

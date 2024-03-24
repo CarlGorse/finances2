@@ -1,5 +1,6 @@
 ﻿using finances.api.Data.Models;
 using finances.api.Logic;
+using finances.api.Models;
 using finances.api.Repositories;
 using System;
 using System.Collections.Generic;
@@ -74,7 +75,9 @@ namespace finances.api.Services {
             return reportTotalsOrdered;
         }
 
-        public IEnumerable<Transaction> GetTransactionsWithRunningTotals(TransactionFilters transactionFilters) {
+        public IEnumerable<Transaction> GetTransactionsWithRunningTotals(SearchCriteriaModel searchCriteria) {
+
+            var transactionFilters = CreateTransactionFilters(searchCriteria);
 
             var transactions = _TransactionRepository.Get(transactionFilters);
 
@@ -99,6 +102,19 @@ namespace finances.api.Services {
                     .ThenByDescending(x => !x.IsWage)
                     .ThenBy(x => x.Category.Group.Name)
                     .ThenBy(x => x.Category.Name);
+        }
+
+        private static TransactionFilters CreateTransactionFilters(SearchCriteriaModel searchCriteria) {
+
+            var transactionFilters = new TransactionFilters {
+                AccountId = searchCriteria.AccountId,
+                StartYear = searchCriteria.StartYear,
+                StartPeriod = searchCriteria.StartPeriod,
+                EndYear = searchCriteria.EndYear,
+                EndPeriod = searchCriteria.EndPeriod
+            };
+
+            return transactionFilters;
         }
 
         private static string FormatSpParameterValue(string text) {
