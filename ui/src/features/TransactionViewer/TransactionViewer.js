@@ -18,7 +18,7 @@ function TransactionViewer() {
         <YearAndPeriodSelector />
       </div>
 
-      <div style={{ marginTop: "20px" }}>
+      <div style={{ marginTop: "30px" }}>
         <Form>
           <OperationButtons />
         </Form>
