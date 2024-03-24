@@ -6,11 +6,10 @@ function TransactionOperationButtons() {
 
     return (
         <Form>
-            {/*
+
             <span>
                 <ClearButton />
             </span>
-    */}
             <span style={{ marginLeft: "20px" }}>
                 <OperationButton operation="Add" />
             </span>
