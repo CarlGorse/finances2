@@ -1,5 +1,5 @@
 import BankAccountSelector from './Components/BankAccountSelector';
-import { Container, Form } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import OperationButtons from './Components/OperationButtons/OperationButtons';
 import OperationPages from './Components/OperationPages/OperationPages';
 import TransactionList from './Components/TransactionList/TransactionList';
@@ -19,21 +19,15 @@ function TransactionViewer() {
       </div>
 
       <div style={{ marginTop: "30px" }}>
-        <Form>
-          <OperationButtons />
-        </Form>
+        <OperationButtons />
       </div>
 
       <div style={{ marginTop: "20px" }}>
         <UserMessage />
       </div>
 
-      <div style={{ marginTop: "20px", padding: "5px" }}>
-        <Form>
-          <div style={{ backgroundColor: "cornsilk" }}>
-            <OperationPages />
-          </div>
-        </Form>
+      <div style={{ marginTop: "20px" }}>
+        <OperationPages />
       </div>
 
       <div style={{ marginTop: "20px" }}>
