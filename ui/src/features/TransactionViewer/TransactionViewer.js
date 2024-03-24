@@ -3,10 +3,19 @@ import { Container } from 'react-bootstrap';
 import OperationButtons from './Components/OperationButtons/OperationButtons';
 import OperationPages from './Components/OperationPages/OperationPages';
 import TransactionList from './Components/TransactionList/TransactionList';
+import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
+import { useRecoilValue } from "recoil";
 import UserMessage from 'components/UserMessage'
 import YearAndPeriodSelector from './Components/YearAndPeriodSelector/YearAndPeriodSelector';
 
 function TransactionViewer() {
+
+  const transactionOperation = useRecoilValue(transactionOperationAtom);
+
+  let operationPagesMarkup;
+  if (transactionOperation) {
+    operationPagesMarkup = <OperationPages />
+  }
 
   return (
 
@@ -27,7 +36,7 @@ function TransactionViewer() {
       </div>
 
       <div style={{ marginTop: "20px" }}>
-        <OperationPages />
+        {operationPagesMarkup}
       </div>
 
       <div style={{ marginTop: "20px" }}>

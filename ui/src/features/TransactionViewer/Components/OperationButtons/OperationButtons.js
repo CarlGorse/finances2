@@ -1,25 +1,27 @@
 import ClearButton from './ClearButton';
 import { Form } from 'react-bootstrap';
-import TransactionOperationButton from "./OperationButton";
+import OperationButton from "./OperationButton";
 
 function TransactionOperationButtons() {
 
     return (
         <Form>
+            {/*
             <span>
                 <ClearButton />
             </span>
+    */}
             <span style={{ marginLeft: "20px" }}>
-                <TransactionOperationButton operation="Add" />
+                <OperationButton operation="Add" />
             </span>
             <span style={{ marginLeft: "1px" }}>
-                <TransactionOperationButton operation="Edit" />
+                <OperationButton operation="Edit" />
             </span >
             <span style={{ marginLeft: "1px" }}>
-                <TransactionOperationButton operation="Delete" />
+                <OperationButton operation="Delete" />
             </span >
             <span style={{ marginLeft: "1px" }}>
-                <TransactionOperationButton operation="Move wages" />
+                <OperationButton operation="Move wages" />
             </span >
         </Form >
     );
