@@ -39,7 +39,7 @@ function TransactionViewer() {
         {operationPagesMarkup}
       </div>
 
-      <div style={{ marginTop: "40px" }}>
+      <div style={{ marginTop: "20px" }}>
         <TransactionList />
       </div>
 
