@@ -38,7 +38,9 @@ function BankAccountSelector() {
   const selectBankAccount = (bankAccount) => {
     ClearSelectedTransactionsAndOperation();
     setTitle(bankAccount.Name);
-    UpdateTransactionSearch("AccountId", bankAccount.AccountId);
+    if (bankAccount.AccountId !== transactionSearch.AccountId) {
+      UpdateTransactionSearch("AccountId", bankAccount.AccountId);
+    }
   };
 
   function ClearSelectedTransactionsAndOperation() {
