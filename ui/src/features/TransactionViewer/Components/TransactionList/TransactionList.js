@@ -100,6 +100,14 @@ function TransactionList() {
           />
         ))}
 
+        <div style={{ paddingLeft: "20px", paddingTop: "30px" }}>
+          <NavigationButtons
+            pageNo={pageNo}
+            pageCount={pageCount.current}
+            onClick={(pageNo) => setPageNo(pageNo)}
+          />
+        </div>
+
       </Table>
     </>
   )
