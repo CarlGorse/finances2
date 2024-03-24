@@ -36,8 +36,8 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Control
                         type="date"
-                        value={new Date(addEditTransaction.EffDate).toISOString().split('T')[0]}
-                        onChange={e => { updateTransactionPropertyValue("EffDate", e.target.value); }}
+                        defaultValue={new Date(addEditTransaction.EffDate).toISOString().split('T')[0]}
+                        onBlur={e => { updateTransactionPropertyValue("EffDate", e.target.value); }}
                     />
                 </Col>
                 <Col xs={2}>
@@ -45,8 +45,8 @@ function AddEdit() {
                 </Col>
                 <Col xs={3}>
                     <Form.Control
-                        value={addEditTransaction.Debit}
-                        onChange={e => updateTransactionPropertyValue("Debit", stringToCurrency(e.target.value))}
+                        defaultValue={addEditTransaction.Debit}
+                        onBlur={e => updateTransactionPropertyValue("Debit", stringToCurrency(e.target.value))}
                     />
                 </Col>
             </Row>
@@ -56,8 +56,8 @@ function AddEdit() {
                 </Col>
                 <Col xs={3}>
                     <Form.Control
-                        value={addEditTransaction.Description}
-                        onChange={e => updateTransactionPropertyValue("Description", e.target.value)}
+                        defaultValue={addEditTransaction.Description}
+                        onBlur={e => updateTransactionPropertyValue("Description", e.target.value)}
                     />
                 </Col>
                 <Col xs={2}>
@@ -65,8 +65,8 @@ function AddEdit() {
                 </Col>
                 <Col xs={3}>
                     <Form.Control
-                        value={addEditTransaction.Credit}
-                        onChange={e => { updateTransactionPropertyValue("Credit", stringToCurrency(e.target.value)) }}
+                        defaultValue={addEditTransaction.Credit}
+                        onBlur={e => { updateTransactionPropertyValue("Credit", stringToCurrency(e.target.value)) }}
                     />
                 </Col>
             </Row>
@@ -76,11 +76,11 @@ function AddEdit() {
                 </Col>
                 <Col xs={3}>
                     <Form.Select
-                        value={addEditTransaction.CategoryId}
-                        onChange={e => updateTransactionPropertyValue("CategoryId", e.target.value)}>
+                        defaultValue={addEditTransaction.CategoryId}
+                        onBlur={e => updateTransactionPropertyValue("CategoryId", e.target.value)}>
                         {
                             categories?.map(category => (
-                                <option value={category.Id}>{category.Name}</option>
+                                <option value={category.Id}>{`${category.Group.Name} | ${category.Name}`}</option>
                             ))
                         }
                     </Form.Select>
@@ -91,8 +91,8 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Check
                         type="switch"
-                        value={addEditTransaction.IsWage}
-                        onChange={e => { updateTransactionPropertyValue("IsWage", e.target.checked) }}
+                        defaultValue={addEditTransaction.IsWage}
+                        onBlur={e => { updateTransactionPropertyValue("IsWage", e.target.checked) }}
                     />
                 </Col>
             </Row >
@@ -102,8 +102,8 @@ function AddEdit() {
                 </Col>
                 <Col xs={3}>
                     <Form.Control
-                        value={addEditTransaction.Item}
-                        onChange={e => updateTransactionPropertyValue("Item", e.target.value)}
+                        defaultValue={addEditTransaction.Item}
+                        onBlur={e => updateTransactionPropertyValue("Item", e.target.value)}
                     />
                 </Col>
                 <Col xs={2}>
@@ -112,8 +112,8 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Check
                         type="switch"
-                        value={addEditTransaction.Exclude}
-                        onChange={e => updateTransactionPropertyValue("Exclude", e.target.checked)}
+                        defaultValue={addEditTransaction.Exclude}
+                        onBlur={e => updateTransactionPropertyValue("Exclude", e.target.checked)}
                     />
                 </Col>
             </Row>
