@@ -90,6 +90,7 @@ function AddEdit() {
                 </Col>
                 <Col xs={3}>
                     <Form.Check
+                        type="switch"
                         value={addEditTransaction.IsWage}
                         onChange={e => { updateTransactionPropertyValue("IsWage", e.target.checked) }}
                     />
@@ -110,6 +111,7 @@ function AddEdit() {
                 </Col>
                 <Col xs={3}>
                     <Form.Check
+                        type="switch"
                         value={addEditTransaction.Exclude}
                         onChange={e => updateTransactionPropertyValue("Exclude", e.target.checked)}
                     />

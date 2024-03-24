@@ -91,10 +91,12 @@ function TransactionList() {
 
         {loading && <Spinner />}
 
-        {!loading && transactions?.map(transaction => (
+        {!loading && transactions?.map((transaction, index) => (
+
           <TransactionRow
             key={transaction.TransactionId}
             transaction={transaction}
+            backgroundColor={index % 2 === 0 ? "lightGrey" : "white"}
           />
         ))}
 

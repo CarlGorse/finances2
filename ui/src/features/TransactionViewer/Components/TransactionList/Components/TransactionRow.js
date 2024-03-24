@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 
 //import styles from './TransactionRow.css';
 
-function TransactionRow({ transaction }) {
+function TransactionRow({ transaction, backgroundColor }) {
 
   const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
   const [isSelected, setIsSelected] = useState(false);
@@ -49,32 +49,36 @@ function TransactionRow({ transaction }) {
   }
 
   return (
-    <Row>
-      <Col className="tableCell" xs={1}>
-        <Form.Check checked={isSelected} onChange={() => onCheck()} />
-      </Col>
-      <Col className="tableCell" xs={1}>
-        {formatDateTimeAsDateDDMMYYYY(transaction.EffDate)}
-      </Col>
-      <Col className="tableCell" xs={2}>
-        {transaction.Category.Group.Name}
-      </Col>
-      <Col className="tableCell" xs={2}>
-        {transaction.Category.Name}
-      </Col>
-      <Col className="tableCell" xs={2}>
-        {transaction.Description}
-      </Col>
-      <Col className="tableCell" xs={1}>
-        {formatCurrency(transaction.Credit)}
-      </Col>
-      <Col className="tableCell" xs={1}>
-        {formatCurrency(transaction.Debit)}
-      </Col>
-      <Col className="tableCell" xs={2}>
-        {formatCurrency(transaction.RunningTotal.RunningTotal)}
-      </Col>
-    </Row>
+
+    <div style={{ backgroundColor: backgroundColor }}>
+      <Row>
+        <Col className="tableCell" xs={1}>
+          <Form.Check checked={isSelected} onChange={() => onCheck()} />
+        </Col>
+        <Col className="tableCell" xs={1}>
+          {formatDateTimeAsDateDDMMYYYY(transaction.EffDate)}
+        </Col>
+        <Col className="tableCell" xs={2}>
+          {transaction.Category.Group.Name}
+        </Col>
+        <Col className="tableCell" xs={2}>
+          {transaction.Category.Name}
+        </Col>
+        <Col className="tableCell" xs={2}>
+          {transaction.Description}
+        </Col>
+        <Col className="tableCell" xs={1}>
+          {formatCurrency(transaction.Credit)}
+        </Col>
+        <Col className="tableCell" xs={1}>
+          {formatCurrency(transaction.Debit)}
+        </Col>
+        <Col className="tableCell" xs={2}>
+          {formatCurrency(transaction.RunningTotal.RunningTotal)}
+        </Col>
+      </Row>
+    </div>
+
   )
 }
 
