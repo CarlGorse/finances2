@@ -99,9 +99,10 @@ namespace finances.api.Services {
                     .OrderByDescending(x => x.Year)
                     .ThenByDescending(x => x.Period)
                     .ThenByDescending(x => x.EffDate)
-                    .ThenByDescending(x => !x.IsWage)
-                    .ThenBy(x => x.Category.Group.Name)
-                    .ThenBy(x => x.Category.Name);
+                    .ThenByDescending(x => x.TransactionId);
+            //.ThenByDescending(x => !x.IsWage)
+            //.ThenBy(x => x.Category.Group.Name)
+            //.ThenBy(x => x.Category.Name);
         }
 
         private static TransactionFilters CreateTransactionFilters(SearchCriteriaModel searchCriteria) {
