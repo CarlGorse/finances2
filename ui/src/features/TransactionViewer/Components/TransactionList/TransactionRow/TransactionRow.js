@@ -51,7 +51,7 @@ function TransactionRow({ transaction, backgroundColor }) {
 
   return (
 
-    <div style={{ backgroundColor: backgroundColor }}>
+    <div style={{ backgroundColor: isSelected ? "limeGreen" : backgroundColor }}>
       <Row style={{ margin: "0px" }} onClick={() => setShowDetail(prevValue => !prevValue)}>
         <Col className="tableCell text-center" xs={1}>
           <Form.Check checked={isSelected} onChange={() => onCheck()} />
