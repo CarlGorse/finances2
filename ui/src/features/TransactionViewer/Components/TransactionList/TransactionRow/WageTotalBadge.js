@@ -10,7 +10,6 @@ function WageTotalBadge({ transaction }) {
 
     const popover = (
         <Popover id="popover-basic">
-            <Popover.Header as="h3">Info</Popover.Header>
             <Popover.Body>
                 <p>Wage total: {transaction.WageTotal}</p>
             </Popover.Body>

@@ -10,7 +10,6 @@ function ItemBadge({ transaction }) {
 
     const popover = (
         <Popover id="popover-basic">
-            <Popover.Header as="h3">Info</Popover.Header>
             <Popover.Body>
                 <p>Item: {transaction.Item}</p>
             </Popover.Body>

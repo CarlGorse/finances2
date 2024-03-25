@@ -13,7 +13,7 @@ function TransactionRow({ transaction, backgroundColor }) {
 
   const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
   const [isSelected, setIsSelected] = useState(false);
-  const [showDetail, setShowDetail] = useState(false);
+  const [, setShowDetail] = useState(false);
 
   useEffect(() => {
     setIsSelected(selectedTransactions?.filter(x => x.TransactionId === transaction.TransactionId).length > 0 ? true : false);
@@ -52,8 +52,8 @@ function TransactionRow({ transaction, backgroundColor }) {
   return (
 
     <div style={{ backgroundColor: backgroundColor }}>
-      <Row onClick={() => setShowDetail(prevValue => !prevValue)}>
-        <Col className="tableCell" xs={1}>
+      <Row style={{ margin: "0px" }} onClick={() => setShowDetail(prevValue => !prevValue)}>
+        <Col className="tableCell text-center" xs={1}>
           <Form.Check checked={isSelected} onChange={() => onCheck()} />
         </Col>
         <Col className="tableCell" xs={1}>
@@ -78,8 +78,8 @@ function TransactionRow({ transaction, backgroundColor }) {
           {formatCurrency(transaction.RunningTotal.RunningTotal)}
         </Col>
         <Col>
-          <TransactionItemBadge transaction={transaction} />
           <TransactionWageTotalBadge transaction={transaction} />
+          <TransactionItemBadge transaction={transaction} />
         </Col>
       </Row>
     </div>
