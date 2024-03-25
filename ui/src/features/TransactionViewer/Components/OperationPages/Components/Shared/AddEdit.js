@@ -59,8 +59,8 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Control
                         type="date"
-                        defaultValue={new Date(addEditTransaction.EffDate).toISOString().split('T')[0]}
-                        onBlur={e => { updateTransactionPropertyValue("EffDate", e.target.value); }}
+                        value={new Date(addEditTransaction.EffDate).toISOString().split('T')[0]}
+                        onChange={e => { updateTransactionPropertyValue("EffDate", e.target.value); }}
                     />
                 </Col>
 
@@ -70,7 +70,7 @@ function AddEdit() {
 
                 <Col xs={3}>
                     <Form.Select
-                        defaultValue={addEditTransaction.CategoryId}
+                        value={addEditTransaction.CategoryId}
                         onChange={e => updateTransactionPropertyValue("CategoryId", e.target.value)}>
                         {
                             sortedCategories.map(category => (
@@ -90,7 +90,8 @@ function AddEdit() {
 
                 <Col xs={3}>
                     <Form.Control
-                        defaultValue={addEditTransaction.Debit}
+                        value={addEditTransaction.Debit}
+                        onChange={e => updateTransactionPropertyValue("Debit", e.target.value)}
                         onBlur={e => updateTransactionPropertyValue("Debit", stringToCurrency(e.target.value))}
                     />
                 </Col>
@@ -101,8 +102,9 @@ function AddEdit() {
 
                 <Col xs={3}>
                     <Form.Control
-                        defaultValue={addEditTransaction.Credit}
-                        onBlur={e => { updateTransactionPropertyValue("Credit", stringToCurrency(e.target.value)) }}
+                        value={addEditTransaction.Credit}
+                        onChange={e => updateTransactionPropertyValue("Credit", e.target.value)}
+                        onBlur={e => updateTransactionPropertyValue("Credit", stringToCurrency(e.target.value))}
                     />
                 </Col>
 
@@ -116,8 +118,8 @@ function AddEdit() {
 
                 <Col xs={3}>
                     <Form.Control
-                        defaultValue={addEditTransaction.Description}
-                        onBlur={e => updateTransactionPropertyValue("Description", e.target.value)}
+                        value={addEditTransaction.Description}
+                        onChange={e => updateTransactionPropertyValue("Description", e.target.value)}
                     />
                 </Col>
 
@@ -127,8 +129,8 @@ function AddEdit() {
 
                 <Col xs={3}>
                     <Form.Control
-                        defaultValue={addEditTransaction.Item}
-                        onBlur={e => updateTransactionPropertyValue("Item", e.target.value)}
+                        value={addEditTransaction.Item}
+                        onChange={e => updateTransactionPropertyValue("Item", e.target.value)}
                     />
                 </Col>
 
@@ -143,8 +145,8 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Check
                         type="switch"
-                        defaultValue={addEditTransaction.IsWage}
-                        onBlur={e => { updateTransactionPropertyValue("IsWage", e.target.checked) }}
+                        value={addEditTransaction.IsWage}
+                        onChange={e => { updateTransactionPropertyValue("IsWage", e.target.checked) }}
                     />
                 </Col>
 
@@ -155,8 +157,8 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Check
                         type="switch"
-                        defaultValue={addEditTransaction.Exclude}
-                        onBlur={e => updateTransactionPropertyValue("Exclude", e.target.checked)}
+                        value={addEditTransaction.Exclude}
+                        onChange={e => updateTransactionPropertyValue("Exclude", e.target.checked)}
                     />
                 </Col>
 

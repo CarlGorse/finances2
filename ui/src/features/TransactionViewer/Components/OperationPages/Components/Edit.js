@@ -32,29 +32,24 @@ function Edit() {
             }
             else {
                 setUserMessage(null);
+
+                const selectedTransaction = selectedTransactions[0];
+
+                setAddEditTransaction({
+                    AccountId: selectedTransaction.AccountId,
+                    CategoryId: selectedTransaction.CategoryId,
+                    Credit: selectedTransaction.Credit,
+                    Debit: selectedTransaction.Debit,
+                    Description: selectedTransaction.Description,
+                    EffDate: selectedTransaction.EffDate,
+                    Exclude: selectedTransaction.Exclude,
+                    IsWage: selectedTransaction.IsWage,
+                    Item: selectedTransaction.Item,
+                    TransactionId: selectedTransaction.TransactionId
+                });
             }
         }
-    })
-
-    useEffect(() => {
-        if (showForm && hasValidSelection) {
-
-            const selectedTransaction = selectedTransactions[0];
-
-            setAddEditTransaction({
-                AccountId: selectedTransaction.AccountId,
-                CategoryId: selectedTransaction.CategoryId,
-                Credit: selectedTransaction.Credit,
-                Debit: selectedTransaction.Debit,
-                Description: selectedTransaction.Description,
-                EffDate: selectedTransaction.EffDate,
-                Exclude: selectedTransaction.Exclude,
-                IsWage: selectedTransaction.IsWage,
-                Item: selectedTransaction.Item,
-                TransactionId: selectedTransaction.TransactionId
-            });
-        }
-    }, [categories, setAddEditTransaction, showForm, hasValidSelection, selectedTransactions])
+    }, [hasValidSelection, selectedTransactions, setUserMessage, showForm, setAddEditTransaction])
 
     if (!showForm || !hasValidSelection) {
         return null

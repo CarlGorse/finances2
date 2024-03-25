@@ -39,19 +39,21 @@ function Add() {
     })
 
     useEffect(() => {
-        setAddEditTransaction({
-            TransactionId: null,
-            EffDate: new Date(),
-            AccountId: null,
-            CategoryId: categories[0]?.CategoryId,
-            Credit: null,
-            Debit: null,
-            IsWage: null,
-            Exclude: null,
-            Item: null,
-            Description: null
-        });
-    }, [categories, setAddEditTransaction])
+        if (showForm) {
+            setAddEditTransaction({
+                TransactionId: null,
+                EffDate: new Date(),
+                AccountId: null,
+                CategoryId: categories[0]?.CategoryId,
+                Credit: null,
+                Debit: null,
+                IsWage: null,
+                Exclude: null,
+                Item: null,
+                Description: null
+            });
+        }
+    }, [categories, setAddEditTransaction, showForm])
 
     if (!showForm || !hasValidSelection) {
         return null
