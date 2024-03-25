@@ -62,7 +62,7 @@ function Add() {
             apiBaseUrl + "/transactions/add",
             {
                 AccountId: transactionSearchFilters.AccountId,
-                CategoryId: 1,
+                CategoryId: transactionToAdd.CategoryId,
                 Credit: transactionToAdd.Credit ?? 0,
                 Debit: transactionToAdd.Debit ?? 0,
                 Description: transactionToAdd.Description,
@@ -79,12 +79,13 @@ function Add() {
                 setRefreshTransactions(prevValue => !prevValue); // to await this we'd have to know when the load finished
                 setSelectedTransactions([response.data.transaction]);
                 setUserMessage({
-                    Message: `Transaction saved: Account: ${response.data.transaction.Account.Name}, Category: ${response.data.transaction.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.transaction.EffDate)}`,
+                    Message: `Transaction saved: Account: (something)), Category: (something)), EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.transaction.EffDate)}`,
                     Variant: "success"
                 })
                 //CancelTransactionOperation()
             })
             .catch(function (error) {
+                console.log(error)
                 setUserMessage({
                     Message: error.response.data.validationErrors[0],
                     Variant: "danger"
