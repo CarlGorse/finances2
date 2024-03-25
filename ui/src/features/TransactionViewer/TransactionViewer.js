@@ -13,6 +13,7 @@ function TransactionViewer() {
   const transactionOperation = useRecoilValue(transactionOperationAtom);
 
   let operationPagesMarkup;
+
   if (transactionOperation) {
     operationPagesMarkup = <OperationPages />
   }

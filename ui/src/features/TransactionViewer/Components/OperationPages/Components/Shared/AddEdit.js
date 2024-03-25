@@ -51,9 +51,11 @@ function AddEdit() {
     return (
         <>
             <Row>
+
                 <Col xs={2}>
                     <Form.Label>Date:</Form.Label>
                 </Col>
+
                 <Col xs={3}>
                     <Form.Control
                         type="date"
@@ -61,44 +63,15 @@ function AddEdit() {
                         onBlur={e => { updateTransactionPropertyValue("EffDate", e.target.value); }}
                     />
                 </Col>
-                <Col xs={2}>
-                    <Form.Label>Debit:</Form.Label>
-                </Col>
-                <Col xs={3}>
-                    <Form.Control
-                        defaultValue={addEditTransaction.Debit}
-                        onBlur={e => updateTransactionPropertyValue("Debit", stringToCurrency(e.target.value))}
-                    />
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={2}>
-                    <Form.Label>Description:</Form.Label>
-                </Col>
-                <Col xs={3}>
-                    <Form.Control
-                        defaultValue={addEditTransaction.Description}
-                        onBlur={e => updateTransactionPropertyValue("Description", e.target.value)}
-                    />
-                </Col>
-                <Col xs={2}>
-                    <Form.Label>Credit:</Form.Label>
-                </Col>
-                <Col xs={3}>
-                    <Form.Control
-                        defaultValue={addEditTransaction.Credit}
-                        onBlur={e => { updateTransactionPropertyValue("Credit", stringToCurrency(e.target.value)) }}
-                    />
-                </Col>
-            </Row>
-            <Row>
+
                 <Col xs={2}>
                     <Form.Label>Category:</Form.Label>
                 </Col>
+
                 <Col xs={3}>
                     <Form.Select
                         defaultValue={addEditTransaction.CategoryId}
-                        onBlur={e => updateTransactionPropertyValue("CategoryId", e.target.value)}>
+                        onChange={e => updateTransactionPropertyValue("CategoryId", e.target.value)}>
                         {
                             sortedCategories.map(category => (
                                 <option value={category.Id}>{`${category.Group.Name} | ${category.Name}`}</option>
@@ -106,9 +79,67 @@ function AddEdit() {
                         }
                     </Form.Select>
                 </Col>
+
+            </Row>
+
+            <Row style={{ paddingTop: "5px" }}>
+
+                <Col xs={2}>
+                    <Form.Label>Debit:</Form.Label>
+                </Col>
+
+                <Col xs={3}>
+                    <Form.Control
+                        defaultValue={addEditTransaction.Debit}
+                        onBlur={e => updateTransactionPropertyValue("Debit", stringToCurrency(e.target.value))}
+                    />
+                </Col>
+
+                <Col xs={2}>
+                    <Form.Label>Credit:</Form.Label>
+                </Col>
+
+                <Col xs={3}>
+                    <Form.Control
+                        defaultValue={addEditTransaction.Credit}
+                        onBlur={e => { updateTransactionPropertyValue("Credit", stringToCurrency(e.target.value)) }}
+                    />
+                </Col>
+
+            </Row>
+
+            <Row style={{ paddingTop: "5px" }}>
+
+                <Col xs={2}>
+                    <Form.Label>Description:</Form.Label>
+                </Col>
+
+                <Col xs={3}>
+                    <Form.Control
+                        defaultValue={addEditTransaction.Description}
+                        onBlur={e => updateTransactionPropertyValue("Description", e.target.value)}
+                    />
+                </Col>
+
+                <Col xs={2}>
+                    <Form.Label>Item:</Form.Label>
+                </Col>
+
+                <Col xs={3}>
+                    <Form.Control
+                        defaultValue={addEditTransaction.Item}
+                        onBlur={e => updateTransactionPropertyValue("Item", e.target.value)}
+                    />
+                </Col>
+
+            </Row>
+
+            <Row style={{ paddingTop: "5px" }}>
+
                 <Col xs={2}>
                     <Form.Label>Is wage?:</Form.Label>
                 </Col>
+
                 <Col xs={3}>
                     <Form.Check
                         type="switch"
@@ -116,20 +147,11 @@ function AddEdit() {
                         onBlur={e => { updateTransactionPropertyValue("IsWage", e.target.checked) }}
                     />
                 </Col>
-            </Row >
-            <Row>
-                <Col xs={2}>
-                    <Form.Label>Item:</Form.Label>
-                </Col>
-                <Col xs={3}>
-                    <Form.Control
-                        defaultValue={addEditTransaction.Item}
-                        onBlur={e => updateTransactionPropertyValue("Item", e.target.value)}
-                    />
-                </Col>
+
                 <Col xs={2}>
                     <Form.Label>Exclude?:</Form.Label>
                 </Col>
+
                 <Col xs={3}>
                     <Form.Check
                         type="switch"
@@ -137,6 +159,7 @@ function AddEdit() {
                         onBlur={e => updateTransactionPropertyValue("Exclude", e.target.checked)}
                     />
                 </Col>
+
             </Row>
         </>
     );

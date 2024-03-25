@@ -4,18 +4,14 @@ function TransactionHeader() {
 
   return (
     <Row>
-      <Col xs={1} />
+      <Col xs={1}>
+        <b>(select)</b>
+      </Col>
       <Col xs={1}>
         <b>Date</b>
       </Col>
-      <Col xs={2}>
-        <b>Group</b>
-      </Col>
-      <Col xs={2}>
-        <b>Category</b>
-      </Col>
-      <Col xs={2}>
-        <b>Description</b>
+      <Col xs={4}>
+        <b>Group | Category</b>
       </Col>
       <Col xs={1}>
         <b>Credit</b>
@@ -26,7 +22,7 @@ function TransactionHeader() {
       <Col xs={1}>
         <b>Balance</b>
       </Col>
-      <Col xs={1}>
+      <Col xs={2}>
       </Col>
     </Row>
   )
