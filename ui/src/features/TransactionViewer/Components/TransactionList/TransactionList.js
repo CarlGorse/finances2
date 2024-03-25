@@ -2,6 +2,7 @@ import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { doRefreshTransactionsAtom } from "recoil/atoms/DoRefreshTransactionsAtom";
 import NavigationButtons from './Components/NavigationButtons'
+import { selectedTransactionsAtom } from "recoil/atoms/SelectedTransactionsAtom";
 import Spinner from 'components/Spinner'
 import { Table } from 'react-bootstrap';
 import TransactionHeader from './Components/TransactionHeader';
@@ -24,6 +25,7 @@ function TransactionList() {
   const doRefreshTransactions = useRecoilValue(doRefreshTransactionsAtom);
   const [loading, setLoading] = useState(null);
   const [pageNo, setPageNo] = useState(1);
+  const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
   const setUserMessage = useSetRecoilState(userMessageAtom);
   const [transactions, setTransactions] = useState(null);
   const transactionSearch = useRecoilValue(transactionSearchAtom);
@@ -104,7 +106,11 @@ function TransactionList() {
           <NavigationButtons
             pageNo={pageNo}
             pageCount={pageCount.current}
-            onClick={(pageNo) => setPageNo(pageNo)}
+            onClick={(pageNo) => {
+              setPageNo(pageNo)
+              setSelectedTransactions(null)
+            }
+            }
           />
         </div>
 
