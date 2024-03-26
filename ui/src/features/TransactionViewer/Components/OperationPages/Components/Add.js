@@ -4,11 +4,10 @@ import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { doRefreshTransactionsAtom } from "recoil/atoms/DoRefreshTransactionsAtom";
-import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { transactionSearchCriteriaAtom } from 'recoil/atoms/TransactionSearchCriteriaAtom';
+import { selectedBankAccountAtom } from 'recoil/atoms/SelectedBankAccountAtom';
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from 'react'
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
@@ -22,7 +21,7 @@ function Add() {
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const transactionToAdd = useRecoilValue(addEditTransactionAtom);
     const transactionOperation = useRecoilValue(transactionOperationAtom);
-    const transactionSearchFilters = useRecoilValue(transactionSearchCriteriaAtom);
+    const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
 
     const showForm = transactionOperation === "Add"
     const hasValidSelection = true//!selectedTransactions || selectedTransactions?.length === 0
@@ -40,15 +39,15 @@ function Add() {
 
     useEffect(() => {
         if (showForm) {
+
             setAddEditTransaction({
                 TransactionId: null,
-                EffDate: new Date(),
+                EffDate: (new Date()).toISOString().split('T')[0],
                 AccountId: null,
                 CategoryId: categories[0]?.CategoryId,
                 Credit: null,
-                Debit: null,
+                Debit: 1,
                 IsWage: null,
-                Exclude: null,
                 Item: null,
                 Description: null
             });
@@ -59,20 +58,22 @@ function Add() {
         return null
     }
 
+    const defaultTransactionToAdd = {
+        AccountId: selectedBankAccount.AccountId,
+        CategoryId: transactionToAdd.CategoryId,
+        Credit: transactionToAdd.Credit ?? 0,
+        Debit: transactionToAdd.Debit ?? 0,
+        Description: transactionToAdd.Description,
+        EffDate: transactionToAdd.EffDate,
+        IsWage: transactionToAdd.IsWage ?? false,
+        Item: transactionToAdd.Item
+    }
+
     function Save() {
+
         axios.post(
             apiBaseUrl + "/transactions/add",
-            {
-                AccountId: transactionSearchFilters.AccountId,
-                CategoryId: transactionToAdd.CategoryId,
-                Credit: transactionToAdd.Credit ?? 0,
-                Debit: transactionToAdd.Debit ?? 0,
-                Description: transactionToAdd.Description,
-                EffDate: transactionToAdd.EffDate,
-                Exclude: transactionToAdd.Exclude ?? false,
-                IsWage: transactionToAdd.IsWage ?? false,
-                Item: transactionToAdd.Item
-            }, {
+            defaultTransactionToAdd, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -81,13 +82,12 @@ function Add() {
                 setRefreshTransactions(prevValue => !prevValue);
                 setSelectedTransactions([response.data.transaction]);
                 setUserMessage({
-                    Message: `Transaction saved: Account: (something)), Category: (something)), EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.transaction.EffDate)}`,
+                    Message: "Transaction saved.",
                     Variant: "success"
                 })
                 //CancelTransactionOperation()
             })
             .catch(function (error) {
-                console.log(error)
                 setUserMessage({
                     Message: error.response.data.validationErrors[0],
                     Variant: "danger"

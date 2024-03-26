@@ -1,6 +1,6 @@
 ﻿using finances.api.Data.Models;
+using finances.api.Dto;
 using finances.api.Enums;
-using finances.api.Models;
 using finances.api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,19 +9,28 @@ using System.Text.Json;
 
 namespace finances.api.Controllers {
 
-    public class TransactionsController(ITransactionManagementService transactionManagementService) : Controller {
+    public class TransactionsController(
+        ITransactionGetter transacrionGetter,
+        ITransactionManagementService transactionManagementService,
+        ITransactionWageMover transactionWageMover
+        ) : Controller {
 
         private readonly ITransactionManagementService _transactionManagementService = transactionManagementService;
+        private readonly ITransactionWageMover _transacrionWageMover = transactionWageMover;
 
         [HttpPost]
-        public IActionResult Get([FromBody] SearchCriteriaModel searchCriteria) {
+        public IActionResult Get([FromBody] GetTransactionsModel model) {
 
-            var result = _transactionManagementService.Get(searchCriteria);
+            var result = transacrionGetter.Get(
+                model.SearchCriteria,
+                model.PageNo,
+                model.IncludeWageTotals,
+                model.IncludeRunningTotals);
 
             return ReturnActionForServiceResult(
                 result.Result,
-                successPayload: new { searchCriteria, transactions = result.Transactions, result.PageCount },
-                failurePayload: new { searchCriteria, result.Errors });
+                successPayload: new { transactions = result.Transactions, result.PageCount },
+                failurePayload: new { result.Errors });
         }
 
         [HttpPost]
@@ -60,7 +69,11 @@ namespace finances.api.Controllers {
         [HttpPost]
         public IActionResult MoveWages([FromBody] MoveWagesModel model) {
 
-            var result = _transactionManagementService.MoveWages(model, out var validationErrors, out var transactionFrom, out var transactionTo);
+            var result = _transacrionWageMover.MoveWages(
+                model,
+                out var validationErrors,
+                out var transactionFrom,
+                out var transactionTo);
 
             return ReturnActionForServiceResult(
                 result,

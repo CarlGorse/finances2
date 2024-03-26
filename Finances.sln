@@ -10,7 +10,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "finances.api", "finances.api\finances.api.csproj", "{BC9C6072-B4BB-476A-A6BF-3A3097C627AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "finances.api.test", "finances.api.test\finances.api.test.csproj", "{4243E0B8-6685-4709-B45A-68591234A8FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "finances.api.test.unit", "finances.api.test\finances.api.test.unit.csproj", "{4243E0B8-6685-4709-B45A-68591234A8FF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "finances.api.test.integration", "ClassLibrary1\finances.api.test.integration.csproj", "{24AD0BCA-715E-44EF-9BE5-C7E8C8218483}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "finances.api.test.data", "finances.api.test.data\finances.api.test.data.csproj", "{463520BD-621E-420C-A96C-7625CC46E4D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "finanes.api.data", "finanes.api.data\finanes.api.data.csproj", "{F7595204-C7EE-4B62-9C26-6BB407D74F0E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{960CCA33-9138-4E29-AAF6-291FD2E24330}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,9 +34,26 @@ Global
 		{4243E0B8-6685-4709-B45A-68591234A8FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4243E0B8-6685-4709-B45A-68591234A8FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4243E0B8-6685-4709-B45A-68591234A8FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24AD0BCA-715E-44EF-9BE5-C7E8C8218483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24AD0BCA-715E-44EF-9BE5-C7E8C8218483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24AD0BCA-715E-44EF-9BE5-C7E8C8218483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24AD0BCA-715E-44EF-9BE5-C7E8C8218483}.Release|Any CPU.Build.0 = Release|Any CPU
+		{463520BD-621E-420C-A96C-7625CC46E4D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{463520BD-621E-420C-A96C-7625CC46E4D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{463520BD-621E-420C-A96C-7625CC46E4D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{463520BD-621E-420C-A96C-7625CC46E4D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7595204-C7EE-4B62-9C26-6BB407D74F0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7595204-C7EE-4B62-9C26-6BB407D74F0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7595204-C7EE-4B62-9C26-6BB407D74F0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7595204-C7EE-4B62-9C26-6BB407D74F0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4243E0B8-6685-4709-B45A-68591234A8FF} = {960CCA33-9138-4E29-AAF6-291FD2E24330}
+		{24AD0BCA-715E-44EF-9BE5-C7E8C8218483} = {960CCA33-9138-4E29-AAF6-291FD2E24330}
+		{463520BD-621E-420C-A96C-7625CC46E4D3} = {960CCA33-9138-4E29-AAF6-291FD2E24330}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83CB44C3-A185-4F40-AA46-AB911A2C91C0}

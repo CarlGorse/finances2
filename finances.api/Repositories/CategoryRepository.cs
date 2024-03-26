@@ -7,18 +7,13 @@ using System.Linq;
 
 namespace finances.api.Repositories {
 
-    public class CategoryRepository : EditableItemRepository<Category>, ICategoryRepository {
+    public class CategoryRepository(
+        IFinancesDbContext dbContext,
+        IGroupRepository categoryGroupRepository) : EditableItemRepository<Category>(
+            dbContext.Categories,
+            dbContext), ICategoryRepository {
 
-        private readonly ICategoryGroupRepository _CategoryGroupRepository;
-
-        public CategoryRepository(
-            IFinancesDbContext dbContext,
-            ICategoryGroupRepository categoryGroupRepository) : base(
-                dbContext.Categories,
-                dbContext) {
-
-            _CategoryGroupRepository = categoryGroupRepository;
-        }
+        private readonly IGroupRepository _CategoryGroupRepository = categoryGroupRepository;
 
         public IEnumerable<Category> Categories => Items;
 
@@ -57,8 +52,8 @@ namespace finances.api.Repositories {
                 return;
             }
 
-            if (newValues.CategoryId > 0 && newValues.CategoryId != existingItem.CategoryId) {
-                existingItem.CategoryId = newValues.CategoryId;
+            if (newValues.GroupId > 0 && newValues.GroupId != existingItem.GroupId) {
+                existingItem.GroupId = newValues.GroupId;
             }
 
             if (newValues.Name.Length > 0 && newValues.Name != existingItem.Name) {

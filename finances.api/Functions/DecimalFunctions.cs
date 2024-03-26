@@ -29,7 +29,7 @@ namespace finances.api.Functions {
         }
 
         private static int NumberOfDecimalPlaces(decimal value) {
-            var decimalPlacePos = value.ToString().IndexOf(".");
+            var decimalPlacePos = value.ToString().IndexOf('.');
             if (decimalPlacePos < 0) {
                 return 0;
             }

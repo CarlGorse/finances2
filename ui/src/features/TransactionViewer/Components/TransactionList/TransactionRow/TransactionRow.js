@@ -1,7 +1,7 @@
 import { Col, Row } from 'react-bootstrap';
 import DescriptionBadge from './Components/DescriptionBadge';
 import Form from 'react-bootstrap/Form';
-import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime';
+import { formatStringAsDateYYYYMMDD } from 'functions/DateTime';
 import { formatCurrency } from 'functions/Currency';
 import ItemBadge from './Components/ItemBadge';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
@@ -63,7 +63,7 @@ function TransactionRow({ transaction, backgroundColor }) {
         </Col>
 
         <Col className="tableCell" xs={1}>
-          {formatDateTimeAsDateDDMMYYYY(transaction.EffDate)}
+          {transaction.EffDate}
         </Col>
 
         <Col className="tableCell" xs={4}>
@@ -79,7 +79,7 @@ function TransactionRow({ transaction, backgroundColor }) {
         </Col>
 
         <Col className="tableCell" xs={1}>
-          {formatCurrency(transaction.RunningTotal.RunningTotal)}
+          {formatCurrency(transaction.AccountRunningTotal)}
         </Col>
 
         <Col xs={2}>

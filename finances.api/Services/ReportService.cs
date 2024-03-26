@@ -1,130 +1,112 @@
 ﻿using finances.api.Data.Models;
-using finances.api.Logic;
-using finances.api.Models;
+using finances.api.Dto;
+using finances.api.Dto.ReportService;
+using finances.api.Enums;
 using finances.api.Repositories;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 
 namespace finances.api.Services {
 
     public class ReportService(
-        IReportTotalRepository reportTotalsRepository,
-        IAccountRepository accountRepository,
-        ICategoryRepository categoryRepository,
-        ICategoryGroupRepository categoryGroupRepository,
-        ITransactionRepository transactionRepository) : IReportService {
+        IGroupRepository groupRepository,
+        ISearchCriteriaService searchCriteriaService,
+        IYearAndPeriodService yearAndPeriodService,
+        ITransactionRepository transactionsRepository,
+        ICategoryRepository categoryRepository) : IReportService {
 
-        private readonly IAccountRepository _AccountRepository = accountRepository;
-        private readonly ICategoryRepository _CategoryRepository = categoryRepository;
-        private readonly ICategoryGroupRepository _CategoryGroupRepository = categoryGroupRepository;
-        private readonly IReportTotalRepository _ReportTotalRepository = reportTotalsRepository;
-        private readonly ITransactionRepository _TransactionRepository = transactionRepository;
+        private readonly ICategoryRepository _categoryRepository = categoryRepository;
+        private readonly IGroupRepository _groupRepository = groupRepository;
+        private readonly ISearchCriteriaService _searchCriteriaService = searchCriteriaService;
+        private readonly IYearAndPeriodService _yearAndPeriodService = yearAndPeriodService;
+        private readonly ITransactionRepository _transactionsRepository = transactionsRepository;
 
-        public IEnumerable<CategoryTotal> GetCategoryTotals(TransactionFilters transactionFilters) {
+        public CategoryTotalsReport GetCategoryTotalsReport(SearchCriteria searchCriteria) {
 
-            var parameters =
-                $"{FormatSpParameterValue(transactionFilters.StartYear.ToString())}," +
-                $"{FormatSpParameterValue(transactionFilters.StartPeriod.ToString())}," +
-                $"{FormatSpParameterValue(transactionFilters.EndYear.ToString())}," +
-                $"{FormatSpParameterValue(transactionFilters.EndPeriod.ToString())}," +
-                $"{FormatSpParameterValue((transactionFilters.CategoryIds.Count == 0 ? default : transactionFilters.CategoryIds.First().ToString()))}";
+            List<string> errors = new();
 
-            // Use AsNoTracking to ensure latest data is always downloaded to client (AsNoTracking works out whether to do this)
-            // A side-effect of this is that linked data isn't returned so need to set this manually :(
-            var reportTotals = (from rta in _ReportTotalRepository.ReportTotalsByCategory(parameters)
-                                select rta)
-                                .ToList();
+            _searchCriteriaService.ValidateSearchCriteria(searchCriteria, errors);
 
-            var reportTotalsOrdered = from rt in reportTotals
-                                      join c in _CategoryRepository.Categories on rt.ItemId equals c.CategoryId
-                                      join cg in _CategoryGroupRepository.CategoryGroups on c.GroupId equals cg.CategoryGroupId
-                                      orderby cg.DisplayOrder, c.GroupDisplayOrder, rt.Year, rt.Period
-                                      select rt;
-
-            foreach (var reportTotal in reportTotalsOrdered) {
-                reportTotal.Category = _CategoryRepository.Get(reportTotal.CategoryId);
+            if (errors.Count > 0) {
+                return new CategoryTotalsReport {
+                    Errors = errors,
+                    ServiceResult = ServiceResult.Invalid
+                };
             }
 
-            return reportTotalsOrdered;
+            var allYearsAndPeriods = _yearAndPeriodService.GetYearsAndPeriods(
+                searchCriteria.StartYear,
+                searchCriteria.StartPeriod,
+                searchCriteria.EndYear,
+                searchCriteria.EndPeriod).ToList();
+
+            var categories = _categoryRepository.All().ToList();
+
+            var groups = _groupRepository.All().ToList();
+
+            var transactions = _transactionsRepository.Get(searchCriteria);
+
+            var groupTotals = GetGroupTotals(transactions);
+
+            var categoryTotals = GetCategoryTotals(transactions);
+
+            var yearAndPeriodTotals = GetYearAndPeriodTotals(transactions);
+
+            var serviceResult = ServiceResult.Ok;
+
+            return new CategoryTotalsReport {
+                Categories = categories,
+                CategoryTotals = categoryTotals,
+                Groups = groups,
+                GroupTotals = groupTotals,
+                ServiceResult = serviceResult,
+                YearsAndPeriods = allYearsAndPeriods,
+                YearAndPeriodTotals = yearAndPeriodTotals
+            };
         }
 
-        public IEnumerable<AccountTotal> GetAccountTotals(
-            int? startYear = null,
-            int? startPeriod = null,
-            int? endYear = null,
-            int? endPeriod = null,
-            int? accountId = null) {
-
-            var parameters = $"{startYear},{startPeriod},{endYear},{endPeriod},{(accountId.ToString() == "" ? "null" : accountId.ToString())}";
-
-            var reportTotals = (from rta in _ReportTotalRepository.ReportTotalsByAccount(parameters)
-                                select rta)
-                                .ToList();
-
-            var reportTotalsOrdered = (from rt in reportTotals
-                                       join a in _AccountRepository.Accounts on rt.AccountId equals a.AccountId
-                                       orderby a.DisplayOrder, rt.Year, rt.Period
-                                       select rt).ToList();
-
-            foreach (var reportTotal in reportTotalsOrdered) {
-                reportTotal.Account = _AccountRepository.Get(reportTotal.AccountId);
-            }
-
-            return reportTotalsOrdered;
-        }
-
-        public IEnumerable<Transaction> GetTransactionsWithRunningTotals(SearchCriteriaModel searchCriteria) {
-
-            var transactionFilters = CreateTransactionFilters(searchCriteria);
-
-            var transactions = _TransactionRepository.Get(transactionFilters);
-
-            var runningTotalQueryParams =
-                $"{FormatSpParameterValue(transactionFilters.AccountId.ToString())}," +
-                $"{FormatSpParameterValue(transactionFilters.StartYear.ToString())}," +
-                $"{FormatSpParameterValue(transactionFilters.StartPeriod.ToString())}," +
-                $"{FormatSpParameterValue(transactionFilters.EndYear.ToString())}," +
-                $"{FormatSpParameterValue(transactionFilters.EndPeriod.ToString())}";
-
-            var reportTotals = (from rta in _ReportTotalRepository.ReportTransactionRunningTotals(runningTotalQueryParams)
-                                select rta).ToList();
-
-            foreach (var transaction in transactions) {
-                transaction.RunningTotal = reportTotals.Single(x => x.TransactionId == transaction.TransactionId);
-            }
+        private List<GroupTotal> GetGroupTotals(IQueryable<Transaction> transactions) {
 
             return transactions
-                    .OrderByDescending(x => x.Year)
-                    .ThenByDescending(x => x.Period)
-                    .ThenByDescending(x => x.EffDate)
-                    .ThenByDescending(x => x.TransactionId);
-            //.ThenByDescending(x => !x.IsWage)
-            //.ThenBy(x => x.Category.Group.Name)
-            //.ThenBy(x => x.Category.Name);
+                    .GroupBy(y => y.Category.GroupId)
+                    .Select(y => new GroupTotal {
+                        GroupId = y.Key,
+                        YearAndPeriodTotals = transactions
+                                                .Where(x => x.Category.GroupId == y.Key)
+                                                .GroupBy(y => new { y.Year, y.Period })
+                                                .Select(x => new YearAndPeriodTotal {
+                                                    YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Period),
+                                                    Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit)
+                                                }).ToList()
+                    }).ToList();
         }
 
-        private static TransactionFilters CreateTransactionFilters(SearchCriteriaModel searchCriteria) {
+        private List<CategoryTotal> GetCategoryTotals(IQueryable<Transaction> transactions) {
 
-            var transactionFilters = new TransactionFilters {
-                AccountId = searchCriteria.AccountId,
-                StartYear = searchCriteria.StartYear,
-                StartPeriod = searchCriteria.StartPeriod,
-                EndYear = searchCriteria.EndYear,
-                EndPeriod = searchCriteria.EndPeriod
-            };
-
-            return transactionFilters;
+            return transactions
+                    .GroupBy(y => y.Category.CategoryId)
+                    .Select(y => new CategoryTotal {
+                        CategoryId = y.Key,
+                        YearAndPeriodTotals = transactions
+                                                .Where(x => x.CategoryId == y.Key)
+                                                .GroupBy(y => new { y.Year, y.Period })
+                                                .Select(x => new YearAndPeriodTotal {
+                                                    YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Period),
+                                                    Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit)
+                                                }).ToList()
+                    }).ToList();
         }
 
-        private static string FormatSpParameterValue(string text) {
-            if (DateTime.TryParse(text, out _)) {
-                text = $"'{Convert.ToDateTime(text):yyyy-MM-dd}'";
-            }
+        private List<YearAndPeriodTotal> GetYearAndPeriodTotals(IQueryable<Transaction> transactions) {
 
-            var formattedValue = text == null || text == string.Empty ? "null" : text;
-            return formattedValue;
+            return transactions
+                    .GroupBy(y => new { y.Year, y.Period })
+                    .Select(x => new YearAndPeriodTotal {
+                        YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Period),
+                        Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit)
+                    }).ToList();
         }
     }
 }

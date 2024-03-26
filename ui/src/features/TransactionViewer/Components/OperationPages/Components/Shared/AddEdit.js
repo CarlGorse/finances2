@@ -59,7 +59,7 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Control
                         type="date"
-                        value={new Date(addEditTransaction.EffDate).toISOString().split('T')[0]}
+                        value={addEditTransaction.EffDate}
                         onChange={e => { updateTransactionPropertyValue("EffDate", e.target.value); }}
                     />
                 </Col>
@@ -147,18 +147,6 @@ function AddEdit() {
                         type="switch"
                         value={addEditTransaction.IsWage}
                         onChange={e => { updateTransactionPropertyValue("IsWage", e.target.checked) }}
-                    />
-                </Col>
-
-                <Col xs={2}>
-                    <Form.Label>Exclude?:</Form.Label>
-                </Col>
-
-                <Col xs={3}>
-                    <Form.Check
-                        type="switch"
-                        value={addEditTransaction.Exclude}
-                        onChange={e => updateTransactionPropertyValue("Exclude", e.target.checked)}
                     />
                 </Col>
 

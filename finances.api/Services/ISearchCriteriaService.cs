@@ -1,8 +1,8 @@
-﻿using finances.api.Models;
+﻿using finances.api.Dto;
 using System.Collections.Generic;
 
 namespace finances.api.Services {
     public interface ISearchCriteriaService {
-        bool ValidateSearchCriteria(SearchCriteriaModel searchCriteria, ICollection<string> validationErrors);
+        void ValidateSearchCriteria(SearchCriteria searchCriteria, ICollection<string> validationErrors);
     }
 }

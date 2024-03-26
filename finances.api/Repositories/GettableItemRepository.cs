@@ -1,4 +1,4 @@
-﻿using finances.api.Data.Models;
+﻿using finanes.api.data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +17,15 @@ namespace finances.api.Repositories {
             return Get($"x => @0.Contains(x.{IdPropertyName})", itemIds);
         }
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>> predicate) {
+        public ICollection<T> Get(Expression<Func<T, bool>> predicate) {
             return ItemsQuery()
-                .Where(predicate);
+                    .Where(predicate)
+                    .ToList();
         }
 
         public string IdPropertyName => $"{T.TypeName}Id";
 
-        private IEnumerable<T> Get(string selector, params object[] args) {
+        private IQueryable<T> Get(string selector, params object[] args) {
             return ItemsQuery()
                 .Where(selector, args);
         }
@@ -37,30 +38,8 @@ namespace finances.api.Repositories {
             return Get(id) != null;
         }
 
-        public bool Any(IEnumerable<int> ids) {
-            var items = Get(ids);
-            return items != null && items.Any();
+        public IQueryable<T> All() {
+            return ItemsQuery();
         }
-
-        public bool Any(Expression<Func<T, bool>> predicate) {
-            var items = Get(predicate);
-            return items != null && items.Any();
-        }
-
-        public IEnumerable<T> All() {
-            return Get(x => true);
-        }
-
-        #region private
-
-        protected IEnumerable<int> ValidIds(IEnumerable<int> ids) {
-            return Get(ids).Select(x => x.Id);
-        }
-
-        protected IEnumerable<int> GetInvalidIds(IEnumerable<int> ids) {
-            return ValidIds(ids).Except(ids);
-        }
-
-        #endregion private
     }
 }

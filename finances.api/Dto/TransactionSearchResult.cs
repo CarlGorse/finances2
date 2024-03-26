@@ -1,6 +1,5 @@
 ﻿using finances.api.Data.Models;
 using finances.api.Enums;
-using finances.api.Models;
 using System.Collections.Generic;
 
 namespace finances.api.Dto {
@@ -8,7 +7,7 @@ namespace finances.api.Dto {
         public ICollection<string> Errors = [];
         public int PageCount;
         public ServiceResult Result;
-        public SearchCriteriaModel SearchCriteria;
+        public SearchCriteria SearchCriteria;
         public IEnumerable<Transaction> Transactions;
     }
 }

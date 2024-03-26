@@ -6,7 +6,7 @@ import TransactionList from './Components/TransactionList/TransactionList';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useRecoilValue } from "recoil";
 import UserMessage from 'components/UserMessage'
-import YearAndPeriodSelector from './Components/YearAndPeriodSelector/YearAndPeriodSelector';
+import YearAndPeriodSelector from './Components/YearAndPeriodSelector';
 
 function TransactionViewer() {
 

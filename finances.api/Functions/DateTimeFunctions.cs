@@ -56,7 +56,7 @@ namespace finances.api.Functions {
         }
 
         public static int CalculateYearAndPeriod(int year, int period) {
-            return year * 12 + period - 1;
+            return (year * 12) + period - 1;
         }
     }
 }

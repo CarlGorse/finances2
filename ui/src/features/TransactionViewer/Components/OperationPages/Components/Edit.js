@@ -2,7 +2,7 @@ import AddEdit from './Shared/AddEdit';
 import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
-import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
+import { formatDateTimeAsDateYYYYMMDD } from 'functions/DateTime'
 import { doRefreshTransactionsAtom } from "recoil/atoms/DoRefreshTransactionsAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
@@ -40,7 +40,6 @@ function Edit() {
                     Debit: selectedTransaction.Debit,
                     Description: selectedTransaction.Description,
                     EffDate: selectedTransaction.EffDate,
-                    Exclude: selectedTransaction.Exclude,
                     IsWage: selectedTransaction.IsWage,
                     Item: selectedTransaction.Item,
                     TransactionId: selectedTransaction.TransactionId
@@ -63,7 +62,6 @@ function Edit() {
                 Debit: transactionToEdit.Debit,
                 Description: transactionToEdit.Description,
                 EffDate: transactionToEdit.EffDate,
-                Exclude: transactionToEdit.Exclude,
                 IsWage: transactionToEdit.IsWage,
                 Item: transactionToEdit.Item,
                 TransactionId: transactionToEdit.TransactionId
@@ -75,7 +73,7 @@ function Edit() {
             .then(function (response) {
                 setDoRefreshTransactions(prevValue => !prevValue); // to await this we'd have to know when the load finished
                 setUserMessage({
-                    Message: `Transaction saved: Account: ${response.data.Account.Name}, Category: ${response.data.Category.Name}, EffDate: ${formatDateTimeAsDateDDMMYYYY(response.data.EffDate)}`,
+                    Message: "Transaction saved.",
                     Variant: "success"
                 })
                 //CancelTransactionOperation()

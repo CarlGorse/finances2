@@ -5,13 +5,9 @@ using System.Linq;
 
 namespace finances.api.Repositories {
 
-    public class AccountRepository : GettableItemRepository<Account>, IAccountRepository {
+    public class AccountRepository(IFinancesDbContext dbContext) : GettableItemRepository<Account>(), IAccountRepository {
 
-        private readonly IFinancesDbContext _DbContext;
-
-        public AccountRepository(IFinancesDbContext dbContext) : base() {
-            _DbContext = dbContext;
-        }
+        private readonly IFinancesDbContext _DbContext = dbContext;
 
         public IEnumerable<Account> Accounts => Items;
 

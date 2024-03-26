@@ -1,10 +1,9 @@
 ﻿using finances.api.Data;
 using finances.api.Data.Models;
+using finances.api.Dto;
 using finances.api.Functions;
 using finances.api.Logic;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace finances.api.Repositories {
@@ -26,48 +25,11 @@ namespace finances.api.Repositories {
                 .Include(x => x.Account);
         }
 
-        public decimal GetTotalCreditForWageTransaction(Transaction transaction) {
-            var wageTransactions = GetMatchingWageTransactions(transaction)?.ToList();
-            return wageTransactions.ToList().Select(t => t.Credit).Sum();
+        public IQueryable<Transaction> Get(SearchCriteria searchCriteria) {
+            return ItemsQuery().Where(x =>
+                    x.EffDate >= searchCriteria.StartDate
+                    && x.EffDate <= searchCriteria.EndDate);
         }
-
-        public IEnumerable<Transaction> GetMatchingWageTransactions(Transaction transaction) {
-
-            if (transaction == null) {
-                return new List<Transaction>().AsQueryable();
-            }
-
-            var transactions = Get(t =>
-                t.IsWage == true
-                && t.AccountId == transaction.AccountId
-                && t.EffDate == transaction.EffDate
-            );
-
-            return transactions;
-        }
-
-        public IEnumerable<Transaction> Get(TransactionFilters transactionFilters) {
-
-            var query = Transactions
-
-                .Where(t => transactionFilters.CategoryIds.Count == 0 || transactionFilters.CategoryIds.Contains(t.CategoryId))
-                .Where(t => transactionFilters.Descriptions.Count == 0 || transactionFilters.Descriptions.Contains(t.Description ?? string.Empty))
-                .Where(t => transactionFilters.Items.Count == 0 || transactionFilters.Items.Contains(t.Item ?? string.Empty))
-
-                .Where(t => transactionFilters.TransactionId == null || transactionFilters.TransactionId == t.TransactionId)
-                .Where(t => transactionFilters.AccountId == null || transactionFilters.AccountId == t.AccountId)
-                .Where(t => transactionFilters.StartYear == null || transactionFilters.StartYear <= t.Year)
-                .Where(t => transactionFilters.StartPeriod == null || transactionFilters.StartPeriod <= t.Period)
-                .Where(t => transactionFilters.EndYear == null || transactionFilters.EndYear >= t.Year)
-                .Where(t => transactionFilters.EndPeriod == null || transactionFilters.EndPeriod >= t.Period)
-            ;
-
-            var transactions = query.ToList();
-
-            return transactions;
-        }
-
-        private IEnumerable<Transaction> Transactions => Items;
 
         public override IValidationResult IsValid(Transaction transaction) {
 
@@ -95,7 +57,7 @@ namespace finances.api.Repositories {
                 return validationResult;
             }
 
-            validationResult = DateTimeFunctions.IsAValidDateTime(context, transaction.EffDate);
+            validationResult = DateTimeFunctions.IsAValidDateTime(context, transaction.EffDate.ToString());
             if (!validationResult.IsValid) {
                 return validationResult;
             }
@@ -121,7 +83,7 @@ namespace finances.api.Repositories {
                 existingItem.CategoryId = newValues.CategoryId;
             }
 
-            if (newValues.EffDate > new DateTime(1900, 1, 1) && newValues.EffDate != existingItem.EffDate) {
+            if (newValues.EffDate != existingItem.EffDate) {
                 existingItem.EffDate = newValues.EffDate;
             }
 
@@ -143,23 +105,6 @@ namespace finances.api.Repositories {
 
             if (newValues.IsWage != existingItem.IsWage) {
                 existingItem.IsWage = newValues.IsWage;
-            }
-
-            if (newValues.Exclude != existingItem.Exclude) {
-                existingItem.Exclude = newValues.Exclude;
-            }
-        }
-
-        public void SetWageTotalForEffDate(Transaction transaction) {
-
-            if (!transaction.IsWage) {
-                return;
-            }
-
-            transaction.WageTotal = GetTotalCreditForWageTransaction(transaction);
-
-            if (!Any(transaction.TransactionId)) {
-                transaction.WageTotal += transaction.Credit;
             }
         }
     }

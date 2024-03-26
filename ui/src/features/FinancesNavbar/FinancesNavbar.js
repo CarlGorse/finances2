@@ -1,4 +1,4 @@
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 function FinancesNavbar() {
 
@@ -8,7 +8,11 @@ function FinancesNavbar() {
         <Navbar.Brand href="./">Finances</Navbar.Brand>
         <Nav>
           <Nav.Link href="./transactions">Transactions</Nav.Link>
-          <Nav.Link href="./category-totals-report">Category totals report</Nav.Link>
+          <NavDropdown title="Reports">
+            <NavDropdown.Item href="./category-totals-report">
+              Category totals report
+            </NavDropdown.Item>
+          </NavDropdown>
         </Nav>
       </Container>
     </Navbar >

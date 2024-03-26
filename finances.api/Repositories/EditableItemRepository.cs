@@ -1,7 +1,7 @@
 ﻿using finances.api.Data;
-using finances.api.Data.Models;
 using finances.api.Enums;
 using finances.api.Logic;
+using finanes.api.data.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,5 +107,12 @@ namespace finances.api.Repositories {
 
         public abstract void CopyValues(T existingItem, T newValues);
 
+        protected IEnumerable<int> ValidIds(IEnumerable<int> ids) {
+            return Get(ids).Select(x => x.Id);
+        }
+
+        protected IEnumerable<int> GetInvalidIds(IEnumerable<int> ids) {
+            return ValidIds(ids).Except(ids);
+        }
     }
 }

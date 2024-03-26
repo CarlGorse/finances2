@@ -1,5 +1,5 @@
-﻿using finances.api.Data.Models;
-using finances.api.Enums;
+﻿using finances.api.Enums;
+using finanes.api.data.Models;
 using System.Collections.Generic;
 
 namespace finances.api.Repositories {
