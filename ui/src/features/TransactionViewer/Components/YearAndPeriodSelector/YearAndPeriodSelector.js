@@ -1,12 +1,12 @@
 import { Col, Row } from 'react-bootstrap';
 import DropdownFilter from './Components/DropdownFilter'
-import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
+import { transactionSearchCriteriaAtom } from 'recoil/atoms/TransactionSearchCriteriaAtom';
 import { useRecoilState } from "recoil";
 
 function YearAndPeriodSelector() {
 
   const periods = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
-  const [transactionSearch, setTransactionSearch] = useRecoilState(transactionSearchAtom);
+  const [transactionSearch, setTransactionSearch] = useRecoilState(transactionSearchCriteriaAtom);
   const years = ["2023", "2024"]
 
   function UpdateTransactionSearch(propertyName, value) {

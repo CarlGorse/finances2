@@ -3,7 +3,7 @@ import { apiBaseUrl } from 'functions/Api';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { transactionSearchAtom } from 'recoil/atoms/TransactionSearchAtom';
+import { transactionSearchCriteriaAtom } from 'recoil/atoms/TransactionSearchCriteriaAtom';
 import { useEffect, useState } from 'react';
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -12,7 +12,7 @@ function BankAccountSelector() {
 
   const [bankAccounts, setBankAccounts] = useState(null);
   const [title, setTitle] = useState("");
-  const [transactionSearch, setTransactionSearch] = useRecoilState(transactionSearchAtom);
+  const [transactionSearch, setTransactionSearch] = useRecoilState(transactionSearchCriteriaAtom);
 
   const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
   const setTransactionOperation = useSetRecoilState(transactionOperationAtom);

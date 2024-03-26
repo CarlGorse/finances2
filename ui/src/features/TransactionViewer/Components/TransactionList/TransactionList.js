@@ -7,7 +7,7 @@ import Spinner from 'components/Spinner'
 import { Table } from 'react-bootstrap';
 import TransactionHeader from './Components/TransactionHeader';
 import TransactionRow from './TransactionRow/TransactionRow';
-import { transactionSearchAtom } from "recoil/atoms/TransactionSearchAtom";
+import { transactionSearchCriteriaAtom } from "recoil/atoms/TransactionSearchCriteriaAtom";
 import { useEffect, useRef, useState } from 'react';
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -28,7 +28,7 @@ function TransactionList() {
   const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
   const setUserMessage = useSetRecoilState(userMessageAtom);
   const [transactions, setTransactions] = useState(null);
-  const transactionSearch = useRecoilValue(transactionSearchAtom);
+  const transactionSearch = useRecoilValue(transactionSearchCriteriaAtom);
 
   const pageCount = useRef(1);
 

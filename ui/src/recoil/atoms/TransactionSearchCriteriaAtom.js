@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
-export const transactionSearchAtom = atom({
-    key: "transactionSearchState",
+export const transactionSearchCriteriaAtom = atom({
+    key: "transactionSearchCriteriaState",
     default: {
         AccountId: 7,
         StartYear: 2024,

@@ -8,7 +8,7 @@ import { formatDateTimeAsDateDDMMYYYY } from 'functions/DateTime'
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { transactionSearchAtom as transactionSearchFiltersAtom } from 'recoil/atoms/TransactionSearchAtom';
+import { transactionSearchCriteriaAtom } from 'recoil/atoms/TransactionSearchCriteriaAtom';
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from 'react'
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
@@ -22,7 +22,7 @@ function Add() {
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const transactionToAdd = useRecoilValue(addEditTransactionAtom);
     const transactionOperation = useRecoilValue(transactionOperationAtom);
-    const transactionSearchFilters = useRecoilValue(transactionSearchFiltersAtom);
+    const transactionSearchFilters = useRecoilValue(transactionSearchCriteriaAtom);
 
     const showForm = transactionOperation === "Add"
     const hasValidSelection = true//!selectedTransactions || selectedTransactions?.length === 0
