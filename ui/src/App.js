@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import NavBar from 'features/NavBar';
+import CategoryTotalsReport from 'features/CategoryTotalsReport/CategoryTotalsReport'
+import FinancesNavbar from 'features/FinancesNavbar/FinancesNavbar';
 import { RecoilRoot } from "recoil";
 import TransactionViewer from 'features/TransactionViewer/TransactionViewer';
 
@@ -9,10 +10,12 @@ function App() {
     <RecoilRoot>
       <BrowserRouter>
 
-        <NavBar />
+        <FinancesNavbar />
 
         <Routes>
           <Route exact path='/' element={<TransactionViewer />} />
+          <Route exact path='/transactions' element={<TransactionViewer />} />
+          <Route exact path='/category-totals-report' element={<CategoryTotalsReport />} />
         </Routes>
 
       </BrowserRouter>
