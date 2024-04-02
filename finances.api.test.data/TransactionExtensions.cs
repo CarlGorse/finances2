@@ -19,11 +19,15 @@ namespace finances.api.test.data {
                 new() {
                     CategoryId=1, AccountId=1, EffDate=DateOnly.FromDateTime(new DateTime(2024, 4, 4)), Debit = 220
                 },
-                                new() {
+                new() {
                     CategoryId=1, AccountId=1, EffDate=DateOnly.FromDateTime(new DateTime(2024, 5, 4)), Debit = 330
                 },
-                                                new() {
+                new() {
                     CategoryId=2, AccountId=1, EffDate=DateOnly.FromDateTime(new DateTime(2024, 6, 4)), Debit = 440
+                }
+                ,
+                new() {
+                    CategoryId=3, AccountId=1, EffDate=DateOnly.FromDateTime(new DateTime(2024, 6, 4)), Debit = 111
                 }
             };
 

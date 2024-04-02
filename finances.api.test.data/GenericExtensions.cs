@@ -28,7 +28,10 @@ namespace finances.api.test.data {
 
         private static void AddGroups(this TestDataFactory dataFactory) {
 
-            var groupsToAdd = new List<Group> { new() { GroupId = 1, Name = "Personal" } };
+            var groupsToAdd = new List<Group> {
+                new() { GroupId = 1, Name = "Personal" } ,
+                new() { GroupId = 2, Name = "Utilties" }
+            };
 
             groupsToAdd = groupsToAdd.Where(x =>
                     !dataFactory.DbContext.CategoryGroups.Any(y => x.GroupId == y.GroupId)).ToList();
@@ -44,7 +47,9 @@ namespace finances.api.test.data {
 
             var categoriesToAdd = new List<Category> {
                 new() { CategoryId = 1, Name = "Carl", GroupId = 1 },
-                new() { CategoryId = 2, Name = "Sam", GroupId = 1 } };
+                new() { CategoryId = 2, Name = "Sam", GroupId = 1 },
+                new() { CategoryId = 3, Name = "Gas/Elec", GroupId = 2 }
+            };
 
             categoriesToAdd = categoriesToAdd.Where(x =>
                     !dataFactory.DbContext.Categories.Any(y => x.CategoryId == y.CategoryId))
