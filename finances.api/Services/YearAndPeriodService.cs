@@ -13,9 +13,9 @@ namespace finances.api.Services {
             var periodCountAtStart = GetPeriodCount(startYear, startPeriod);
             var periodCountAtEnd = GetPeriodCount(endYear, endPeriod);
 
-            for (var periodPtr = periodCountAtStart; periodPtr <= periodCountAtEnd; periodPtr++) {
-                var year = (int)System.Math.Floor((decimal)(periodPtr - 1) / 12);
-                var period = periodPtr - (year * 12);
+            for (var periodCount = periodCountAtStart; periodCount <= periodCountAtEnd; periodCount++) {
+                var year = (int)System.Math.Floor((decimal)(periodCount - 1) / 12);
+                var period = periodCount - (year * 12);
                 yearsAndPeriods.Add(new YearAndPeriod(year, period));
             }
 
