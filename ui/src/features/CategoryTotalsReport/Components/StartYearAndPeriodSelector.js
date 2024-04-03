@@ -2,17 +2,16 @@ import { Button } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
 import DropdownFilter from 'components/DropdownFilter'
 import { selectedYearAndPeriodAtom } from 'recoil/atoms/SelectedYearAndPeriodAtom';
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect, useState } from 'react';
+import { useRecoilState } from "recoil";
 
 function StartYearAndPeriodSelector() {
 
   const periods = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
-  const selectedYearAndPeriod = useRecoilValue(selectedYearAndPeriodAtom);
-  const setSelectedYearAndPeriod = useSetRecoilState(selectedYearAndPeriodAtom);
+  const [selectedYearAndPeriod, setSelectedYearAndPeriod] = useRecoilState(selectedYearAndPeriodAtom);
   const years = ["2023", "2024"]
   const reportPeriodsToShow = 6;
-  const [startYearAndPeriodCount, setStartYearAndPeriodCount] = useState((null));
+  const [startYearAndPeriodCount, setStartYearAndPeriodCount] = useState((2024 * 12) + 4);
 
 useEffect(() => {
   let today = new Date();
