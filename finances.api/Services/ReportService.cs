@@ -25,7 +25,7 @@ namespace finances.api.Services {
 
         public CategoryTotalsReport GetCategoryTotalsReport(SearchCriteria searchCriteria) {
 
-            List<string> errors = new();
+            List<string> errors = [];
 
             _searchCriteriaService.ValidateSearchCriteria(searchCriteria, errors);
 
@@ -67,7 +67,7 @@ namespace finances.api.Services {
             };
         }
 
-        private List<GroupTotal> GetGroupTotals(IQueryable<Transaction> transactions) {
+        private static List<GroupTotal> GetGroupTotals(IQueryable<Transaction> transactions) {
 
             return transactions
                     .GroupBy(y => y.Category.GroupId)
@@ -83,7 +83,7 @@ namespace finances.api.Services {
                     }).ToList();
         }
 
-        private List<CategoryTotal> GetCategoryTotals(IQueryable<Transaction> transactions) {
+        private static List<CategoryTotal> GetCategoryTotals(IQueryable<Transaction> transactions) {
 
             return transactions
                     .GroupBy(y => y.Category.CategoryId)
@@ -99,7 +99,7 @@ namespace finances.api.Services {
                     }).ToList();
         }
 
-        private List<YearAndPeriodTotal> GetYearAndPeriodTotals(IQueryable<Transaction> transactions) {
+        private static List<YearAndPeriodTotal> GetYearAndPeriodTotals(IQueryable<Transaction> transactions) {
 
             return transactions
                     .GroupBy(y => new { y.Year, y.Period })
