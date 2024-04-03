@@ -52,7 +52,7 @@ var configuration = new ConfigurationBuilder()
 
 var isIntegrationTest = false;
 
-if (builder.Environment.IsDevelopment()) {
+if (builder.Environment.IsDevelopment() && false) {
     if (isIntegrationTest) {
         builder.Services.AddDbContext<AppDbContext>(
             options => options.UseInMemoryDatabase("App", new InMemoryDatabaseRoot())
@@ -77,7 +77,7 @@ builder.Services.Configure<JsonSerializerSettings>(options => options.ContractRe
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()) {
+if (app.Environment.IsDevelopment() && false) {
     var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetService<IFinancesDbContext>();
     var testDataFactory = new TestDataFactory(dbContext);
