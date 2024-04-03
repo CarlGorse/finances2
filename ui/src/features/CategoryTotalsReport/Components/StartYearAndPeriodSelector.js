@@ -13,16 +13,16 @@ function StartYearAndPeriodSelector() {
   const reportPeriodsToShow = 6;
   const [startYearAndPeriodCount, setStartYearAndPeriodCount] = useState((2024 * 12) + 4);
 
-useEffect(() => {
-  let today = new Date();
-  let year = (today.getFullYear() * 12);
-  let periods = today.getMonth() + 1;
-  let yearAndPeriodCount = year + periods;
-  setStartYearAndPeriodCount(yearAndPeriodCount);
-}, []);
+  useEffect(() => {
+    let today = new Date();
+    let year = (today.getFullYear() * 12);
+    let periods = today.getMonth() + 1;
+    let yearAndPeriodCount = year + periods;
+    setStartYearAndPeriodCount(yearAndPeriodCount);
+  }, []);
 
   useEffect(() => {
-    
+
     let startYearAndPeriod = GetYearAndPeriodFromPeriodCount(startYearAndPeriodCount);
     let endYearAndPeriod = GetYearAndPeriodFromPeriodCount(startYearAndPeriodCount + (reportPeriodsToShow - 1));
 
@@ -34,11 +34,11 @@ useEffect(() => {
     });
   }, [startYearAndPeriodCount])
 
-  function GetYearAndPeriodFromPeriodCount(periodCount) {    
+  function GetYearAndPeriodFromPeriodCount(periodCount) {
     let year = Math.floor((periodCount - 1) / 12);
     let period = periodCount - (year * 12);
 
-    return {Year: year, Period: period};
+    return { Year: year, Period: period };
   }
 
   function SetStartYearAndPeriodCountFromYearAndPeriod(year, period) {
@@ -56,17 +56,15 @@ useEffect(() => {
 
   return (
     <>
-    
-      <Button size="sm" onClick={() => 
-        {
-          setStartYearAndPeriodCount(prevValue => prevValue - 1);
-        }}
+
+      <Button size="sm" onClick={() => {
+        setStartYearAndPeriodCount(prevValue => prevValue - 1);
+      }}
       >{"<"}</Button>
-      
-      <Button size="sm" style={{marginLeft: "1px"}} onClick={() => 
-        {
-          setStartYearAndPeriodCount(prevValue => prevValue + 1);
-        }}
+
+      <Button size="sm" style={{ marginLeft: "1px" }} onClick={() => {
+        setStartYearAndPeriodCount(prevValue => prevValue + 1);
+      }}
       >{">"}</Button>
 
       <Row>
