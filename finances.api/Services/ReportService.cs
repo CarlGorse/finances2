@@ -57,9 +57,9 @@ namespace finances.api.Services {
             var serviceResult = ServiceResult.Ok;
 
             return new CategoryTotalsReport {
-                Categories = categories,
+                Categories = categories.OrderBy(x => x.GroupDisplayOrder),
                 CategoryTotals = categoryTotals,
-                Groups = groups,
+                Groups = groups.OrderBy(x => x.DisplayOrder),
                 GroupTotals = groupTotals,
                 ServiceResult = serviceResult,
                 YearsAndPeriods = allYearsAndPeriods,
