@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace finances.api.Data.Models {
 
-    [Table("CategoryGroup")]
+    [Table("CategoryGroups")]
     public partial class Group {
 
         [Key]
+        [Column("CategoryGroupId")]
         public int GroupId { get; set; }
         public string Name { get; set; }
         public int DisplayOrder { get; set; }

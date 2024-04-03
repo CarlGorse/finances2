@@ -75,9 +75,9 @@ namespace finances.api.Services {
                         GroupId = y.Key,
                         YearAndPeriodTotals = transactions
                                                 .Where(x => x.Category.GroupId == y.Key)
-                                                .GroupBy(y => new { y.Year, y.Period })
+                                                .GroupBy(y => new { y.EffDate.Year, y.EffDate.Month })
                                                 .Select(x => new YearAndPeriodTotal {
-                                                    YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Period),
+                                                    YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Month),
                                                     Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit)
                                                 }).ToList()
                     }).ToList();
@@ -91,9 +91,9 @@ namespace finances.api.Services {
                         CategoryId = y.Key,
                         YearAndPeriodTotals = transactions
                                                 .Where(x => x.CategoryId == y.Key)
-                                                .GroupBy(y => new { y.Year, y.Period })
+                                                .GroupBy(y => new { y.EffDate.Year, y.EffDate.Month })
                                                 .Select(x => new YearAndPeriodTotal {
-                                                    YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Period),
+                                                    YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Month),
                                                     Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit)
                                                 }).ToList()
                     }).ToList();
@@ -102,9 +102,9 @@ namespace finances.api.Services {
         private static List<YearAndPeriodTotal> GetYearAndPeriodTotals(IQueryable<Transaction> transactions) {
 
             return transactions
-                    .GroupBy(y => new { y.Year, y.Period })
+                    .GroupBy(y => new { y.EffDate.Year, y.EffDate.Month })
                     .Select(x => new YearAndPeriodTotal {
-                        YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Period),
+                        YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Month),
                         Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit)
                     }).ToList();
         }

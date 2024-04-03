@@ -8,9 +8,9 @@ namespace finances.api.Data.Models {
         [NotMapped]
         public int Id => TransactionId;
 
-        public int Year { get; private set; }
+        //public int Year { get; private set; }
 
-        public int Period { get; private set; }
+        //public int Period { get; private set; }
 
         [NotMapped]
         public decimal AccountRunningTotal { get; set; }

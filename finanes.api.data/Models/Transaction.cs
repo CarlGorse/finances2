@@ -31,8 +31,8 @@ namespace finances.api.Data.Models {
             get => _effDate;
             set {
                 _effDate = value;
-                Year = value.Year;
-                Period = value.Month;
+                //Year = value.Year;
+                //Period = value.Month;
             }
         }
     }
