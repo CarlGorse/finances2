@@ -55,7 +55,7 @@ function MoveWages() {
             }
         })
             .then(function (response) {
-                setRefreshTransactions(true);
+                setRefreshTransactions(prevValue => !prevValue);
                 setUserMessage({
                     Message: `Credit ${formatCurrency(Math.abs(response.data.CreditToMove))} moved from ${response.data.transactionFrom.Category.Name} to ${response.data.transactionTo.Category.Name}.`,
                     Variant: "success"
