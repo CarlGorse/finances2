@@ -53,6 +53,7 @@ namespace finances.api.Services {
 
                     transactionsForSearchCriteria = transactionsForSearchCriteria
                                                     .OrderByDescending(x => x.EffDate)
+                                                    .ThenByDescending(x => x.Id)
                                                     .ToList();
 
                     if (includeRunningTotals) {
