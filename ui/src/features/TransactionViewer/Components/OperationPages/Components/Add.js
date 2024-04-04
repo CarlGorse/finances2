@@ -60,13 +60,13 @@ function Add() {
 
     const defaultTransactionToAdd = {
         AccountId: selectedBankAccount.AccountId,
-        CategoryId: transactionToAdd.CategoryId,
-        Credit: transactionToAdd.Credit ?? 0,
-        Debit: transactionToAdd.Debit ?? 0,
-        Description: transactionToAdd.Description,
-        EffDate: transactionToAdd.EffDate,
-        IsWage: transactionToAdd.IsWage ?? false,
-        Item: transactionToAdd.Item
+        CategoryId: transactionToAdd?.CategoryId,
+        Credit: transactionToAdd?.Credit ?? 0,
+        Debit: transactionToAdd?.Debit ?? 0,
+        Description: transactionToAdd?.Description,
+        EffDate: transactionToAdd?.EffDate,
+        IsWage: transactionToAdd?.IsWage ?? false,
+        Item: transactionToAdd?.Item
     }
 
     function Save() {
