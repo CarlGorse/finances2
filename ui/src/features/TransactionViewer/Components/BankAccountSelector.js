@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { apiBaseUrl } from 'functions/Api';
+import { apiBaseUrl } from 'consts/ApiConsts';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';

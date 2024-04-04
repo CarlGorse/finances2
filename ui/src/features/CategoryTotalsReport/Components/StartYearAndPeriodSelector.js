@@ -1,6 +1,7 @@
 import { Button } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
 import DropdownFilter from 'components/DropdownFilter'
+import {getYearsAndPeriodsFromPeriodCount, getPeriodCountFromYearsAndPeriods} from 'functions/YearsAndPeriodsFunctions';
 import { selectedYearAndPeriodAtom } from 'recoil/atoms/SelectedYearAndPeriodAtom';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from "recoil";
@@ -8,23 +9,23 @@ import { useRecoilState } from "recoil";
 function StartYearAndPeriodSelector() {
 
   const periods = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
-  const [selectedYearAndPeriod, setSelectedYearAndPeriod] = useRecoilState(selectedYearAndPeriodAtom);
-  const years = ["2023", "2024"]
   const reportPeriodsToShow = 6;
-  const [startYearAndPeriodCount, setStartYearAndPeriodCount] = useState((2024 * 12) + 4);
+  const [selectedYearAndPeriod, setSelectedYearAndPeriod] = useRecoilState(selectedYearAndPeriodAtom);
+  const [yearAndPeriodCount, setYearAndPeriodCount] = useState((2024 * 12) + 4);
+  const years = ["2019", "2020", "2021", "2022", "2023", "2024"]
 
   useEffect(() => {
     let today = new Date();
     let year = (today.getFullYear() * 12);
     let periods = today.getMonth() + 1;
     let yearAndPeriodCount = year + periods;
-    setStartYearAndPeriodCount(yearAndPeriodCount);
+    setYearAndPeriodCount(yearAndPeriodCount);
   }, []);
 
   useEffect(() => {
 
-    let startYearAndPeriod = GetYearAndPeriodFromPeriodCount(startYearAndPeriodCount);
-    let endYearAndPeriod = GetYearAndPeriodFromPeriodCount(startYearAndPeriodCount + (reportPeriodsToShow - 1));
+    let startYearAndPeriod = getYearsAndPeriodsFromPeriodCount(yearAndPeriodCount);
+    let endYearAndPeriod = getYearsAndPeriodsFromPeriodCount(yearAndPeriodCount + (reportPeriodsToShow - 1));
 
     setSelectedYearAndPeriod({
       StartYear: startYearAndPeriod.Year,
@@ -32,22 +33,11 @@ function StartYearAndPeriodSelector() {
       EndYear: endYearAndPeriod.Year,
       EndPeriod: endYearAndPeriod.Period
     });
-  }, [startYearAndPeriodCount])
-
-  function GetYearAndPeriodFromPeriodCount(periodCount) {
-    let year = Math.floor((periodCount - 1) / 12);
-    let period = periodCount - (year * 12);
-
-    return { Year: year, Period: period };
-  }
+  }, [yearAndPeriodCount])
 
   function SetStartYearAndPeriodCountFromYearAndPeriod(year, period) {
-    let periodCount = GetPeriodCountFromYearAndPeriod(year, period);
-    setStartYearAndPeriodCount(periodCount);
-  }
-
-  function GetPeriodCountFromYearAndPeriod(year, period) {
-    return (year * 12) + period;
+    let periodCount = getPeriodCountFromYearsAndPeriods(year, period);
+    setYearAndPeriodCount(periodCount);
   }
 
   if (!selectedYearAndPeriod) {
@@ -58,12 +48,12 @@ function StartYearAndPeriodSelector() {
     <>
 
       <Button size="sm" onClick={() => {
-        setStartYearAndPeriodCount(prevValue => prevValue - 1);
+        setYearAndPeriodCount(prevValue => prevValue - 1);
       }}
       >{"<"}</Button>
 
       <Button size="sm" style={{ marginLeft: "1px" }} onClick={() => {
-        setStartYearAndPeriodCount(prevValue => prevValue + 1);
+        setYearAndPeriodCount(prevValue => prevValue + 1);
       }}
       >{">"}</Button>
 

@@ -1,8 +1,8 @@
-import { apiBaseUrl } from 'functions/Api';
+import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { Col, Form, Row } from 'react-bootstrap';
 import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
-import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/Currency';
+import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/CurrencyFunctions';
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';

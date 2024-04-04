@@ -1,15 +1,15 @@
-import { apiBaseUrl } from 'functions/Api';
+import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { Col, Container, Row, Table } from 'react-bootstrap';
 import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
-import { formatCurrency } from 'functions/Currency'
-import Spinner from 'components/Spinner'
+import { formatCurrency } from 'functions/CurrencyFunctions'
 import { selectedBankAccountAtom } from "recoil/atoms/SelectedBankAccountAtom";
 import { selectedYearAndPeriodAtom } from "recoil/atoms/SelectedYearAndPeriodAtom";
+import Spinner from 'components/Spinner'
+import StartYearAndPeriodSelector from './Components/StartYearAndPeriodSelector'
 import { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
-import StartYearAndPeriodSelector from './Components/StartYearAndPeriodSelector'
 
 function CategoryTotalsReport() {
 
@@ -146,7 +146,7 @@ function CategoryTotalsReport() {
                                                                 {formatCurrency(
                                                                     categoryTotalsReport.CategoryTotals.filter(categoryTotal =>
                                                                         categoryTotal.CategoryId === category.Id)[0]?.YearAndPeriodTotals.filter(categoryYearAndPeriodTotal =>
-                                                                            categoryYearAndPeriodTotal.YearAndPeriod.Year = yearAndPeriod.Year === yearAndPeriod.Year
+                                                                            categoryYearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
                                                                             && categoryYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
                                                                 }
                                                             </Col>

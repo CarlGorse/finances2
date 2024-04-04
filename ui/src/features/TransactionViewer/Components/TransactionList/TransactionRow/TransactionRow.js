@@ -1,8 +1,7 @@
 import { Col, Row } from 'react-bootstrap';
 import DescriptionBadge from './Components/DescriptionBadge';
 import Form from 'react-bootstrap/Form';
-import { formatStringAsDateYYYYMMDD } from 'functions/DateTime';
-import { formatCurrency } from 'functions/Currency';
+import { formatCurrency } from 'functions/CurrencyFunctions';
 import ItemBadge from './Components/ItemBadge';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 //import styles from './TransactionRow.css';

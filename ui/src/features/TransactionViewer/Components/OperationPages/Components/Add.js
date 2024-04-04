@@ -1,6 +1,6 @@
 import AddEdit from './Shared/AddEdit';
 import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
-import { apiBaseUrl } from 'functions/Api';
+import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";

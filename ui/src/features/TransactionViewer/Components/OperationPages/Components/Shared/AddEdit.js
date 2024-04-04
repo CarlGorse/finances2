@@ -1,9 +1,9 @@
 import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
-import { apiBaseUrl } from 'functions/Api'
+import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios'
 import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { Col, Form, Row } from 'react-bootstrap';
-import { stringToCurrency } from 'functions/Currency';
+import { stringToCurrency } from 'functions/CurrencyFunctions';
 import { useEffect } from 'react'
 import { useRecoilState } from "recoil";
 

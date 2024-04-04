@@ -1,5 +1,5 @@
 import Dropdown from 'react-bootstrap/Dropdown';
-import { padStart } from 'functions/Number'
+import { padStart } from 'functions/NumberFunctions'
 import { useEffect, useState } from 'react';
 
 function DropdownFilter({ defaultValue, onSelect, values }) {

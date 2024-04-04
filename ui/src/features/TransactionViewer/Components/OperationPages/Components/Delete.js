@@ -1,4 +1,4 @@
-import { apiBaseUrl } from 'functions/Api';
+import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
