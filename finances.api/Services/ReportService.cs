@@ -47,12 +47,13 @@ namespace finances.api.Services {
             var groups = _groupRepository.All().ToList();
 
             var transactions = _transactionsRepository.Get(searchCriteria);
+            var allTransactions = _transactionsRepository.All();
 
-            var groupTotals = GetGroupTotals(transactions);
+            var groupTotals = GetGroupTotals(transactions, allTransactions);
 
-            var categoryTotals = GetCategoryTotals(transactions);
+            var categoryTotals = GetCategoryTotals(transactions, allTransactions);
 
-            var yearAndPeriodTotals = GetYearAndPeriodTotals(transactions);
+            var yearAndPeriodTotals = GetYearAndPeriodTotals(transactions, allTransactions);
 
             var serviceResult = ServiceResult.Ok;
 
@@ -67,7 +68,7 @@ namespace finances.api.Services {
             };
         }
 
-        private static List<GroupTotal> GetGroupTotals(IQueryable<Transaction> transactions) {
+        private static List<GroupTotal> GetGroupTotals(IQueryable<Transaction> transactions, IQueryable<Transaction> allTransactions) {
 
             return transactions
                     .GroupBy(y => y.Category.GroupId)
@@ -78,12 +79,13 @@ namespace finances.api.Services {
                                                 .GroupBy(y => new { y.EffDate.Year, y.EffDate.Month })
                                                 .Select(x => new YearAndPeriodTotal {
                                                     YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Month),
-                                                    Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit)
+                                                    Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit),
+                                                    YTDTotal = allTransactions.Where(z => z.Category.GroupId == y.Key && (z.EffDate.Year < x.Key.Year || (z.EffDate.Year == x.Key.Year && (z.EffDate.Month <= x.Key.Month)))).Sum(t => t.Credit - t.Debit)
                                                 }).ToList()
                     }).ToList();
         }
 
-        private static List<CategoryTotal> GetCategoryTotals(IQueryable<Transaction> transactions) {
+        private static List<CategoryTotal> GetCategoryTotals(IQueryable<Transaction> transactions, IQueryable<Transaction> allTransactions) {
 
             return transactions
                     .GroupBy(y => y.Category.CategoryId)
@@ -94,18 +96,20 @@ namespace finances.api.Services {
                                                 .GroupBy(y => new { y.EffDate.Year, y.EffDate.Month })
                                                 .Select(x => new YearAndPeriodTotal {
                                                     YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Month),
-                                                    Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit)
+                                                    Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit),
+                                                    YTDTotal = allTransactions.Where(z => z.CategoryId == y.Key && (z.EffDate.Year < x.Key.Year || (z.EffDate.Year == x.Key.Year && (z.EffDate.Month <= x.Key.Month)))).Sum(t => t.Credit - t.Debit)
                                                 }).ToList()
                     }).ToList();
         }
 
-        private static List<YearAndPeriodTotal> GetYearAndPeriodTotals(IQueryable<Transaction> transactions) {
+        private static List<YearAndPeriodTotal> GetYearAndPeriodTotals(IQueryable<Transaction> transactions, IQueryable<Transaction> allTransactions) {
 
             return transactions
                     .GroupBy(y => new { y.EffDate.Year, y.EffDate.Month })
                     .Select(x => new YearAndPeriodTotal {
                         YearAndPeriod = new YearAndPeriod(x.Key.Year, x.Key.Month),
-                        Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit)
+                        Total = x.Sum(t => t.Credit) - x.Sum(t => t.Debit),
+                        YTDTotal = allTransactions.Where(z => z.EffDate.Year < x.Key.Year || (z.EffDate.Year == x.Key.Year && (z.EffDate.Month <= x.Key.Month))).Sum(t => t.Credit - t.Debit)
                     }).ToList();
         }
     }

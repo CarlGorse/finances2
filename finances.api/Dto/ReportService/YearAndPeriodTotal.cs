@@ -7,6 +7,7 @@ namespace finances.api.Dto.ReportService {
         public YearAndPeriod YearAndPeriod { get; set; }
 
         public decimal Total { get; set; }
+        public decimal YTDTotal { get; set; }
 
         public override bool Equals(object other) {
             return (other is YearAndPeriodTotal yearAndPeriod)

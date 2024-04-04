@@ -83,6 +83,7 @@ function CategoryTotalsReport() {
                             ))
                         }
                     </Row>
+
                     <Row>
                         <Col>Total:</Col>
                         {
@@ -92,7 +93,7 @@ function CategoryTotalsReport() {
                                     {formatCurrency(categoryTotalsReport.YearAndPeriodTotals.filter(yearAndPeriodTotal =>
                                         yearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
                                         && yearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period
-                                    )[0]?.Total)}
+                                    )[0]?.YTDTotal)}
                                 </Col>
                             ))
                         }
@@ -119,7 +120,7 @@ function CategoryTotalsReport() {
                                                                 categoryTotalsReport.GroupTotals.filter(groupTotal =>
                                                                     groupTotal.GroupId === group.GroupId)[0]?.YearAndPeriodTotals.filter(groupYearAndPeriodTotal =>
                                                                         groupYearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
-                                                                        && groupYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.Total)
+                                                                        && groupYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
                                                             }
                                                         </b>
                                                     </Col>
@@ -144,7 +145,7 @@ function CategoryTotalsReport() {
                                                                     categoryTotalsReport.CategoryTotals.filter(categoryTotal =>
                                                                         categoryTotal.CategoryId === category.Id)[0]?.YearAndPeriodTotals.filter(categoryYearAndPeriodTotal =>
                                                                             categoryYearAndPeriodTotal.YearAndPeriod.Year = yearAndPeriod.Year === yearAndPeriod.Year
-                                                                            && categoryYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.Total)
+                                                                            && categoryYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
                                                                 }
                                                             </Col>
                                                         ))
