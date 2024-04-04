@@ -87,6 +87,7 @@ function CategoryTotalsReport() {
                     </Row>
 
                     <Row>
+                        {/*
                         <Col>Total:</Col>
                         {
                             categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
@@ -100,6 +101,7 @@ function CategoryTotalsReport() {
                             ))
                         }
                     </Row>
+                    */}
 
                     {
                         categoryTotalsReport.Groups.map(group => (
