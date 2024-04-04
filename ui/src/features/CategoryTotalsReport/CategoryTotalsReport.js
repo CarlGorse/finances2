@@ -71,22 +71,25 @@ function CategoryTotalsReport() {
             {loading && <Spinner />}
 
             {!loading &&
-                <Table>
 
-                    <Row>
-                        <Col />
-                        {
-                            categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
+                <>
 
-                                <Col className="tableCell text-center">
-                                    <b>{yearAndPeriod.Year}.{yearAndPeriod.Period}</b>
-                                </Col>
-                            ))
-                        }
-                    </Row>
                     <Button size="md" style={{ marginTop: "20px" }} onClick={() => setDoRefresh(prevValue => !prevValue)}>Refresh</Button>
 
-                    <Row>
+                    <Table style={{ marginTop: "20px" }}>
+
+                        <Row>
+                            <Col />
+                            {
+                                categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
+
+                                    <Col className="tableCell text-center">
+                                        <b>{yearAndPeriod.Year}.{yearAndPeriod.Period}</b>
+                                    </Col>
+                                ))
+                            }
+                        </Row>
+
                         {/*
                         <Col>Total:</Col>
                         {
@@ -102,68 +105,68 @@ function CategoryTotalsReport() {
                         }
                     </Row>
                     */}
+                        {
+                            categoryTotalsReport.Groups.map(group => (
+                                <>
+                                    {
+                                        <>
+                                            <div style={{
+                                                borderBottom: "1px solid"
+                                            }}></div>
 
-                    {
-                        categoryTotalsReport.Groups.map(group => (
-                            <>
-                                {
-                                    <>
-                                        <div style={{
-                                            borderBottom: "1px solid"
-                                        }}></div>
+                                            <Row style={{ paddingTop: "10px" }}>
+                                                <Col className="tableCell text-center">
+                                                    <b>{group.Name}</b>
+                                                </Col>
+                                                {
+                                                    categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
+                                                        <Col className="tableCell text-center">
+                                                            <b>
+                                                                {formatCurrency(
+                                                                    categoryTotalsReport.GroupTotals.filter(groupTotal =>
+                                                                        groupTotal.GroupId === group.GroupId)[0]?.YearAndPeriodTotals.filter(groupYearAndPeriodTotal =>
+                                                                            groupYearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
+                                                                            && groupYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
+                                                                }
+                                                            </b>
+                                                        </Col>
+                                                    ))
+                                                }
 
-                                        <Row style={{ paddingTop: "10px" }}>
-                                            <Col className="tableCell text-center">
-                                                <b>{group.Name}</b>
-                                            </Col>
+                                            </Row>
+
                                             {
-                                                categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
-                                                    <Col className="tableCell text-center">
-                                                        <b>
-                                                            {formatCurrency(
-                                                                categoryTotalsReport.GroupTotals.filter(groupTotal =>
-                                                                    groupTotal.GroupId === group.GroupId)[0]?.YearAndPeriodTotals.filter(groupYearAndPeriodTotal =>
-                                                                        groupYearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
-                                                                        && groupYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
-                                                            }
-                                                        </b>
-                                                    </Col>
+                                                categoryTotalsReport.Categories.filter(category => category.GroupId === group.GroupId).map(category => (
+
+                                                    <Row key={category.Id}>
+
+                                                        <Col className="tableCell text-center">
+                                                            {category.Name}
+                                                        </Col>
+
+                                                        {
+                                                            categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
+                                                                <Col className="tableCell text-center">
+                                                                    {formatCurrency(
+                                                                        categoryTotalsReport.CategoryTotals.filter(categoryTotal =>
+                                                                            categoryTotal.CategoryId === category.Id)[0]?.YearAndPeriodTotals.filter(categoryYearAndPeriodTotal =>
+                                                                                categoryYearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
+                                                                                && categoryYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
+                                                                    }
+                                                                </Col>
+                                                            ))
+                                                        }
+
+                                                    </Row>
                                                 ))
                                             }
-
-                                        </Row>
-
-                                        {
-                                            categoryTotalsReport.Categories.filter(category => category.GroupId === group.GroupId).map(category => (
-
-                                                <Row key={category.Id}>
-
-                                                    <Col className="tableCell text-center">
-                                                        {category.Name}
-                                                    </Col>
-
-                                                    {
-                                                        categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
-                                                            <Col className="tableCell text-center">
-                                                                {formatCurrency(
-                                                                    categoryTotalsReport.CategoryTotals.filter(categoryTotal =>
-                                                                        categoryTotal.CategoryId === category.Id)[0]?.YearAndPeriodTotals.filter(categoryYearAndPeriodTotal =>
-                                                                            categoryYearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
-                                                                            && categoryYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
-                                                                }
-                                                            </Col>
-                                                        ))
-                                                    }
-
-                                                </Row>
-                                            ))
-                                        }
-                                    </>
-                                }
-                            </>
-                        ))
-                    }
-                </Table>
+                                        </>
+                                    }
+                                </>
+                            ))
+                        }
+                    </Table>
+                </>
             }
 
         </Container>
