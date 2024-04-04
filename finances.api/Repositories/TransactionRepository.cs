@@ -20,9 +20,10 @@ namespace finances.api.Repositories {
 
         protected override IQueryable<Transaction> ItemsQuery() {
             return _dbContext.Transactions
-                .Include(x => x.Category)
-                .Include(x => x.Category.Group)
-                .Include(x => x.Account);
+                    .Where(x => x.Exclude == false)
+                    .Include(x => x.Category)
+                    .Include(x => x.Category.Group)
+                    .Include(x => x.Account);
         }
 
         public IQueryable<Transaction> Get(SearchCriteria searchCriteria) {

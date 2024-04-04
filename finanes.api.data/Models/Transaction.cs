@@ -35,5 +35,7 @@ namespace finances.api.Data.Models {
                 //Period = value.Month;
             }
         }
+
+        public bool Exclude { get; set; }
     }
 }

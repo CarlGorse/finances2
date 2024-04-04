@@ -47,7 +47,9 @@ function TransactionList() {
         EndYear: selectedYearAndPeriod.EndYear,
         EndPeriod: selectedYearAndPeriod.EndPeriod,
       },
-      PageNo: pageNo
+      PageNo: pageNo,
+      IncludeRunningTotals: true,
+      IncludeWageTotals: true
     }, {
       headers: {
         "Content-Type": "application/json"
@@ -55,7 +57,7 @@ function TransactionList() {
     })
       .then(response => {
 
-        setTransactions(response.data.transactions); 
+        setTransactions(response.data.transactions);
 
         pageCount.current = response.data.PageCount;
 

@@ -12,7 +12,7 @@ function YearAndPeriodSelector() {
   const years = ["2019", "2020", "2021", "2022", "2023", "2024"]
 
   function UpdateSelectedStartYearAndPeriod(propertyName, value) {
-    setSelectedStartYearAndPeriod(prevState => ({ ...prevState, [propertyName]: value }))
+    setSelectedYearAndPeriod(prevState => ({ ...prevState, [propertyName]: value }))
   }
 
   function UpdateSelectedEndYearAndPeriod(propertyName, value) {

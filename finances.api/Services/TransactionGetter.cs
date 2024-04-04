@@ -46,11 +46,14 @@ namespace finances.api.Services {
                 else {
 
                     var transactionsForSearchCriteria = _transactionRepository.Get(x =>
-                        x.EffDate.Year >= searchCriteria.StartYear
-                        && x.EffDate.Year <= searchCriteria.EndYear
-                        && x.EffDate.Month >= searchCriteria.StartPeriod
-                        && x.EffDate.Month <= searchCriteria.EndPeriod
-                        && x.AccountId == searchCriteria.AccountId);
+                        x.AccountId == searchCriteria.AccountId
+                        && (x.EffDate.Year > searchCriteria.StartYear || (x.EffDate.Year == searchCriteria.StartYear && (x.EffDate.Month >= searchCriteria.StartPeriod)))
+                        && (x.EffDate.Year < searchCriteria.EndYear || (x.EffDate.Year == searchCriteria.EndYear && (x.EffDate.Month <= searchCriteria.EndPeriod)))
+                    );
+
+                    transactionsForSearchCriteria = transactionsForSearchCriteria
+                                                    .OrderByDescending(x => x.EffDate)
+                                                    .ToList();
 
                     if (includeRunningTotals) {
                         SetRunningTotals(transactionsForSearchCriteria, searchCriteria);
@@ -62,7 +65,7 @@ namespace finances.api.Services {
                             _pageSize,
                             pageNo).ToList();
 
-                        pageCount = PagingLogic.GetPageCount(transactionsForSearchCriteria.Count, _pageSize);
+                        pageCount = PagingLogic.GetPageCount(transactionsForSearchCriteria.Count(), _pageSize);
                     }
                     else {
                         transactionsOutput = transactionsForSearchCriteria;
@@ -101,30 +104,36 @@ namespace finances.api.Services {
             }
         }//
 
-        private void SetRunningTotals(ICollection<Transaction> transactions, SearchCriteria searchCriteria) {
+        private void SetRunningTotals(ICollection<Transaction> transactionsOrdered, SearchCriteria searchCriteria) {
+
+            if (!transactionsOrdered.Any()) {
+                return;
+            }
 
             var transactionComparer = new TransactionComparer();
 
             var previousYearAndPeriod = _yearAndPeriodService.GetPreviousYearAndPeriod(new YearAndPeriod(searchCriteria.StartYear, searchCriteria.StartPeriod));
 
             var previousTransactions = _transactionRepository.Get(x =>
-                x.EffDate.Year <= previousYearAndPeriod.Year
-                && x.EffDate.Month <= previousYearAndPeriod.Period);
+                x.AccountId == searchCriteria.AccountId
+                && (x.EffDate.Year < previousYearAndPeriod.Year ||
+                    (x.EffDate.Year == previousYearAndPeriod.Year && x.EffDate.Month <= previousYearAndPeriod.Period)));
 
             var previousTransactionRunningTotal = previousTransactions.Sum(x => x.Credit) - previousTransactions.Sum(x => x.Debit);
 
-            var firstTransaction = transactions.ElementAt(0);
+            var firstTransaction = transactionsOrdered.ElementAt(transactionsOrdered.Count - 1);
             firstTransaction.AccountRunningTotal = previousTransactionRunningTotal
                                                     + firstTransaction.Credit
                                                     - firstTransaction.Debit;
 
             var previousTransaction = firstTransaction;
 
-            for (var x = 1; x < transactions.Count; x++) {
-                var transaction = transactions.ElementAt(x);
+            for (var x = transactionsOrdered.Count - 2; x >= 0; x--) {
+                var transaction = transactionsOrdered.ElementAt(x);
                 transaction.AccountRunningTotal = previousTransaction.AccountRunningTotal
                                                     + transaction.Credit
                                                     - transaction.Debit;
+                previousTransaction = transaction;
             }
         }
     }
