@@ -1,7 +1,7 @@
 import { Button } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
 import DropdownFilter from 'components/DropdownFilter'
-import {getYearsAndPeriodsFromPeriodCount, getPeriodCountFromYearsAndPeriods} from 'functions/YearsAndPeriodsFunctions';
+import { getYearsAndPeriodsFromPeriodCount, getPeriodCountFromYearsAndPeriods } from 'functions/YearsAndPeriodsFunctions';
 import { selectedYearAndPeriodAtom } from 'recoil/atoms/SelectedYearAndPeriodAtom';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from "recoil";
