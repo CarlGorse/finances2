@@ -92,7 +92,7 @@ namespace finances.api.Repositories {
                 existingItem.Description = newValues.Description;
             }
 
-            if (newValues.Item?.Length > 0 && newValues.Item != existingItem.Item) {
+            if (newValues.Item != existingItem.Item) {
                 existingItem.Item = newValues.Item;
             }
 
