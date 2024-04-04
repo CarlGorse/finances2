@@ -57,7 +57,7 @@ function StartYearAndPeriodSelector() {
       }}
       >{">"}</Button>
 
-      <Row>
+      <Row style={{ marginTop: "20px" }}>
         <Col xs={1}>From:</Col>
         <Col xs={1}>
           <DropdownFilter
