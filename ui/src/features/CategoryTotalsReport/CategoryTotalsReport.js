@@ -1,7 +1,6 @@
 import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
-import { Col, Container, Row, Table } from 'react-bootstrap';
-import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
+import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { formatCurrency } from 'functions/CurrencyFunctions'
 import { selectedBankAccountAtom } from "recoil/atoms/SelectedBankAccountAtom";
 import { selectedYearAndPeriodAtom } from "recoil/atoms/SelectedYearAndPeriodAtom";
@@ -14,7 +13,7 @@ import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 function CategoryTotalsReport() {
 
     const [categoryTotalsReport, setCategoryTotalsReport] = useState(null)
-    const lastTransactionsLoadDate = useRecoilValue(lastTransactionsLoadDateAtom);
+    const [doRefresh, setDoRefresh] = useState(false)
     const [loading, setLoading] = useState(null);
     const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
     const selectedYearAndPeriod = useRecoilValue(selectedYearAndPeriodAtom);
@@ -51,7 +50,7 @@ function CategoryTotalsReport() {
                     Variant: "danger"
                 })
             })
-    }, [selectedYearAndPeriod, setUserMessage, lastTransactionsLoadDate])
+    }, [selectedYearAndPeriod, setUserMessage, doRefresh])
 
     function _isSearchCriteriaValid(transactionSearch) {
         return transactionSearch.StartPeriod !== null
@@ -85,6 +84,7 @@ function CategoryTotalsReport() {
                             ))
                         }
                     </Row>
+                    <Button size="md" style={{ marginTop: "20px" }} onClick={() => setDoRefresh(prevValue => !prevValue)}>Refresh</Button>
 
                     <Row>
                         {/*
