@@ -1,7 +1,7 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { Col, Container, Row, Table } from 'react-bootstrap';
-import { doRefreshTransactionsAtom } from "recoil/atoms/DoRefreshTransactionsAtom";
+import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
 import { formatCurrency } from 'functions/Currency'
 import Spinner from 'components/Spinner'
 import { selectedBankAccountAtom } from "recoil/atoms/SelectedBankAccountAtom";
@@ -14,7 +14,7 @@ import StartYearAndPeriodSelector from './Components/StartYearAndPeriodSelector'
 function CategoryTotalsReport() {
 
     const [categoryTotalsReport, setCategoryTotalsReport] = useState(null)
-    const doRefreshTransactions = useRecoilValue(doRefreshTransactionsAtom);
+    const lastTransactionsLoadDate = useRecoilValue(lastTransactionsLoadDateAtom);
     const [loading, setLoading] = useState(null);
     const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
     const selectedYearAndPeriod = useRecoilValue(selectedYearAndPeriodAtom);
@@ -51,7 +51,7 @@ function CategoryTotalsReport() {
                     Variant: "danger"
                 })
             })
-    }, [selectedYearAndPeriod, setUserMessage, doRefreshTransactions])
+    }, [selectedYearAndPeriod, setUserMessage, lastTransactionsLoadDate])
 
     function _isSearchCriteriaValid(transactionSearch) {
         return transactionSearch.StartPeriod !== null

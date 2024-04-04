@@ -3,7 +3,7 @@ import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
 import { formatDateTimeAsDateYYYYMMDD } from 'functions/DateTime'
-import { doRefreshTransactionsAtom } from "recoil/atoms/DoRefreshTransactionsAtom";
+import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
@@ -15,7 +15,7 @@ function Edit() {
 
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
     const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
-    const setDoRefreshTransactions = useSetRecoilState(doRefreshTransactionsAtom);
+    const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const transactionToEdit = useRecoilValue(addEditTransactionAtom);
     const transactionOperation = useRecoilValue(transactionOperationAtom);
@@ -70,8 +70,8 @@ function Edit() {
                 "Content-Type": "application/json"
             }
         })
-            .then(function (response) {
-                setDoRefreshTransactions(prevValue => !prevValue); // to await this we'd have to know when the load finished
+            .then(function () {
+                setLastTransactionsLoadDate(new Date()); 
                 setUserMessage({
                     Message: "Transaction saved.",
                     Variant: "success"

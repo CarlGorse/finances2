@@ -1,6 +1,6 @@
 import { apiBaseUrl } from 'functions/Api';
 import axios from 'axios';
-import { doRefreshTransactionsAtom } from "recoil/atoms/DoRefreshTransactionsAtom";
+import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
 import NavigationButtons from './Components/NavigationButtons'
 import { selectedBankAccountAtom } from "recoil/atoms/SelectedBankAccountAtom";
 import { selectedTransactionsAtom } from "recoil/atoms/SelectedTransactionsAtom";
@@ -15,7 +15,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 
 function TransactionList() {
 
-  const doRefreshTransactions = useRecoilValue(doRefreshTransactionsAtom);
+  const lastTransactionsLoadDate = useRecoilValue(lastTransactionsLoadDateAtom);
   const [loading, setLoading] = useState(null);
   const [pageNo, setPageNo] = useState(1);
   const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
@@ -71,7 +71,7 @@ function TransactionList() {
           Variant: "danger"
         })
       })
-  }, [selectedYearAndPeriod, selectedBankAccount, doRefreshTransactions, pageNo, setUserMessage])
+  }, [selectedYearAndPeriod, selectedBankAccount, lastTransactionsLoadDate, pageNo, setUserMessage])
 
   function _isSearchCriteriaValid() {
     return selectedBankAccount !== null
