@@ -1,14 +1,12 @@
 import { Col, Row } from 'react-bootstrap';
-import DropdownFilter from '../../../components/DropdownFilter'
-import { selectedStartYearAndPeriodAtom } from 'recoil/atoms/SelectedStartYearAndPeriodAtom';
+import DropdownFilter from 'components/DropdownFilter'
 import { selectedYearAndPeriodAtom } from 'recoil/atoms/SelectedYearAndPeriodAtom';
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 function YearAndPeriodSelector() {
 
   const periods = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
   const [selectedYearAndPeriod, setSelectedYearAndPeriod] = useRecoilState(selectedYearAndPeriodAtom);
-  const setSelectedStartYearAndPeriod = useSetRecoilState(selectedStartYearAndPeriodAtom);
   const years = ["2019", "2020", "2021", "2022", "2023", "2024"]
 
   function UpdateSelectedStartYearAndPeriod(propertyName, value) {
