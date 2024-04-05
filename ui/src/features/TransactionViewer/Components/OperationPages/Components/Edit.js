@@ -7,7 +7,7 @@ import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
 function Edit() {
@@ -18,6 +18,7 @@ function Edit() {
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const transactionToEdit = useRecoilValue(addEditTransactionAtom);
     const transactionOperation = useRecoilValue(transactionOperationAtom);
+    const [saveButtonEnabled, setSaveButtonEnabled] = useState(false);
 
     const showForm = transactionOperation === "Edit"
     const hasValidSelection = selectedTransactions?.length === 1
@@ -70,12 +71,11 @@ function Edit() {
             }
         })
             .then(function () {
-                setLastTransactionsLoadDate(new Date()); 
+                setLastTransactionsLoadDate(new Date());
                 setUserMessage({
                     Message: "Transaction saved.",
                     Variant: "success"
                 })
-                //CancelTransactionOperation()
             })
             .catch(function (error) {
                 setUserMessage({
@@ -87,9 +87,9 @@ function Edit() {
 
     return (
         <>
-            <AddEdit transactionOperation={transactionOperation} />
+            <AddEdit transactionOperation={transactionOperation} onUpdate={() => setSaveButtonEnabled(true)} />
 
-            <SaveAndCancelButtons save={() => Save()} />
+            <SaveAndCancelButtons save={() => Save()} saveButtonEnabled={saveButtonEnabled} />
 
         </ >
     );

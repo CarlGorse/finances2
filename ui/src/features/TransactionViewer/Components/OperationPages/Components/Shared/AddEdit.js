@@ -7,13 +7,14 @@ import { stringToCurrency } from 'functions/CurrencyFunctions';
 import { useEffect } from 'react'
 import { useRecoilState } from "recoil";
 
-function AddEdit() {
+function AddEdit({ onUpdate }) {
 
     const [addEditTransaction, setAddEditTransaction] = useRecoilState(addEditTransactionAtom);
     const [categories, setCategories] = useRecoilState(categoriesAtom);
 
-    async function updateTransactionPropertyValue(propertyName, value) {
+    async function updateTransaction(propertyName, value) {
         setAddEditTransaction(prevState => ({ ...prevState, [propertyName]: value }));
+        onUpdate();
     }
 
     useEffect(() => {
@@ -60,7 +61,7 @@ function AddEdit() {
                     <Form.Control
                         type="date"
                         value={addEditTransaction.EffDate}
-                        onChange={e => { updateTransactionPropertyValue("EffDate", e.target.value); }}
+                        onChange={e => { updateTransaction("EffDate", e.target.value); }}
                     />
                 </Col>
 
@@ -71,7 +72,7 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Select
                         value={addEditTransaction.CategoryId}
-                        onChange={e => updateTransactionPropertyValue("CategoryId", e.target.value)}>
+                        onChange={e => updateTransaction("CategoryId", e.target.value)}>
                         {
                             sortedCategories.map(category => (
                                 <option value={category.Id}>{`${category.Group.Name} | ${category.Name}`}</option>
@@ -91,8 +92,8 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Control
                         value={addEditTransaction.Debit}
-                        onChange={e => updateTransactionPropertyValue("Debit", e.target.value)}
-                        onBlur={e => updateTransactionPropertyValue("Debit", stringToCurrency(e.target.value))}
+                        onChange={e => updateTransaction("Debit", e.target.value)}
+                        onBlur={e => updateTransaction("Debit", stringToCurrency(e.target.value))}
                     />
                 </Col>
 
@@ -103,8 +104,8 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Control
                         value={addEditTransaction.Credit}
-                        onChange={e => updateTransactionPropertyValue("Credit", e.target.value)}
-                        onBlur={e => updateTransactionPropertyValue("Credit", stringToCurrency(e.target.value))}
+                        onChange={e => updateTransaction("Credit", e.target.value)}
+                        onBlur={e => updateTransaction("Credit", stringToCurrency(e.target.value))}
                     />
                 </Col>
 
@@ -119,7 +120,7 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Control
                         value={addEditTransaction.Description}
-                        onChange={e => updateTransactionPropertyValue("Description", e.target.value)}
+                        onChange={e => updateTransaction("Description", e.target.value)}
                     />
                 </Col>
 
@@ -130,7 +131,7 @@ function AddEdit() {
                 <Col xs={3}>
                     <Form.Control
                         value={addEditTransaction.Item}
-                        onChange={e => updateTransactionPropertyValue("Item", e.target.value)}
+                        onChange={e => updateTransaction("Item", e.target.value)}
                     />
                 </Col>
 
@@ -146,7 +147,7 @@ function AddEdit() {
                     <Form.Check
                         type="switch"
                         value={addEditTransaction.IsWage}
-                        onChange={e => { updateTransactionPropertyValue("IsWage", e.target.checked) }}
+                        onChange={e => { updateTransaction("IsWage", e.target.checked) }}
                     />
                 </Col>
 

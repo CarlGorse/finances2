@@ -2,7 +2,7 @@ import { Button } from 'react-bootstrap';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useSetRecoilState } from "recoil";
 
-function SaveAndCancelButtons({ save, saveButtonText, cancelButtonText }) {
+function SaveAndCancelButtons({ save, saveButtonText, cancelButtonText, saveButtonEnabled }) {
 
     const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
 
@@ -12,7 +12,7 @@ function SaveAndCancelButtons({ save, saveButtonText, cancelButtonText }) {
 
     return (
         <div style={{ marginTop: "20px" }}>
-            <Button size="sm" onClick={() => save()}>{saveButtonText ?? "Save"}</Button>
+            <Button size="sm" onClick={() => save()} disabled={!saveButtonEnabled}>{saveButtonText ?? "Save"}</Button>
             <Button style={{ marginLeft: "1px" }} size="sm" onClick={() => CancelTransactionOperation()}>{cancelButtonText ?? "Cancel"}</Button>
         </div>
     );
