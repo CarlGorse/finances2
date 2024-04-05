@@ -1,4 +1,3 @@
-import ClearButton from './ClearButton';
 import { Form } from 'react-bootstrap';
 import OperationButton from "./OperationButton";
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
@@ -33,9 +32,6 @@ function TransactionOperationButtons() {
 
     return (
         <Form>
-            <span>
-                <ClearButton />
-            </span>
             <span style={{ marginLeft: "20px" }}>
                 <OperationButton operation="Add" enabled={addIsEnabled} />
             </span>

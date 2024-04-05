@@ -1,11 +1,18 @@
-import { Col, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
+import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
+import { useRecoilState } from "recoil";
 
-function TransactionHeader() {
+function TransactionHeader({ showClearOption }) {
+
+  const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
+
+  let firstColMarkup;
+  firstColMarkup = showClearOption && <Form.Check checked={selectedTransactions?.length > 0} onClick={() => setSelectedTransactions(null)} />
 
   return (
     <Row>
-      <Col xs={1}>
-        <b>(select)</b>
+      <Col xs={1} className="text-center">
+        {firstColMarkup}
       </Col>
       <Col xs={1}>
         <b>Date</b>
@@ -24,7 +31,7 @@ function TransactionHeader() {
       </Col>
       <Col xs={2}>
       </Col>
-    </Row>
+    </Row >
   )
 }
 
