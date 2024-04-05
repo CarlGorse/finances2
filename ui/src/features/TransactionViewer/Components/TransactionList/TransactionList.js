@@ -7,8 +7,8 @@ import { selectedTransactionsAtom } from "recoil/atoms/SelectedTransactionsAtom"
 import { selectedYearAndPeriodAtom } from "recoil/atoms/SelectedYearAndPeriodAtom";
 import Spinner from 'components/Spinner'
 import { Table } from 'react-bootstrap';
-import TransactionHeader from './Components/TransactionHeader';
-import TransactionRow from '../../../../components/TransactionRow';
+import TransactionHeader from 'components/TransactionHeader';
+import TransactionRow from 'components/TransactionRow';
 import { useEffect, useRef, useState } from 'react';
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 import { useRecoilValue, useSetRecoilState } from "recoil";

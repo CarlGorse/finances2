@@ -5,6 +5,7 @@ import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { Table } from 'react-bootstrap';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
+import TransactionHeader from 'components/TransactionHeader';
 import TransactionRow from 'components/TransactionRow';
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -73,6 +74,11 @@ function Delete() {
             <div style={{ paddingTop: "10px" }} />
 
             <Table className="table-bordered">
+
+                <div style={{ paddingTop: "10px" }}>
+                    <TransactionHeader />
+                </div>
+
                 {selectedTransactions.map((transaction, index) => (
                     <TransactionRow
                         key={transaction.TransactionId}
