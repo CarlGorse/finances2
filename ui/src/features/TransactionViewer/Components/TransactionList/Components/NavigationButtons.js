@@ -1,58 +1,77 @@
-import { Button } from 'react-bootstrap'
+import MiddleRangeButton from './Components/MiddleRangeButton';
+import NextPageButton from './Components/NextPageButton';
+import Pagination from 'react-bootstrap/Pagination';
+import PageNumberButton from './Components/PageNumberButton';
+import PrevPageButton from './Components/PrevPageButton';
 
 function NavigationButtons({ pageNo, pageCount, onClick }) {
 
-  function onClickFirst() {
-    onClick(1)
+  // doesn't seem to work for other totals, e.g. 8
+  const maxPageNoButtonsPreMiddleRangeButton = 3;
+  const maxPageNoButtonsPostMiddleRangeButton = 3;
+  const maxPageNoButtons = maxPageNoButtonsPreMiddleRangeButton + maxPageNoButtonsPostMiddleRangeButton;
+
+  if (pageCount === 1) {
+    return null;
   }
 
-  function onClickPrev() {
-    onClick(prevValue => Math.max(prevValue - 1, 0))
+  let buttons = [];
+
+  if (pageCount > 1) {
+    buttons.push(
+      <PrevPageButton
+        pageNo={pageNo}
+        pageCount={pageCount}
+        onClick={() => onClick(prevPageNo => Math.max(prevPageNo - 1, 0))}
+      />);
   }
 
-  function onClickNext() {
-    onClick(prevValue => {
-      return Math.min(prevValue + 1, pageCount)
-    })
+  const showMiddleRangeButton = pageCount > maxPageNoButtons;
+
+  if (!showMiddleRangeButton) {
+
+    for (let ctr = 1; ctr <= Math.min(pageCount, maxPageNoButtons); ctr++) {
+      buttons.push(<PageNumberButton label={ctr} pageNo={pageNo} onClick={onClick} />);
+    }
+
+  }
+  else {
+
+    let lastPageNoButtonPreMiddleRange = Math.min(pageCount, maxPageNoButtonsPreMiddleRangeButton);
+
+    for (let ctr = 1; ctr <= lastPageNoButtonPreMiddleRange; ctr++) {
+      buttons.push(<PageNumberButton label={ctr} pageNo={pageNo} onClick={onClick} />);
+    }
+
+    const firstPageNoAfterMiddleRange = pageCount - maxPageNoButtonsPostMiddleRangeButton + 1;
+    const isMiddleRangeButtonActive = pageNo > lastPageNoButtonPreMiddleRange && pageNo < firstPageNoAfterMiddleRange;
+
+    buttons.push(
+      <MiddleRangeButton pageNo={pageNo} isActive={isMiddleRangeButtonActive} />
+    );
+
+    for (let ctr = firstPageNoAfterMiddleRange; ctr <= pageCount; ctr++) {
+      buttons.push(<PageNumberButton label={ctr} pageNo={pageNo} onClick={onClick} />);
+    }
   }
 
-  function onClickLast() {
-    onClick(pageCount)
-  }
+  if (pageCount > 1) {
+    buttons.push(<NextPageButton
+      pageNo={pageNo}
+      pageCount={pageCount}
+      onClick={() => onClick(prevValue => {
+        return Math.min(prevValue + 1, pageCount)
+      })}
+    />)
+  };
 
   return (
-    <>
-      <Button
-        disabled={pageCount <= 1 || pageNo === 1} onClick={() => onClickFirst()} size="sm">{"<<"}
-      </Button>
-
-      <Button
-        disabled={pageCount <= 1 || pageNo === 1}
-        onClick={() => onClickPrev()}
-        size="sm"
-        style={{ marginLeft: "1px" }}>{"<"}
-      </Button>
-
-      <span
-        style={{ marginLeft: "10px" }}>
-        Page {pageNo} of {pageCount}
-      </span>
-
-      <Button
-        disabled={pageCount <= 1 || pageNo === pageCount}
-        onClick={() => onClickNext()}
-        size="sm"
-        style={{ marginLeft: "10px" }}>{">"}
-      </Button>
-
-      <Button
-        disabled={pageCount <= 1 || pageNo === pageCount}
-        onClick={() => onClickLast()}
-        size="sm"
-        style={{ marginLeft: "1px" }}>{">>"}
-      </Button>
-    </>
+    <Pagination size="md" >
+      Select page:
+      {buttons}
+    </Pagination>
   )
+
 }
 
 export default NavigationButtons;

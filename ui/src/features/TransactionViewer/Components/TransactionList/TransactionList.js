@@ -93,7 +93,7 @@ function TransactionList() {
       </div>
 
       <div style={{ paddingTop: "10px" }}>
-        <TransactionHeader showClearOption={true} />
+        <TransactionHeader />
       </div>
 
       {loading && <><Spinner /><span>loading transactions</span></>}
