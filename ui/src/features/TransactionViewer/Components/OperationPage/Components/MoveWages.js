@@ -5,27 +5,17 @@ import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadD
 import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/CurrencyFunctions';
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
-import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 import { useState } from 'react'
 
-function MoveWages() {
-
-    const operation = "Move wages";
+function MoveWages({ handleClose }) {
 
     const [creditToMove, setCreditToMove] = useState(0);
     const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
     const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
-    const transactionOperation = useRecoilValue(transactionOperationAtom);
-
-    const showForm = transactionOperation === operation
 
     const setUserMessage = useSetRecoilState(userMessageAtom);
-
-    if (!showForm) {
-        return null;
-    }
 
     function Save() {
         axios.post(
@@ -161,7 +151,7 @@ function MoveWages() {
                 </Col>
             </Row>
 
-            <SaveAndCancelButtons save={() => Save()} />
+            <SaveAndCancelButtons save={() => Save()} handleClose={handleClose} />
 
         </>
     );

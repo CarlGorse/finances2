@@ -1,34 +1,22 @@
 import { Button } from 'react-bootstrap';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
+import { useRecoilState } from "recoil";
 
-function OperationButton({ operation, enabled }) {
+function OperationButton({ operation, enabled, description }) {
 
-    const setUserMessage = useSetRecoilState(userMessageAtom);
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
 
-    const variant = transactionOperation === operation ? "info" : "primary";
-
     const onClick = () => {
-        if (transactionOperation === operation) {
-            setTransactionOperation(null);
-            setUserMessage(null);
-        }
-        else {
-            setTransactionOperation(operation)
-        }
+        setTransactionOperation(operation)
     }
 
     return (
         <Button
-            variant={variant}
+            variant={transactionOperation === operation ? "info" : "primary"}
             onClick={onClick}
             disabled={!enabled}
         >
-
-            {operation}
-
+            {description}
         </Button>
     );
 }

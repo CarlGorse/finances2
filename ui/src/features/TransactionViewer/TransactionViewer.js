@@ -1,7 +1,7 @@
 import BankAccountSelector from './Components/BankAccountSelector';
 import { Container } from 'react-bootstrap';
 import OperationButtons from './Components/OperationButtons/OperationButtons';
-import OperationPage from './Components/OperationPages/OperationPage';
+import OperationPage from './Components/OperationPage/OperationPage';
 import TransactionList from './Components/TransactionList/TransactionList';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useRecoilState } from "recoil";

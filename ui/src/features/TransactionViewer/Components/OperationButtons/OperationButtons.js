@@ -1,7 +1,9 @@
 import { Form } from 'react-bootstrap';
+import { GetOperationProperties } from "functions/OperationFunctions";
 import OperationButton from "./OperationButton";
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { useRecoilValue } from "recoil";
+import { operationAdd, operationEdit, operationDelete, operationMoveWages } from "functions/OperationFunctions";
 
 function TransactionOperationButtons() {
 
@@ -12,37 +14,30 @@ function TransactionOperationButtons() {
     let editIsEnabled = false;
     let moveWagesIsEnabled = false;
 
+    addIsEnabled = GetOperationProperties(operationAdd, selectedTransactions).IsEnabled;
+
     if (selectedTransactions) {
-
-        if (selectedTransactions.length === 1) {
-            editIsEnabled = true;
-        }
-
-        if (selectedTransactions.length >= 1) {
-            deleteIsEnabled = true;
-        }
-
-        if (selectedTransactions?.length === 2
-            && selectedTransactions.filter(x => x.IsWage === true).length === 2
-            && selectedTransactions[0].EffDate === selectedTransactions[1].EffDate
-        ) {
-            moveWagesIsEnabled = true;
-        }
+        editIsEnabled = GetOperationProperties(operationEdit, selectedTransactions).IsEnabled;
+        deleteIsEnabled = GetOperationProperties(operationDelete, selectedTransactions).IsEnabled;
+        moveWagesIsEnabled = GetOperationProperties(operationMoveWages, selectedTransactions).IsEnabled;
     }
 
     return (
         <Form>
             <span style={{ marginLeft: "20px" }}>
-                <OperationButton operation="Add" enabled={addIsEnabled} />
+                <OperationButton operation="add" enabled={addIsEnabled} description="add" />
             </span>
+
             <span style={{ marginLeft: "1px" }}>
-                <OperationButton operation="Edit" enabled={editIsEnabled} />
+                <OperationButton operation="edit" enabled={editIsEnabled} description="edit" />
             </span >
+
             <span style={{ marginLeft: "1px" }}>
-                <OperationButton operation="Delete" enabled={deleteIsEnabled} />
+                <OperationButton operation="delete" enabled={deleteIsEnabled} description="delete" />
             </span >
+
             <span style={{ marginLeft: "1px" }}>
-                <OperationButton operation="Move wages" enabled={moveWagesIsEnabled} />
+                <OperationButton operation="move-wages" enabled={moveWagesIsEnabled} description="move wages" />
             </span >
         </Form >
     );

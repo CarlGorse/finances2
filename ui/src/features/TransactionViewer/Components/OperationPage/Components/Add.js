@@ -37,10 +37,6 @@ function Add({ handleClose }) {
             .then(function (response) {
                 setLastTransactionsLoadDate(new Date());
                 setSelectedTransactions([response.data.transaction]);
-                console.log(11);
-                console.log(response);
-                console.log(response.data);
-                console.log(response.data.transaction);
                 setUserMessage({
                     Message: "Transaction saved.",
                     Variant: "success"

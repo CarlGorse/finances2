@@ -7,21 +7,16 @@ import { Table } from 'react-bootstrap';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import TransactionHeader from 'components/TransactionHeader';
 import TransactionRow from 'components/TransactionRow';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
-function Delete() {
+function Delete({ handleClose }) {
 
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
-    const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
+    const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
 
-    const showForm = transactionOperation === "Delete"
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
-
-    if (!showForm) {
-        return null
-    }
 
     function Delete() {
 
@@ -63,7 +58,7 @@ function Delete() {
             <Table className="table-bordered">
 
                 <div style={{ paddingTop: "10px" }}>
-                    <TransactionHeader />
+                    <TransactionHeader showClearOption={false} />
                 </div>
 
                 {selectedTransactions.map((transaction, index) => (
@@ -79,6 +74,7 @@ function Delete() {
                 save={() => Delete()}
                 saveButtonText="Yes"
                 cancelButtonText="No"
+                handleClose={handleClose}
             />
 
         </>

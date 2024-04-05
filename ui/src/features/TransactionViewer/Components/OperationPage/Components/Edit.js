@@ -5,46 +5,38 @@ import axios from 'axios';
 import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
-import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect, useState } from 'react'
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
-function Edit() {
+function Edit({ handleClose }) {
 
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
     const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
     const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const transactionToEdit = useRecoilValue(addEditTransactionAtom);
-    const transactionOperation = useRecoilValue(transactionOperationAtom);
     const [saveButtonEnabled, setSaveButtonEnabled] = useState(false);
 
-    const showForm = transactionOperation === "Edit"
-
     useEffect(() => {
-        if (showForm) {
-            setUserMessage(null);
 
-            const selectedTransaction = selectedTransactions[0];
+        setUserMessage(null);
 
-            setAddEditTransaction({
-                AccountId: selectedTransaction.AccountId,
-                CategoryId: selectedTransaction.CategoryId,
-                Credit: selectedTransaction.Credit,
-                Debit: selectedTransaction.Debit,
-                Description: selectedTransaction.Description,
-                EffDate: selectedTransaction.EffDate,
-                IsWage: selectedTransaction.IsWage,
-                Item: selectedTransaction.Item,
-                TransactionId: selectedTransaction.TransactionId
-            });
-        }
-    }, [selectedTransactions, setUserMessage, showForm, setAddEditTransaction])
+        const selectedTransaction = selectedTransactions[0];
 
-    if (!showForm) {
-        return null
-    }
+        setAddEditTransaction({
+            AccountId: selectedTransaction.AccountId,
+            CategoryId: selectedTransaction.CategoryId,
+            Credit: selectedTransaction.Credit,
+            Debit: selectedTransaction.Debit,
+            Description: selectedTransaction.Description,
+            EffDate: selectedTransaction.EffDate,
+            IsWage: selectedTransaction.IsWage,
+            Item: selectedTransaction.Item,
+            TransactionId: selectedTransaction.TransactionId
+        });
+
+    }, [selectedTransactions, setUserMessage, setAddEditTransaction])
 
     function Save() {
         axios.post(
@@ -83,7 +75,7 @@ function Edit() {
         <>
             <AddEdit onUpdate={() => setSaveButtonEnabled(true)} />
 
-            <SaveAndCancelButtons save={() => Save()} saveButtonEnabled={saveButtonEnabled} />
+            <SaveAndCancelButtons save={() => Save()} saveButtonEnabled={saveButtonEnabled} handleClose={handleClose} />
 
         </ >
     );
