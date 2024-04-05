@@ -8,7 +8,7 @@ import { selectedYearAndPeriodAtom } from "recoil/atoms/SelectedYearAndPeriodAto
 import Spinner from 'components/Spinner'
 import { Table } from 'react-bootstrap';
 import TransactionHeader from './Components/TransactionHeader';
-import TransactionRow from './TransactionRow/TransactionRow';
+import TransactionRow from '../../../../components/TransactionRow';
 import { useEffect, useRef, useState } from 'react';
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -104,6 +104,7 @@ function TransactionList() {
           key={transaction.TransactionId}
           transaction={transaction}
           backgroundColor={index % 2 === 0 ? "lightGrey" : "white"}
+          colorOnSelect="limeGreen"
         />
       ))}
 

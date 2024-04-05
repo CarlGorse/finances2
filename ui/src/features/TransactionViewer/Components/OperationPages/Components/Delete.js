@@ -3,7 +3,9 @@ import axios from 'axios';
 import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
+import { Table } from 'react-bootstrap';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
+import TransactionRow from 'components/TransactionRow';
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
@@ -66,14 +68,26 @@ function Delete() {
 
     return (
         <>
-            <span>{`Do you wish to delete ${selectedTransactions.length === 1 ? 'this transaction' : `these ${selectedTransactions.length} transactions`}?`}</span>
-            <span style={{ marginLeft: "1px" }} >
-                <SaveAndCancelButtons
-                    save={() => Delete()}
-                    saveButtonText="Yes"
-                    cancelButtonText="No"
-                />
-            </span>
+            <span>{`Do you wish to delete ${selectedTransactions.length === 1 ? 'this transaction' : `these transactions`}?`}</span>
+
+            <div style={{ paddingTop: "10px" }} />
+
+            <Table className="table-bordered">
+                {selectedTransactions.map((transaction, index) => (
+                    <TransactionRow
+                        key={transaction.TransactionId}
+                        transaction={transaction}
+                        backgroundColor={index % 2 === 0 ? "lightGrey" : "white"}
+                    />
+                ))}
+            </Table>
+
+            <SaveAndCancelButtons
+                save={() => Delete()}
+                saveButtonText="Yes"
+                cancelButtonText="No"
+            />
+
         </>
     );
 }

@@ -1,15 +1,15 @@
 import { Col, Row } from 'react-bootstrap';
-import DescriptionBadge from './Components/DescriptionBadge';
+import DescriptionBadge from '../features/TransactionViewer/Components/TransactionList/TransactionRow/Components/DescriptionBadge';
 import Form from 'react-bootstrap/Form';
 import { formatCurrency } from 'functions/CurrencyFunctions';
-import ItemBadge from './Components/ItemBadge';
+import ItemBadge from '../features/TransactionViewer/Components/TransactionList/TransactionRow/Components/ItemBadge';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 //import styles from './TransactionRow.css';
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import WageTotalBadge from './Components/WageTotalBadge';
+import WageTotalBadge from '../features/TransactionViewer/Components/TransactionList/TransactionRow/Components/WageTotalBadge';
 
-function TransactionRow({ transaction, backgroundColor }) {
+function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
 
   const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
   const [isSelected, setIsSelected] = useState(false);
@@ -51,9 +51,10 @@ function TransactionRow({ transaction, backgroundColor }) {
 
   let categoryGroupText = `${transaction.Category.Group.Name} | ${transaction.Category.Name}`
 
+
   return (
 
-    <div style={{ backgroundColor: isSelected ? "limeGreen" : backgroundColor }}>
+    <div style={{ backgroundColor: colorOnSelect && isSelected ? colorOnSelect : backgroundColor }}>
 
       <Row style={{ margin: "0px" }} onClick={() => setShowDetail(prevValue => !prevValue)}>
 
