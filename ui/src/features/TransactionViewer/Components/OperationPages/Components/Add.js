@@ -5,38 +5,17 @@ import axios from 'axios';
 import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
-import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import { selectedBankAccountAtom } from 'recoil/atoms/SelectedBankAccountAtom';
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useEffect } from 'react'
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
-function Add() {
+function Add({ handleClose }) {
 
     const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
     const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const transactionToAdd = useRecoilValue(addEditTransactionAtom);
-    const transactionOperation = useRecoilValue(transactionOperationAtom);
     const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
-
-    const showForm = transactionOperation === "Add"
-    const hasValidSelection = true
-
-    useEffect(() => {
-        if (showForm) {
-            if (!hasValidSelection) {
-                setUserMessage({ Message: `You must deselect all transactions.`, Variant: "warning" });
-            }
-            else {
-                setUserMessage(null);
-            }
-        }
-    })
-
-    if (!showForm || !hasValidSelection) {
-        return null
-    }
 
     function Save() {
         axios.post(
@@ -57,11 +36,16 @@ function Add() {
         })
             .then(function (response) {
                 setLastTransactionsLoadDate(new Date());
-                setSelectedTransactions(response.data.transaction);
+                setSelectedTransactions([response.data.transaction]);
+                console.log(11);
+                console.log(response);
+                console.log(response.data);
+                console.log(response.data.transaction);
                 setUserMessage({
                     Message: "Transaction saved.",
                     Variant: "success"
                 })
+                handleClose();
             })
             .catch(function (error) {
                 setUserMessage({
@@ -73,9 +57,9 @@ function Add() {
 
     return (
         <>
-            <AddEdit transactionOperation={transactionOperation} />
+            <AddEdit />
 
-            <SaveAndCancelButtons save={() => Save()} />
+            <SaveAndCancelButtons save={() => Save()} handleClose={handleClose} saveButtonEnabled={true} />
         </>
     );
 }

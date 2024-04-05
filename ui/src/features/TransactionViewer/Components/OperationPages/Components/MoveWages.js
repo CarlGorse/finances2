@@ -6,9 +6,9 @@ import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/Cur
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
+import { useState } from 'react'
 
 function MoveWages() {
 
@@ -20,25 +20,10 @@ function MoveWages() {
     const transactionOperation = useRecoilValue(transactionOperationAtom);
 
     const showForm = transactionOperation === operation
-    const hasValidTransactionsSelected = selectedTransactions
-        && selectedTransactions.length === 2
-        && selectedTransactions.filter(x => x.IsWage === true).length === 2
-        && selectedTransactions[0].EffDate === selectedTransactions[1].EffDate
 
     const setUserMessage = useSetRecoilState(userMessageAtom);
 
-    useEffect(() => {
-        if (showForm) {
-            if (!hasValidTransactionsSelected) {
-                setUserMessage({ Message: `You must select two wage transactions and on the same date.`, Variant: "warning" });
-            }
-            else {
-                setUserMessage(null);
-            }
-        }
-    }, [showForm, hasValidTransactionsSelected, setUserMessage])
-
-    if (!showForm || !hasValidTransactionsSelected) {
+    if (!showForm) {
         return null;
     }
 

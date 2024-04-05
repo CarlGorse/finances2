@@ -21,34 +21,28 @@ function Edit() {
     const [saveButtonEnabled, setSaveButtonEnabled] = useState(false);
 
     const showForm = transactionOperation === "Edit"
-    const hasValidSelection = selectedTransactions?.length === 1
 
     useEffect(() => {
         if (showForm) {
-            if (!hasValidSelection) {
-                setUserMessage({ Message: `You must select a ${selectedTransactions?.length > 0 ? " single " : ""}transaction`, Variant: "warning" });
-            }
-            else {
-                setUserMessage(null);
+            setUserMessage(null);
 
-                const selectedTransaction = selectedTransactions[0];
+            const selectedTransaction = selectedTransactions[0];
 
-                setAddEditTransaction({
-                    AccountId: selectedTransaction.AccountId,
-                    CategoryId: selectedTransaction.CategoryId,
-                    Credit: selectedTransaction.Credit,
-                    Debit: selectedTransaction.Debit,
-                    Description: selectedTransaction.Description,
-                    EffDate: selectedTransaction.EffDate,
-                    IsWage: selectedTransaction.IsWage,
-                    Item: selectedTransaction.Item,
-                    TransactionId: selectedTransaction.TransactionId
-                });
-            }
+            setAddEditTransaction({
+                AccountId: selectedTransaction.AccountId,
+                CategoryId: selectedTransaction.CategoryId,
+                Credit: selectedTransaction.Credit,
+                Debit: selectedTransaction.Debit,
+                Description: selectedTransaction.Description,
+                EffDate: selectedTransaction.EffDate,
+                IsWage: selectedTransaction.IsWage,
+                Item: selectedTransaction.Item,
+                TransactionId: selectedTransaction.TransactionId
+            });
         }
-    }, [hasValidSelection, selectedTransactions, setUserMessage, showForm, setAddEditTransaction])
+    }, [selectedTransactions, setUserMessage, showForm, setAddEditTransaction])
 
-    if (!showForm || !hasValidSelection) {
+    if (!showForm) {
         return null
     }
 
@@ -87,7 +81,7 @@ function Edit() {
 
     return (
         <>
-            <AddEdit transactionOperation={transactionOperation} onUpdate={() => setSaveButtonEnabled(true)} />
+            <AddEdit onUpdate={() => setSaveButtonEnabled(true)} />
 
             <SaveAndCancelButtons save={() => Save()} saveButtonEnabled={saveButtonEnabled} />
 

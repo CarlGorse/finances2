@@ -1,22 +1,24 @@
 import BankAccountSelector from './Components/BankAccountSelector';
 import { Container } from 'react-bootstrap';
 import OperationButtons from './Components/OperationButtons/OperationButtons';
-import OperationPages from './Components/OperationPages/OperationPages';
+import OperationPage from './Components/OperationPages/OperationPage';
 import TransactionList from './Components/TransactionList/TransactionList';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import UserMessage from 'components/UserMessage'
+import { useEffect, useState } from 'react'
 import YearAndPeriodSelector from './Components/YearAndPeriodSelector';
 
 function TransactionViewer() {
 
-  const transactionOperation = useRecoilValue(transactionOperationAtom);
+  const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
+  const [show, setShow] = useState(false);
 
-  let operationPagesMarkup;
-
-  if (transactionOperation) {
-    operationPagesMarkup = <OperationPages />
-  }
+  useEffect(() => {
+    if (transactionOperation) {
+      setShow(true);
+    }
+  }, [transactionOperation])
 
   return (
 
@@ -37,7 +39,7 @@ function TransactionViewer() {
       </div>
 
       <div style={{ marginTop: "20px" }}>
-        {operationPagesMarkup}
+        <OperationPage show={show} handleClose={() => { setShow(false); setTransactionOperation(null); }} />
       </div>
 
       <div style={{ marginTop: "20px" }}>

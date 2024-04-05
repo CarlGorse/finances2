@@ -7,7 +7,6 @@ import { Table } from 'react-bootstrap';
 import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
 import TransactionHeader from 'components/TransactionHeader';
 import TransactionRow from 'components/TransactionRow';
-import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
@@ -17,22 +16,10 @@ function Delete() {
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
 
     const showForm = transactionOperation === "Delete"
-    const hasValidTransactionSelected = selectedTransactions?.length >= 1
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
 
-    useEffect(() => {
-        if (showForm) {
-            if (!hasValidTransactionSelected) {
-                setUserMessage({ Message: `You must select at least one transaction.`, Variant: "warning" });
-            }
-            else {
-                setUserMessage(null);
-            }
-        }
-    })
-
-    if (!showForm || !hasValidTransactionSelected) {
+    if (!showForm) {
         return null
     }
 
