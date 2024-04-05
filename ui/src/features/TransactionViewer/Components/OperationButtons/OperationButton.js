@@ -16,7 +16,6 @@ function OperationButton({ operation }) {
         if (transactionOperation === operation) {
             setTransactionOperation(null);
             setUserMessage(null);
-            setAddEditTransaction(null);
         }
         else {
             setTransactionOperation(operation)

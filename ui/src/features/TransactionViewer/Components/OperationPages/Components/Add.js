@@ -2,7 +2,6 @@ import AddEdit from './Shared/AddEdit';
 import { addEditTransactionAtom } from "recoil/atoms/AddEditTransactionAtom";
 import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
-import { categoriesAtom } from 'recoil/atoms/CategoriesAtom';
 import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
 import SaveAndCancelButtons from './Shared/SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'recoil/atoms/SelectedTransactionsAtom';
@@ -14,8 +13,6 @@ import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 
 function Add() {
 
-    const categories = useRecoilValue(categoriesAtom);
-    const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
     const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
     const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
@@ -24,7 +21,7 @@ function Add() {
     const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
 
     const showForm = transactionOperation === "Add"
-    const hasValidSelection = true//!selectedTransactions || selectedTransactions?.length === 0
+    const hasValidSelection = true
 
     useEffect(() => {
         if (showForm) {
@@ -37,55 +34,34 @@ function Add() {
         }
     })
 
-    useEffect(() => {
-        if (showForm) {
-
-            setAddEditTransaction({
-                TransactionId: null,
-                EffDate: (new Date()).toISOString().split('T')[0],
-                AccountId: null,
-                CategoryId: categories[0]?.CategoryId,
-                Credit: null,
-                Debit: 1,
-                IsWage: null,
-                Item: null,
-                Description: null
-            });
-        }
-    }, [categories, setAddEditTransaction, showForm])
-
     if (!showForm || !hasValidSelection) {
         return null
     }
 
-    const defaultTransactionToAdd = {
-        AccountId: selectedBankAccount.AccountId,
-        CategoryId: transactionToAdd?.CategoryId,
-        Credit: transactionToAdd?.Credit ?? 0,
-        Debit: transactionToAdd?.Debit ?? 0,
-        Description: transactionToAdd?.Description,
-        EffDate: transactionToAdd?.EffDate,
-        IsWage: transactionToAdd?.IsWage ?? false,
-        Item: transactionToAdd?.Item
-    }
-
     function Save() {
-
         axios.post(
             apiBaseUrl + "/transactions/add",
-            defaultTransactionToAdd, {
+            {
+                AccountId: selectedBankAccount.AccountId,
+                CategoryId: transactionToAdd.CategoryId,
+                Credit: transactionToAdd.Credit ?? 0,
+                Debit: transactionToAdd.Debit ?? 0,
+                Description: transactionToAdd.Description,
+                EffDate: transactionToAdd.EffDate,
+                IsWage: transactionToAdd.IsWage ?? false,
+                Item: transactionToAdd.Item
+            }, {
             headers: {
                 "Content-Type": "application/json"
             }
         })
             .then(function (response) {
                 setLastTransactionsLoadDate(new Date());
-                setSelectedTransactions([response.data.transaction]);
+                setSelectedTransactions(response.data.transaction);
                 setUserMessage({
                     Message: "Transaction saved.",
                     Variant: "success"
                 })
-                //CancelTransactionOperation()
             })
             .catch(function (error) {
                 setUserMessage({
