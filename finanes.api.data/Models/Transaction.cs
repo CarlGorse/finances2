@@ -5,8 +5,6 @@ namespace finances.api.Data.Models {
 
     public partial class Transaction {
 
-        private DateOnly _effDate;
-
         [Key]
         public int TransactionId { get; set; }
 
@@ -27,14 +25,7 @@ namespace finances.api.Data.Models {
 
         public Category Category { get; set; }
 
-        public DateOnly EffDate {
-            get => _effDate;
-            set {
-                _effDate = value;
-                //Year = value.Year;
-                //Period = value.Month;
-            }
-        }
+        public DateOnly EffDate { get; set; }
 
         public bool Exclude { get; set; }
     }

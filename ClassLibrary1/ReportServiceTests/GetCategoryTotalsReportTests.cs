@@ -49,7 +49,7 @@ namespace finances.api.test.integration.TransactionGetterTests {
                 }
             ]);
 
-            var actual = _reportService.GetCategoryTotalsReport(new SearchCriteria {
+            var actual = _reportService.GetCategoryTotalsReport(new YearAndPeriodSearch {
                 StartYear = 2023,
                 StartPeriod = 1,
                 EndYear = 2024,
@@ -95,7 +95,7 @@ namespace finances.api.test.integration.TransactionGetterTests {
                 }
             ]);
 
-            var actual = _reportService.GetCategoryTotalsReport(new SearchCriteria {
+            var actual = _reportService.GetCategoryTotalsReport(new YearAndPeriodSearch {
                 StartYear = 2023,
                 StartPeriod = 1,
                 EndYear = 2024,
@@ -139,7 +139,7 @@ namespace finances.api.test.integration.TransactionGetterTests {
                 }
             ]);
 
-            var actual = _reportService.GetCategoryTotalsReport(new SearchCriteria {
+            var actual = _reportService.GetCategoryTotalsReport(new YearAndPeriodSearch {
                 StartYear = 2023,
                 StartPeriod = 1,
                 EndYear = 2024,
@@ -189,7 +189,7 @@ namespace finances.api.test.integration.TransactionGetterTests {
                 }
             ]);
 
-            var actual = _reportService.GetCategoryTotalsReport(new SearchCriteria {
+            var actual = _reportService.GetCategoryTotalsReport(new YearAndPeriodSearch {
                 StartYear = 2023,
                 StartPeriod = 1,
                 EndYear = 2024,

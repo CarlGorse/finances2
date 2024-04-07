@@ -1,10 +1,10 @@
 ﻿using finances.api.Data.Models;
-using finances.api.Dto;
+using System;
 using System.Linq;
 
 namespace finances.api.Repositories {
 
     public interface ITransactionRepository : IEditableItemRepository<Transaction> {
-        IQueryable<Transaction> Get(SearchCriteria searchCriteria);
+        IQueryable<Transaction> Get(DateOnly startDate, DateOnly endDate);
     }
 }

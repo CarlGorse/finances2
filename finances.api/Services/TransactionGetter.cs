@@ -11,18 +11,19 @@ using System.Linq;
 namespace finances.api.Services {
 
     public class TransactionGetter(
-        ISearchCriteriaService searchCriteriaService,
+        IYearAndPeriodSearchValidationService searchCriteriaService,
         ITransactionRepository transactionRepository,
         IYearAndPeriodService yearAndPeriodService) : ITransactionGetter {
 
-        private readonly ISearchCriteriaService _searchCriteriaService = searchCriteriaService;
+        private readonly IYearAndPeriodSearchValidationService _searchCriteriaService = searchCriteriaService;
         private readonly ITransactionRepository _transactionRepository = transactionRepository;
         private readonly IYearAndPeriodService _yearAndPeriodService = yearAndPeriodService;
 
         private const int _pageSize = 100;
 
         public TransactionSearchResult Get(
-            SearchCriteria searchCriteria,
+            int accountId,
+            YearAndPeriodSearch yearAndPeriodSearch,
             int pageNo,
             bool includeWageTotals,
             bool includeRunningTotals) {
@@ -38,7 +39,7 @@ namespace finances.api.Services {
                     errors.Add($"PageNo must not be negative.");
                 }
 
-                _searchCriteriaService.ValidateSearchCriteria(searchCriteria, errors);
+                _searchCriteriaService.Validate(yearAndPeriodSearch, errors);
 
                 if (errors.Count > 0) {
                     serviceResult = ServiceResult.Invalid;
@@ -46,9 +47,9 @@ namespace finances.api.Services {
                 else {
 
                     var transactionsForSearchCriteria = _transactionRepository.Get(x =>
-                        x.AccountId == searchCriteria.AccountId
-                        && (x.EffDate.Year > searchCriteria.StartYear || (x.EffDate.Year == searchCriteria.StartYear && (x.EffDate.Month >= searchCriteria.StartPeriod)))
-                        && (x.EffDate.Year < searchCriteria.EndYear || (x.EffDate.Year == searchCriteria.EndYear && (x.EffDate.Month <= searchCriteria.EndPeriod)))
+                        x.AccountId == accountId
+                        && (x.EffDate.Year > yearAndPeriodSearch.StartYear || (x.EffDate.Year == yearAndPeriodSearch.StartYear && (x.EffDate.Month >= yearAndPeriodSearch.StartPeriod)))
+                        && (x.EffDate.Year < yearAndPeriodSearch.EndYear || (x.EffDate.Year == yearAndPeriodSearch.EndYear && (x.EffDate.Month <= yearAndPeriodSearch.EndPeriod)))
                     );
 
                     transactionsForSearchCriteria = transactionsForSearchCriteria
@@ -58,7 +59,7 @@ namespace finances.api.Services {
                                                     .ToList();
 
                     if (includeRunningTotals) {
-                        SetRunningTotals(transactionsForSearchCriteria, searchCriteria);
+                        SetRunningTotals(transactionsForSearchCriteria, accountId, yearAndPeriodSearch);
                     }
 
                     if (pageNo > 0) {
@@ -67,7 +68,7 @@ namespace finances.api.Services {
                             _pageSize,
                             pageNo).ToList();
 
-                        pageCount = PagingLogic.GetPageCount(transactionsForSearchCriteria.Count(), _pageSize);
+                        pageCount = PagingLogic.GetPageCount(transactionsForSearchCriteria.Count, _pageSize);
                     }
                     else {
                         transactionsOutput = transactionsForSearchCriteria;
@@ -106,18 +107,18 @@ namespace finances.api.Services {
             }
         }//
 
-        private void SetRunningTotals(ICollection<Transaction> transactionsOrdered, SearchCriteria searchCriteria) {
+        private void SetRunningTotals(ICollection<Transaction> transactionsOrdered, int accountId, YearAndPeriodSearch yearAndPeriodSearch) {
 
-            if (!transactionsOrdered.Any()) {
+            if (transactionsOrdered.Count == 0) {
                 return;
             }
 
             var transactionComparer = new TransactionComparer();
 
-            var previousYearAndPeriod = _yearAndPeriodService.GetPreviousYearAndPeriod(new YearAndPeriod(searchCriteria.StartYear, searchCriteria.StartPeriod));
+            var previousYearAndPeriod = _yearAndPeriodService.GetPreviousYearAndPeriod(new YearAndPeriod(yearAndPeriodSearch.StartYear, yearAndPeriodSearch.StartPeriod));
 
             var previousTransactions = _transactionRepository.Get(x =>
-                x.AccountId == searchCriteria.AccountId
+                x.AccountId == accountId
                 && (x.EffDate.Year < previousYearAndPeriod.Year ||
                     (x.EffDate.Year == previousYearAndPeriod.Year && x.EffDate.Month <= previousYearAndPeriod.Period)));
 

@@ -27,7 +27,7 @@ builder.Services.AddScoped<IEditableItemRepository<Group>, GroupRepository>();
 builder.Services.AddScoped<IEditableItemRepository<Transaction>, TransactionRepository>();
 builder.Services.AddScoped<IFinancesDbContext, AppDbContext>();
 builder.Services.AddScoped<IReportService, ReportService>();
-builder.Services.AddScoped<ISearchCriteriaService, SearchCriteriaService>();
+builder.Services.AddScoped<IYearAndPeriodSearchValidationService, YearAndPeriodSearchValidationService>();
 builder.Services.AddScoped<ITransactionGetter, TransactionGetter>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionManagementService, TransactionManagementService>();

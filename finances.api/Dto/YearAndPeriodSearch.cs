@@ -2,9 +2,8 @@
 
 namespace finances.api.Dto {
 
-    public class SearchCriteria {
+    public class YearAndPeriodSearch {
 
-        public int AccountId { get; set; }
         public int StartYear { get; set; }
         public int StartPeriod { get; set; }
         public int EndYear { get; set; }

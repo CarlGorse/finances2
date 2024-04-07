@@ -1,9 +1,9 @@
 ﻿using finances.api.Data;
 using finances.api.Data.Models;
-using finances.api.Dto;
 using finances.api.Functions;
 using finances.api.Logic;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace finances.api.Repositories {
@@ -26,10 +26,10 @@ namespace finances.api.Repositories {
                     .Include(x => x.Account);
         }
 
-        public IQueryable<Transaction> Get(SearchCriteria searchCriteria) {
+        public IQueryable<Transaction> Get(DateOnly startDate, DateOnly endDate) {
             return ItemsQuery().Where(x =>
-                    x.EffDate >= searchCriteria.StartDate
-                    && x.EffDate <= searchCriteria.EndDate);
+                    x.EffDate >= startDate
+                    && x.EffDate <= endDate);
         }
 
         public override IValidationResult IsValid(Transaction transaction) {

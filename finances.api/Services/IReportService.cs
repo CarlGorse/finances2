@@ -4,6 +4,6 @@ using finances.api.Dto.ReportService;
 namespace finances.api.Services {
 
     public interface IReportService {
-        CategoryTotalsReport GetCategoryTotalsReport(SearchCriteria searchCriteria);
+        CategoryTotalsReport GetCategoryTotalsReport(YearAndPeriodSearch yearAndPeriodSearch);
     }
 }

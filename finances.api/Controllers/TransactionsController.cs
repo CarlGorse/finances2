@@ -22,7 +22,8 @@ namespace finances.api.Controllers {
         public IActionResult Get([FromBody] GetTransactionsModel model) {
 
             var result = transacrionGetter.Get(
-                model.SearchCriteria,
+                model.AccountId,
+                model.YearAndPeriodSearch,
                 model.PageNo,
                 model.IncludeWageTotals,
                 model.IncludeRunningTotals);

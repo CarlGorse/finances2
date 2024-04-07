@@ -12,22 +12,22 @@ namespace finances.api.Services {
 
     public class ReportService(
         IGroupRepository groupRepository,
-        ISearchCriteriaService searchCriteriaService,
+        IYearAndPeriodSearchValidationService searchCriteriaService,
         IYearAndPeriodService yearAndPeriodService,
         ITransactionRepository transactionsRepository,
         ICategoryRepository categoryRepository) : IReportService {
 
         private readonly ICategoryRepository _categoryRepository = categoryRepository;
         private readonly IGroupRepository _groupRepository = groupRepository;
-        private readonly ISearchCriteriaService _searchCriteriaService = searchCriteriaService;
+        private readonly IYearAndPeriodSearchValidationService _searchCriteriaService = searchCriteriaService;
         private readonly IYearAndPeriodService _yearAndPeriodService = yearAndPeriodService;
         private readonly ITransactionRepository _transactionsRepository = transactionsRepository;
 
-        public CategoryTotalsReport GetCategoryTotalsReport(SearchCriteria searchCriteria) {
+        public CategoryTotalsReport GetCategoryTotalsReport(YearAndPeriodSearch searchCriteria) {
 
             List<string> errors = [];
 
-            _searchCriteriaService.ValidateSearchCriteria(searchCriteria, errors);
+            _searchCriteriaService.Validate(searchCriteria, errors);
 
             if (errors.Count > 0) {
                 return new CategoryTotalsReport {
@@ -46,7 +46,7 @@ namespace finances.api.Services {
 
             var groups = _groupRepository.All().ToList();
 
-            var transactions = _transactionsRepository.Get(searchCriteria);
+            var transactions = _transactionsRepository.Get(searchCriteria.StartDate, searchCriteria.EndDate);
             var allTransactions = _transactionsRepository.All();
 
             var groupTotals = GetGroupTotals(transactions, allTransactions);

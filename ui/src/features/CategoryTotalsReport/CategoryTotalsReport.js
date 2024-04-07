@@ -2,26 +2,25 @@ import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { formatCurrency } from 'functions/CurrencyFunctions'
-import { selectedBankAccountAtom } from "recoil/atoms/SelectedBankAccountAtom";
-import { selectedYearAndPeriodAtom } from "recoil/atoms/SelectedYearAndPeriodAtom";
+import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions'
 import Spinner from 'components/Spinner'
 import StartYearAndPeriodSelector from './Components/StartYearAndPeriodSelector'
 import { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
+import { yearAndPeriodSearchAtom } from "recoil/atoms/YearAndPeriodSearchAtom";
 
 function CategoryTotalsReport() {
 
     const [categoryTotalsReport, setCategoryTotalsReport] = useState(null)
     const [doRefresh, setDoRefresh] = useState(false)
     const [loading, setLoading] = useState(null);
-    const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
-    const selectedYearAndPeriod = useRecoilValue(selectedYearAndPeriodAtom);
+    const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
 
     useEffect(() => {
 
-        if (!_isSearchCriteriaValid(selectedYearAndPeriodAtom)
+        if (!isYearAndPeriodSearchValid(yearAndPeriodSearch)
         ) {
             return () => { };
         }
@@ -29,11 +28,10 @@ function CategoryTotalsReport() {
         setLoading(true);
 
         axios.post(apiBaseUrl + "/reportTotals/getCategoryTotals", {
-            AccountId: selectedBankAccount.AccountId,
-            StartYear: selectedYearAndPeriod.StartYear,
-            StartPeriod: selectedYearAndPeriod.StartPeriod,
-            EndYear: selectedYearAndPeriod.EndYear,
-            EndPeriod: selectedYearAndPeriod.EndPeriod,
+            StartYear: yearAndPeriodSearch.StartYear,
+            StartPeriod: yearAndPeriodSearch.StartPeriod,
+            EndYear: yearAndPeriodSearch.EndYear,
+            EndPeriod: yearAndPeriodSearch.EndPeriod,
         }, {
             headers: {
                 "Content-Type": "application/json"
@@ -50,14 +48,7 @@ function CategoryTotalsReport() {
                     Variant: "danger"
                 })
             })
-    }, [selectedYearAndPeriod, setUserMessage, doRefresh])
-
-    function _isSearchCriteriaValid(transactionSearch) {
-        return transactionSearch.StartPeriod !== null
-            || transactionSearch.StartYear !== null
-            || transactionSearch.EndPeriod !== null
-            || transactionSearch.EndYear !== null
-    }
+    }, [yearAndPeriodSearch, setUserMessage, doRefresh])
 
     if (!categoryTotalsReport) {
         return null;

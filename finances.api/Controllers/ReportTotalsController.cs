@@ -12,9 +12,9 @@ namespace finances.api.Controllers {
         private readonly IReportService _reportService = reportService;
 
         [HttpPost]
-        public IActionResult GetCategoryTotals([FromBody] SearchCriteria searchCriteria) {
+        public IActionResult GetCategoryTotals([FromBody] YearAndPeriodSearch yearAndPeriodSearch) {
 
-            var report = _reportService.GetCategoryTotalsReport(searchCriteria);
+            var report = _reportService.GetCategoryTotalsReport(yearAndPeriodSearch);
 
             return ReturnActionForServiceResult(
                 report.ServiceResult,

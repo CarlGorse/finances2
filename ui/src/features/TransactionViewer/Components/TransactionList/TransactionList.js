@@ -1,17 +1,18 @@
 import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { Container, Row } from 'react-bootstrap';
+import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions'
 import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
 import NavigationButtons from './Components/NavigationButtons'
 import { selectedBankAccountAtom } from "recoil/atoms/SelectedBankAccountAtom";
 import { selectedTransactionsAtom } from "recoil/atoms/SelectedTransactionsAtom";
-import { selectedYearAndPeriodAtom } from "recoil/atoms/SelectedYearAndPeriodAtom";
 import Spinner from 'components/Spinner'
 import TransactionHeader from 'components/TransactionHeader';
 import TransactionRow from 'components/TransactionRow';
 import { useEffect, useRef, useState } from 'react';
 import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { yearAndPeriodSearchAtom } from 'recoil/atoms/YearAndPeriodSearchAtom';
 
 function TransactionList() {
 
@@ -19,7 +20,7 @@ function TransactionList() {
   const [loading, setLoading] = useState(null);
   const [pageNo, setPageNo] = useState(1);
   const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
-  const selectedYearAndPeriod = useRecoilValue(selectedYearAndPeriodAtom);
+  const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchAtom);
   const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
   const setUserMessage = useSetRecoilState(userMessageAtom);
   const [transactions, setTransactions] = useState(null);
@@ -28,11 +29,11 @@ function TransactionList() {
 
   useEffect(() => {
     setPageNo(1);
-  }, [selectedYearAndPeriod])
+  }, [yearAndPeriodSearch])
 
   useEffect(() => {
 
-    if (!_isSearchCriteriaValid()
+    if (!isYearAndPeriodSearchValid(yearAndPeriodSearch)
     ) {
       return () => { };
     }
@@ -40,12 +41,12 @@ function TransactionList() {
     setLoading(true);
 
     axios.post(apiBaseUrl + "/transactions/get", {
-      searchCriteria: {
-        AccountId: selectedBankAccount.AccountId,
-        StartYear: selectedYearAndPeriod.StartYear,
-        StartPeriod: selectedYearAndPeriod.StartPeriod,
-        EndYear: selectedYearAndPeriod.EndYear,
-        EndPeriod: selectedYearAndPeriod.EndPeriod,
+      AccountId: selectedBankAccount.AccountId,
+      YearAndPeriodSearch: {
+        StartYear: yearAndPeriodSearch.StartYear,
+        StartPeriod: yearAndPeriodSearch.StartPeriod,
+        EndYear: yearAndPeriodSearch.EndYear,
+        EndPeriod: yearAndPeriodSearch.EndPeriod,
       },
       PageNo: pageNo,
       IncludeRunningTotals: true,
@@ -71,15 +72,7 @@ function TransactionList() {
           Variant: "danger"
         })
       })
-  }, [selectedYearAndPeriod, selectedBankAccount, lastTransactionsLoadDate, pageNo, setUserMessage])
-
-  function _isSearchCriteriaValid() {
-    return selectedBankAccount !== null
-      || selectedYearAndPeriod.StartPeriod !== null
-      || selectedYearAndPeriod.StartYear !== null
-      || selectedYearAndPeriod.EndPeriod !== null
-      || selectedYearAndPeriod.EndYear !== null
-  }
+  }, [yearAndPeriodSearch, selectedBankAccount, lastTransactionsLoadDate, pageNo, setUserMessage])
 
   return (
 

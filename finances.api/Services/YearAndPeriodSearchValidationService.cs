@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace finances.api.Services {
 
-    public class SearchCriteriaService() : ISearchCriteriaService {
+    public class YearAndPeriodSearchValidationService() : IYearAndPeriodSearchValidationService {
 
-        public void ValidateSearchCriteria(SearchCriteria searchCriteria, ICollection<string> validationErrors) {
+        public void Validate(YearAndPeriodSearch searchCriteria, ICollection<string> validationErrors) {
 
             if (searchCriteria == null) {
                 validationErrors.Add("Search criteria must be provided.");

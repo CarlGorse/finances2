@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
-export const selectedYearAndPeriodAtom = atom({
-    key: "SelectedYearAndPeriodState",
+export const yearAndPeriodSearchAtom = atom({
+    key: "YearAndPeriodSearchState",
     default: {
         StartYear: 2024,
         EndYear: 2024,
