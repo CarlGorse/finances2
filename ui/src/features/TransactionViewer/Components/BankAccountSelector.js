@@ -50,7 +50,7 @@ function BankAccountSelector() {
 
   return (
     <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic" >
+      <Dropdown.Toggle size="lg" variant="success" id="dropdown-basic" >
         {title}
       </Dropdown.Toggle>
 
