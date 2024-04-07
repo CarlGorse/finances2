@@ -62,7 +62,7 @@ function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
           <Form.Check checked={isSelected} onChange={() => onCheck()} />
         </Col>
 
-        <Col className="tableCell" xs={1}>
+        <Col className="tableCell" xs={2}>
           {transaction.EffDate}
         </Col>
 

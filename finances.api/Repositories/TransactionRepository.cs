@@ -1,9 +1,11 @@
 ﻿using finances.api.Data;
 using finances.api.Data.Models;
+using finances.api.Dto;
 using finances.api.Functions;
 using finances.api.Logic;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace finances.api.Repositories {
@@ -24,6 +26,14 @@ namespace finances.api.Repositories {
                     .Include(x => x.Category)
                     .Include(x => x.Category.Group)
                     .Include(x => x.Account);
+        }
+
+        public ICollection<Transaction> Get(int accountId, YearAndPeriodSearch yearAndPeriodSearch) {
+            return ItemsQuery().Where(x =>
+                        x.AccountId == accountId
+                        && (x.EffDate.Year > yearAndPeriodSearch.StartYear || (x.EffDate.Year == yearAndPeriodSearch.StartYear && (x.EffDate.Month >= yearAndPeriodSearch.StartPeriod)))
+                        && (x.EffDate.Year < yearAndPeriodSearch.EndYear || (x.EffDate.Year == yearAndPeriodSearch.EndYear && (x.EffDate.Month <= yearAndPeriodSearch.EndPeriod))))
+                    .ToList();
         }
 
         public IQueryable<Transaction> Get(DateOnly startDate, DateOnly endDate) {

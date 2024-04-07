@@ -3,6 +3,7 @@ import axios from 'axios';
 import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions'
 import { loadedTransactionsAtom } from "recoil/atoms/LoadedTransactionsAtom";
 import { selectedBankAccountAtom } from "recoil/atoms/SelectedBankAccountAtom";
+import { transactionsPageSizeAtom } from "recoil/atoms/TransactionsPageSizeAtom";
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { yearAndPeriodSearchAtom } from 'recoil/atoms/YearAndPeriodSearchAtom';
@@ -14,6 +15,7 @@ function useLoadTransactions() {
   const [pageNo] = useState(1);
   const setLoadedTransactions = useSetRecoilState(loadedTransactionsAtom);
   const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
+  const transactionsPageSize = useRecoilValue(transactionsPageSizeAtom);
   const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchAtom);
 
   useEffect(() => {
@@ -55,12 +57,17 @@ function useLoadTransactions() {
           EndPeriod: yearAndPeriodSearch.EndPeriod,
         },
         PageNo: pageNo,
+        PageSize: transactionsPageSize,
         IncludeRunningTotals: true,
         IncludeWageTotals: true
       }
     }
 
     function IsModelValid(model) {
+
+      if (!model.PageSize > 0) {
+        return false;
+      }
 
       if (model.YearAndPeriodSearch.EndYear < model.YearAndPeriodSearch.StartYear) {
         return false;
@@ -73,7 +80,7 @@ function useLoadTransactions() {
 
       return true;
     }
-  }, [pageNo, selectedBankAccount, yearAndPeriodSearch, setLoadedTransactions])
+  }, [pageNo, selectedBankAccount, yearAndPeriodSearch, setLoadedTransactions, transactionsPageSize])
 
   return pageCount.current;
 }

@@ -19,63 +19,56 @@ namespace finances.api.Services {
         private readonly ITransactionRepository _transactionRepository = transactionRepository;
         private readonly IYearAndPeriodService _yearAndPeriodService = yearAndPeriodService;
 
-        private const int _pageSize = 100;
-
-        public TransactionSearchResult Get(
-            int accountId,
-            YearAndPeriodSearch yearAndPeriodSearch,
-            int pageNo,
-            bool includeWageTotals,
-            bool includeRunningTotals) {
+        public TransactionSearchResult Get(GetTransactionsParams parms) {
 
             List<string> errors = [];
             var pageCount = 0;
-            ICollection<Transaction> transactionsOutput = [];
+            ICollection<Transaction> pagedTransactions = [];
             ServiceResult serviceResult;
 
             try {
 
-                if (pageNo < 0) {
+                if (parms.PageNo < 0) {
                     errors.Add($"PageNo must not be negative.");
                 }
 
-                _searchCriteriaService.Validate(yearAndPeriodSearch, errors);
+                if (parms.PageSize <= 0) {
+                    errors.Add($"PageSize must be greater than zero.");
+                }
+
+                _searchCriteriaService.Validate(parms.YearAndPeriodSearch, errors);
 
                 if (errors.Count > 0) {
                     serviceResult = ServiceResult.Invalid;
                 }
                 else {
 
-                    var transactionsForSearchCriteria = _transactionRepository.Get(x =>
-                        x.AccountId == accountId
-                        && (x.EffDate.Year > yearAndPeriodSearch.StartYear || (x.EffDate.Year == yearAndPeriodSearch.StartYear && (x.EffDate.Month >= yearAndPeriodSearch.StartPeriod)))
-                        && (x.EffDate.Year < yearAndPeriodSearch.EndYear || (x.EffDate.Year == yearAndPeriodSearch.EndYear && (x.EffDate.Month <= yearAndPeriodSearch.EndPeriod)))
-                    );
+                    var filteredTransactions = _transactionRepository.Get(parms.AccountId, parms.YearAndPeriodSearch);
 
-                    transactionsForSearchCriteria = transactionsForSearchCriteria
-                                                    .OrderByDescending(x => x.EffDate)
-                                                    .ThenBy(x => x.IsWage ? $"{x.Category.Group.Name} | {x.Category.Name}" : "")
-                                                    .ThenByDescending(x => !x.IsWage ? x.Id : 1)
-                                                    .ToList();
+                    var orderedTransactions = filteredTransactions
+                                                .OrderByDescending(x => x.EffDate)
+                                                .ThenBy(x => x.IsWage ? $"{x.Category.Group.Name} | {x.Category.Name}" : "")
+                                                .ThenByDescending(x => !x.IsWage ? x.Id : 1)
+                                                .ToList();
 
-                    if (includeRunningTotals) {
-                        SetRunningTotals(transactionsForSearchCriteria, accountId, yearAndPeriodSearch);
+                    if (parms.IncludeRunningTotals) {
+                        SetRunningTotals(orderedTransactions, parms.AccountId, parms.YearAndPeriodSearch);
                     }
 
-                    if (pageNo > 0) {
-                        transactionsOutput = PagingLogic.GetPagedItems(
-                            transactionsForSearchCriteria.ToList(),
-                            _pageSize,
-                            pageNo).ToList();
+                    if (parms.PageNo > 0) {
+                        pagedTransactions = PagingLogic.GetPagedItems(
+                            filteredTransactions.ToList(),
+                            parms.PageSize,
+                            parms.PageNo).ToList();
 
-                        pageCount = PagingLogic.GetPageCount(transactionsForSearchCriteria.Count, _pageSize);
+                        pageCount = PagingLogic.GetPageCount(orderedTransactions.Count, parms.PageSize);
                     }
                     else {
-                        transactionsOutput = transactionsForSearchCriteria;
+                        pagedTransactions = orderedTransactions;
                     }
 
-                    if (includeWageTotals) {
-                        SetWageTotals(transactionsOutput);
+                    if (parms.IncludeWageTotals) {
+                        SetWageTotals(pagedTransactions);
                     }
 
                     serviceResult = ServiceResult.Ok;
@@ -89,7 +82,7 @@ namespace finances.api.Services {
             return new TransactionSearchResult {
                 PageCount = pageCount,
                 Result = serviceResult,
-                Transactions = transactionsOutput
+                Transactions = pagedTransactions
             };
         }
 
@@ -107,7 +100,7 @@ namespace finances.api.Services {
             }
         }//
 
-        private void SetRunningTotals(ICollection<Transaction> transactionsOrdered, int accountId, YearAndPeriodSearch yearAndPeriodSearch) {
+        private void SetRunningTotals(IList<Transaction> transactionsOrdered, int accountId, YearAndPeriodSearch yearAndPeriodSearch) {
 
             if (transactionsOrdered.Count == 0) {
                 return;

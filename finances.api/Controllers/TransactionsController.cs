@@ -19,14 +19,9 @@ namespace finances.api.Controllers {
         private readonly ITransactionWageMover _transacrionWageMover = transactionWageMover;
 
         [HttpPost]
-        public IActionResult Get([FromBody] GetTransactionsModel model) {
+        public IActionResult Get([FromBody] GetTransactionsParams @params) {
 
-            var result = transacrionGetter.Get(
-                model.AccountId,
-                model.YearAndPeriodSearch,
-                model.PageNo,
-                model.IncludeWageTotals,
-                model.IncludeRunningTotals);
+            var result = transacrionGetter.Get(@params);
 
             return ReturnActionForServiceResult(
                 result.Result,

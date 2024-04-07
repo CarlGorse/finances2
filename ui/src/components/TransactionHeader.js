@@ -14,7 +14,7 @@ function TransactionHeader({ showClearOption }) {
       <Col xs={1} className="text-center">
         {firstColMarkup}
       </Col>
-      <Col xs={1}>
+      <Col xs={2}>
         <b>Date</b>
       </Col>
       <Col xs={4}>

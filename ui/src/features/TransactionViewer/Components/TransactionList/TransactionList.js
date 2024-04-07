@@ -1,6 +1,7 @@
 import { Container, Row } from 'react-bootstrap';
 import { loadedTransactionsAtom } from "recoil/atoms/LoadedTransactionsAtom";
-import NavigationButtons from './Components/NavigationButtons'
+import NavigationButtons from './NavigationButtons/NavigationButtons'
+import PageSizeInput from './PageSizeInput'
 import { selectedTransactionsAtom } from "recoil/atoms/SelectedTransactionsAtom";
 import Spinner from 'components/Spinner'
 import TransactionHeader from 'components/TransactionHeader';
@@ -16,7 +17,6 @@ function TransactionList() {
   const loadedTransactions = useRecoilValue(loadedTransactionsAtom);
   const [pageNo, setPageNo] = useState(1);
   const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
-  //const setUserMessage = useSetRecoilState(userMessageAtom);
   const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchAtom);
 
   useEffect(() => {
@@ -59,6 +59,8 @@ function TransactionList() {
   return (
 
     <Container className="table-bordered">
+
+      <PageSizeInput />
 
       <NavigationButtons
         pageNo={pageNo}
