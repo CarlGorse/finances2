@@ -151,7 +151,7 @@ function MoveWages({ handleClose }) {
                 </Col>
             </Row>
 
-            <SaveAndCancelButtons save={() => Save()} handleClose={handleClose} />
+            <SaveAndCancelButtons save={() => Save()} handleClose={handleClose} saveButtonEnabled={true} />
 
         </>
     );
