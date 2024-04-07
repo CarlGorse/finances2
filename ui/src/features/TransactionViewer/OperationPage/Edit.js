@@ -1,0 +1,84 @@
+import AddEdit from './AddEdit';
+import { addEditTransactionAtom } from 'common/recoil/atoms/AddEditTransactionAtom';
+import { apiBaseUrl } from 'common/consts/ApiConsts';
+import axios from 'axios';
+import { lastTransactionsLoadDateAtom } from 'common/recoil/atoms/LastTransactionsLoadDateAtom';
+import SaveAndCancelButtons from './SaveAndCancelButtons';
+import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useEffect, useState } from 'react'
+import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
+
+function Edit({ handleClose }) {
+
+    const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
+    const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
+    const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
+    const setUserMessage = useSetRecoilState(userMessageAtom);
+    const transactionToEdit = useRecoilValue(addEditTransactionAtom);
+    const [saveButtonEnabled, setSaveButtonEnabled] = useState(false);
+
+    useEffect(() => {
+
+        setUserMessage(null);
+
+        const selectedTransaction = selectedTransactions[0];
+
+        setAddEditTransaction({
+            AccountId: selectedTransaction.AccountId,
+            CategoryId: selectedTransaction.CategoryId,
+            Credit: selectedTransaction.Credit,
+            Debit: selectedTransaction.Debit,
+            Description: selectedTransaction.Description,
+            EffDate: selectedTransaction.EffDate,
+            IsWage: selectedTransaction.IsWage,
+            Item: selectedTransaction.Item,
+            TransactionId: selectedTransaction.TransactionId
+        });
+
+    }, [selectedTransactions, setUserMessage, setAddEditTransaction])
+
+    function Save() {
+        axios.post(
+            apiBaseUrl + "/transactions/edit",
+            {
+                AccountId: transactionToEdit.AccountId,
+                CategoryId: transactionToEdit.CategoryId,
+                Credit: transactionToEdit.Credit,
+                Debit: transactionToEdit.Debit,
+                Description: transactionToEdit.Description,
+                EffDate: transactionToEdit.EffDate,
+                IsWage: transactionToEdit.IsWage,
+                Item: transactionToEdit.Item,
+                TransactionId: transactionToEdit.TransactionId
+            }, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(function () {
+                setLastTransactionsLoadDate(new Date());
+                setUserMessage({
+                    Message: "Transaction saved.",
+                    Variant: "success"
+                })
+            })
+            .catch(function (error) {
+                setUserMessage({
+                    Message: error.response.data.validationErrors[0],
+                    Variant: "danger"
+                })
+            })
+    }
+
+    return (
+        <>
+            <AddEdit onUpdate={() => setSaveButtonEnabled(true)} />
+
+            <SaveAndCancelButtons save={() => Save()} saveButtonEnabled={saveButtonEnabled} handleClose={handleClose} />
+
+        </ >
+    );
+}
+
+export default Edit;

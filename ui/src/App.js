@@ -1,7 +1,7 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import CategoryTotalsReport from 'features/CategoryTotalsReport/CategoryTotalsReport'
 import FinancesNavbar from 'features/FinancesNavbar/FinancesNavbar';
-import { RecoilRoot } from "recoil";
+import { RecoilRoot } from 'recoil';
 import TransactionViewer from 'features/TransactionViewer/TransactionViewer';
 
 function App() {

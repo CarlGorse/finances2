@@ -1,13 +1,13 @@
-import BankAccountSelector from './Components/BankAccountSelector';
+import BankAccountSelector from './BankAccountSelector';
 import { Container } from 'react-bootstrap';
-import OperationButtons from './Components/OperationButtons/OperationButtons';
-import OperationPage from './Components/OperationPage/OperationPage';
-import TransactionList from './Components/TransactionList/TransactionList';
-import { transactionOperationAtom } from 'recoil/atoms/TransactionOperationAtom';
-import { useRecoilState } from "recoil";
-import UserMessage from 'components/UserMessage'
+import OperationButtons from './OperationButtons';
+import OperationPage from './OperationPage';
+import TransactionList from './TransactionList';
+import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
+import { useRecoilState } from 'recoil';
+import UserMessage from 'common/components/UserMessage'
 import { useEffect, useState } from 'react'
-import YearAndPeriodSelector from './Components/YearAndPeriodSelector';
+import YearsAndPeriodsSearch from './YearsAndPeriodsSearch';
 
 function TransactionViewer() {
 
@@ -27,7 +27,7 @@ function TransactionViewer() {
       <BankAccountSelector />
 
       <div style={{ marginTop: "20px" }}>
-        <YearAndPeriodSelector />
+        <YearsAndPeriodsSearch />
       </div>
 
       <div style={{ marginTop: "30px" }}>

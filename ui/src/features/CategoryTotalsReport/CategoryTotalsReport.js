@@ -1,14 +1,14 @@
-import { apiBaseUrl } from 'consts/ApiConsts';
+import { apiBaseUrl } from 'common/consts/ApiConsts';
 import axios from 'axios';
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import { formatCurrency } from 'functions/CurrencyFunctions'
-import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions'
-import Spinner from 'components/Spinner'
-import StartYearAndPeriodSelector from './Components/StartYearAndPeriodSelector'
+import { formatCurrency } from 'common/functions/CurrencyFunctions'
+import { isYearAndPeriodSearchValid } from 'common/functions/YearAndPeriodFunctions'
+import Spinner from 'common/components/Spinner'
 import { useEffect, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userMessageAtom } from 'recoil/atoms/UserMessageAtom';
-import { yearAndPeriodSearchAtom } from "recoil/atoms/YearAndPeriodSearchAtom";
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
+import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
+import StartYearAndPeriodSelector from './StartYearAndPeriodSelector'
 
 function CategoryTotalsReport() {
 
@@ -55,6 +55,7 @@ function CategoryTotalsReport() {
     }
 
     return (
+
         <Container>
 
             <StartYearAndPeriodSelector />
