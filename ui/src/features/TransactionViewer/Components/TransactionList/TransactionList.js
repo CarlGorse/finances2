@@ -1,12 +1,12 @@
 import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
+import { Container, Row } from 'react-bootstrap';
 import { lastTransactionsLoadDateAtom } from "recoil/atoms/LastTransactionsLoadDateAtom";
 import NavigationButtons from './Components/NavigationButtons'
 import { selectedBankAccountAtom } from "recoil/atoms/SelectedBankAccountAtom";
 import { selectedTransactionsAtom } from "recoil/atoms/SelectedTransactionsAtom";
 import { selectedYearAndPeriodAtom } from "recoil/atoms/SelectedYearAndPeriodAtom";
 import Spinner from 'components/Spinner'
-import { Table } from 'react-bootstrap';
 import TransactionHeader from 'components/TransactionHeader';
 import TransactionRow from 'components/TransactionRow';
 import { useEffect, useRef, useState } from 'react';
@@ -82,19 +82,18 @@ function TransactionList() {
   }
 
   return (
-    <Table className="table-bordered">
 
-      <div style={{ paddingLeft: "10px", paddingTop: "10px" }}>
-        <NavigationButtons
-          pageNo={pageNo}
-          pageCount={pageCount.current}
-          onClick={(pageNo) => setPageNo(pageNo)}
-        />
-      </div>
+    <Container className="table-bordered">
 
-      <div style={{ paddingTop: "10px" }}>
+      <NavigationButtons
+        pageNo={pageNo}
+        pageCount={pageCount.current}
+        onClick={(pageNo) => setPageNo(pageNo)}
+      />
+
+      <Row style={{ paddingTop: "10px" }}>
         <TransactionHeader />
-      </div>
+      </Row>
 
       {loading && <><Spinner /><span>loading transactions</span></>}
 
@@ -108,19 +107,16 @@ function TransactionList() {
         />
       ))}
 
-      <div style={{ paddingLeft: "20px", paddingTop: "30px" }}>
-        <NavigationButtons
-          pageNo={pageNo}
-          pageCount={pageCount.current}
-          onClick={(pageNo) => {
-            setPageNo(pageNo)
-            setSelectedTransactions(null)
-          }
-          }
-        />
-      </div>
+      <NavigationButtons
+        pageNo={pageNo}
+        pageCount={pageCount.current}
+        onClick={(pageNo) => {
+          setPageNo(pageNo)
+          setSelectedTransactions(null)
+        }}
+      />
 
-    </Table>
+    </Container>
   )
 }
 

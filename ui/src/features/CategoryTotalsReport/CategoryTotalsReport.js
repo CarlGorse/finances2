@@ -1,6 +1,6 @@
 import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
-import { Button, Col, Container, Row, Table } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { formatCurrency } from 'functions/CurrencyFunctions'
 import { selectedBankAccountAtom } from "recoil/atoms/SelectedBankAccountAtom";
 import { selectedYearAndPeriodAtom } from "recoil/atoms/SelectedYearAndPeriodAtom";
@@ -76,51 +76,36 @@ function CategoryTotalsReport() {
 
                     <Button size="md" style={{ marginTop: "20px" }} onClick={() => setDoRefresh(prevValue => !prevValue)}>Refresh</Button>
 
-                    <Table style={{ marginTop: "20px" }}>
+                    <Container style={{ marginTop: "20px" }}>
 
                         <Row>
                             <Col />
                             {
                                 categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
 
-                                    <Col className="tableCell text-center">
+                                    <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center" >
                                         <b>{yearAndPeriod.Year}.{yearAndPeriod.Period}</b>
                                     </Col>
                                 ))
                             }
                         </Row>
 
-                        {/*
-                        <Col>Total:</Col>
-                        {
-                            categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
-
-                                <Col className="tableCell text-center">
-                                    {formatCurrency(categoryTotalsReport.YearAndPeriodTotals.filter(yearAndPeriodTotal =>
-                                        yearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
-                                        && yearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period
-                                    )[0]?.YTDTotal)}
-                                </Col>
-                            ))
-                        }
-                    </Row>
-                    */}
                         {
                             categoryTotalsReport.Groups.map(group => (
-                                <>
+                                <div key={group.Id}>
                                     {
                                         <>
                                             <div style={{
                                                 borderBottom: "1px solid"
                                             }}></div>
 
-                                            <Row style={{ paddingTop: "10px" }}>
+                                            <Row key={group.Id} style={{ paddingTop: "10px" }}>
                                                 <Col className="tableCell text-center">
                                                     <b>{group.Name}</b>
                                                 </Col>
                                                 {
                                                     categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
-                                                        <Col className="tableCell text-center">
+                                                        <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center">
                                                             <b>
                                                                 {formatCurrency(
                                                                     categoryTotalsReport.GroupTotals.filter(groupTotal =>
@@ -136,7 +121,7 @@ function CategoryTotalsReport() {
                                             </Row>
 
                                             {
-                                                categoryTotalsReport.Categories.filter(category => category.GroupId === group.GroupId).map(category => (
+                                                categoryTotalsReport.Categories.filter(category => category.GroupId === group.GroupId).map(category =>
 
                                                     <Row key={category.Id}>
 
@@ -146,7 +131,7 @@ function CategoryTotalsReport() {
 
                                                         {
                                                             categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
-                                                                <Col className="tableCell text-center">
+                                                                <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center">
                                                                     {formatCurrency(
                                                                         categoryTotalsReport.CategoryTotals.filter(categoryTotal =>
                                                                             categoryTotal.CategoryId === category.Id)[0]?.YearAndPeriodTotals.filter(categoryYearAndPeriodTotal =>
@@ -158,18 +143,19 @@ function CategoryTotalsReport() {
                                                         }
 
                                                     </Row>
-                                                ))
+
+                                                )
                                             }
                                         </>
                                     }
-                                </>
+                                </div>
                             ))
                         }
-                    </Table>
+                    </Container>
                 </>
             }
 
-        </Container>
+        </Container >
     )
 }
 
