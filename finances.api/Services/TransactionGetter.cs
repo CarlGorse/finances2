@@ -57,7 +57,7 @@ namespace finances.api.Services {
 
                     if (parms.PageNo > 0) {
                         pagedTransactions = PagingLogic.GetPagedItems(
-                            filteredTransactions.ToList(),
+                            orderedTransactions.ToList(),
                             parms.PageSize,
                             parms.PageNo).ToList();
 
