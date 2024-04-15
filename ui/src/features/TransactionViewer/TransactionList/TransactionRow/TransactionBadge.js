@@ -21,23 +21,12 @@ function TransactionBadge({ transaction, badgeType, badgeLabel, badgeColour, isB
     if (isBadgeApplicable) {
         badge =
             <span style={{ paddingRight: "2px" }}>
-                <OverlayTrigger trigger="click" placement="right" overlay={popover}
+                <OverlayTrigger trigger="click" placement="right"// overlay={popover}
                     show={
                         transactionBadgeToShow?.Type === badgeType &&
                         transactionBadgeToShow?.TransactionId === transaction.TransactionId
                     }
-                    onToggle={(nextShow) => {
-                        if (nextShow) {
-                            setTransactionBadgeToShow({
-                                Type: badgeType,
-                                TransactionId: transaction.TransactionId
-                            })
-                        }
-                        else {
-                            setTransactionBadgeToShow(null)
-                        }
-                    }
-                    }>
+                >
 
                     <Badge pill bg={badgeColour}>{badgeLabel}</Badge>
                 </OverlayTrigger>

@@ -19,8 +19,8 @@ function YearsAndPeriodsSearch() {
   return (
     <>
       <Row>
-        <Col xs={1}>From:</Col>
-        <Col xs={1}>
+        <Col xs={2}>From:</Col>
+        <Col xs={3}>
           <YearAndPeriodSelect
             defaultValue={yearAndPeriodSearch?.StartPeriod}
             onSelect={value => UpdateSelectedStartYearAndPeriod("StartPeriod", value)}
@@ -35,8 +35,8 @@ function YearsAndPeriodsSearch() {
         <Col />
       </Row>
       <Row>
-        <Col xs={1}>To:</Col>
-        <Col xs={1}>
+        <Col xs={2}>To:</Col>
+        <Col xs={3}>
           <YearAndPeriodSelect
             defaultValue={yearAndPeriodSearch?.EndPeriod}
             onSelect={value => UpdateSelectedEndYearAndPeriod("EndPeriod", value)}

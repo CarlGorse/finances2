@@ -1,4 +1,4 @@
-import { Col, Row } from 'react-bootstrap';
+import { Accordion, Col, Row } from 'react-bootstrap';
 import DescriptionBadge from 'features/TransactionViewer/TransactionList/TransactionRow/DescriptionBadge';
 import Form from 'react-bootstrap/Form';
 import { formatCurrency } from 'common/functions/CurrencyFunctions';
@@ -12,7 +12,7 @@ function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
 
   const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
   const [isSelected, setIsSelected] = useState(false);
-  const [, setShowDetail] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {
     setIsSelected(selectedTransactions?.filter(x => x.TransactionId === transaction.TransactionId).length > 0 ? true : false);
@@ -51,44 +51,48 @@ function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
   let categoryGroupText = `${transaction.Category.Group.Name} | ${transaction.Category.Name}`
 
   return (
+    <Accordion.Item eventKey={transaction.TransactionId}>
+      <div>
+        <Accordion.Header>
+          <Col className="tableCell text-center" xs={1}>
+            <Form.Check checked={isSelected} onChange={() => onCheck()} />
+          </Col>
 
-    <div style={{ backgroundColor: colorOnSelect && isSelected ? colorOnSelect : backgroundColor }}>
+          <Col className="tableCell" xs={2}>
+            {transaction.EffDate}
+          </Col>
 
-      <Row style={{ margin: "0px" }} onClick={() => setShowDetail(prevValue => !prevValue)}>
+          <Col className="tableCell" xs={4}>
+            {categoryGroupText}
+          </Col>
 
-        <Col className="tableCell text-center" xs={1}>
-          <Form.Check checked={isSelected} onChange={() => onCheck()} />
-        </Col>
+          <Col className="tableCell" xs={1}>
+            {formatCurrency(transaction.Credit)}
+          </Col>
 
-        <Col className="tableCell" xs={2}>
-          {transaction.EffDate}
-        </Col>
+          <Col className="tableCell" xs={1}>
+            {formatCurrency(transaction.Debit)}
+          </Col>
 
-        <Col className="tableCell" xs={4}>
-          {categoryGroupText}
-        </Col>
+          <Col className="tableCell" xs={1}>
+            {formatCurrency(transaction.AccountRunningTotal)}
+          </Col>
 
-        <Col className="tableCell" xs={1}>
-          {formatCurrency(transaction.Credit)}
-        </Col>
+          <Col xs={2}>
+            <WageTotalBadge transaction={transaction} />
+          </Col>
 
-        <Col className="tableCell" xs={1}>
-          {formatCurrency(transaction.Debit)}
-        </Col>
-
-        <Col className="tableCell" xs={1}>
-          {formatCurrency(transaction.AccountRunningTotal)}
-        </Col>
-
-        <Col xs={2}>
-          <DescriptionBadge transaction={transaction} />
-          <WageTotalBadge transaction={transaction} />
-          <ItemBadge transaction={transaction} />
-        </Col>
-
-      </Row>
-    </div>
-
+        </Accordion.Header>
+        <Accordion.Body>
+          <div>
+            Description: {transaction.Description}
+          </div>
+          <div>
+            Wage total: {transaction.WageTotal}
+          </div>
+        </Accordion.Body>
+      </div >
+    </Accordion.Item >
   )
 }
 

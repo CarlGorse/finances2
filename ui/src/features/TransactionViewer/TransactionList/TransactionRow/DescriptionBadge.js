@@ -14,7 +14,7 @@ function DescriptionBadge({ transaction }) {
     return <TransactionBadge
         transaction={transaction}
         badgeType="description"
-        badgeLabel="desc"
+        badgeLabel="d"
         badgeColour="info"
         isBadgeApplicable={transaction.Description}
         popoverBody={popover}

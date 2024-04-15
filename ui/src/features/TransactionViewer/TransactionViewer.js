@@ -1,11 +1,16 @@
-import Accordion from 'react-bootstrap/Accordion';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import BankAccountSelector from './BankAccountSelector';
+import { loadedTransactionsAtom } from 'common/recoil/atoms/LoadedTransactionsAtom';
+import NavigationButtons from './TransactionList/NavigationButtons'
+import Offcanvas from 'react-bootstrap/Offcanvas';
 import OperationButtons from './OperationButtons';
 import OperationPage from './OperationPage';
 import { padStart } from 'common/functions/NumberFunctions';
+import PageSizeInput from './TransactionList/PageSizeInput'
 import { selectedBankAccountAtom } from 'common/recoil/atoms/SelectedBankAccountAtom';
 import TransactionList from './TransactionList';
 import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
+import { transactionsPageNoAtom } from 'common/recoil/atoms/TransactionsPageNoAtom';
 import { useRecoilState } from 'recoil';
 import UserMessage from 'common/components/UserMessage'
 import { useEffect, useState } from 'react'
@@ -15,10 +20,18 @@ import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearch
 
 function TransactionViewer() {
 
+  const loadedTransactions = useRecoilValue(loadedTransactionsAtom);
   const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
   const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
+  const [transactionPageNo, setTransactionPageNo] = useRecoilState(transactionsPageNoAtom);
   const [show, setShow] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [showOperations, setShowOperations] = useState(false);
   const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchAtom);
+
+  useEffect(() => {
+    setTransactionPageNo(1);
+  }, [setTransactionPageNo, yearAndPeriodSearch])
 
   useEffect(() => {
     if (transactionOperation) {
@@ -27,52 +40,90 @@ function TransactionViewer() {
   }, [transactionOperation])
 
   return (
+    <Container>
+      <Row>
+        <Col xs="11">
 
-    <Accordion>
+          <Offcanvas show={showSearch} placement="end" onHide={() => setShowSearch(false)} style={{ backgroundColor: "cornsilk" }}
+            scroll={true}
+            backdrop={false}
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title>Search</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <BankAccountSelector />
 
-      <div style={{ marginLeft: "20px" }}>
-        <BankAccountSelector />
-      </div>
+              <div class="mt-3">
+                <YearsAndPeriodsSearch />
+              </div>
 
-      <div style={{ marginTop: "20px" }}>
-        <UserMessage />
-      </div>
+              <div class="mt-3">
+                <PageSizeInput />
+              </div>
 
-      <div style={{ marginTop: "20px" }}>
-        <Accordion.Item eventKey="2">
-          <Accordion.Header>
-            Search transactions: <b>
-              {padStart(yearAndPeriodSearch.StartPeriod, 2, '0')}.{yearAndPeriodSearch.StartYear}
-            </b>
-            {" to "}
-            <b>
-              {padStart(yearAndPeriodSearch.EndPeriod, 2, '0')}.{yearAndPeriodSearch.EndYear}
-            </b>
-          </Accordion.Header>
-          <Accordion.Body>
-            <YearsAndPeriodsSearch />
-          </Accordion.Body>
-        </Accordion.Item>
-      </div>
+            </Offcanvas.Body>
+          </Offcanvas>
 
-      <Accordion.Item eventKey="3">
-        <Accordion.Header>
-          Operations
-        </Accordion.Header>
-        <Accordion.Body>
+          <Offcanvas placement="end" show={showOperations} onHide={() => setShowOperations(false)} style={{ backgroundColor: "cornsilk" }}
+            scroll={true}
+            backdrop={false}
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title>Operations</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <OperationButtons />
+              <OperationPage show={show} handleClose={() => { setShow(false); setTransactionOperation(null); }} />
+            </Offcanvas.Body>
+          </Offcanvas>
 
-          <OperationButtons />
 
-          <OperationPage show={show} handleClose={() => { setShow(false); setTransactionOperation(null); }} />
 
-        </Accordion.Body>
-      </Accordion.Item>
+          <div class="mt-3">
+            <UserMessage />
+          </div>
 
-      <div style={{ marginTop: "20px" }}>
-        <TransactionList />
-      </div>
+          <div>
+            <div>
+              Bank account: <b>{selectedBankAccount.Name}</b>
+            </div>
+            <div>
+              From <b>
+                {padStart(yearAndPeriodSearch.StartPeriod, 2, '0')}.{yearAndPeriodSearch.StartYear}
+              </b>
+              {" to "}
+              <b>
+                {padStart(yearAndPeriodSearch.EndPeriod, 2, '0')}.{yearAndPeriodSearch.EndYear}
+              </b>
+            </div>
+          </div>
 
-    </Accordion >
+          <div class="mt-3">
+            <NavigationButtons
+              pageNo={transactionPageNo}
+              pageCount={loadedTransactions?.pageCount}
+              onClick={pageNo => { setTransactionPageNo(pageNo); }}
+            />
+          </div>
+
+          <div class="mt-3">
+            <TransactionList />
+          </div>
+
+
+        </Col>
+        <Col xs="1">
+          <div>
+            <Button onClick={() => setShowSearch(true)}>Search</Button>
+          </div>
+          <div class="mt-1">
+            <Button onClick={() => setShowOperations(true)}>Operations</Button>
+          </div>
+
+        </Col>
+      </Row>
+    </Container >
   );
 }
 

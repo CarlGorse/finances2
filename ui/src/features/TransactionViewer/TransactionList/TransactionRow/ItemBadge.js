@@ -17,7 +17,7 @@ function ItemBadge({ transaction }) {
         badgeLabel="item"
         badgeColour="info"
         isBadgeApplicable={transaction.Item}
-        popoverBody={popover}
+    //popoverBody={popover}
     />
 
 }

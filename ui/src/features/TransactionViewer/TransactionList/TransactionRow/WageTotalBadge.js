@@ -14,10 +14,10 @@ function WageTotalBadge({ transaction }) {
     return <TransactionBadge
         transaction={transaction}
         badgeType="wageTotal"
-        badgeLabel="wage total"
+        badgeLabel="wage"
         badgeColour="secondary"
         isBadgeApplicable={transaction.IsWage}
-        popoverBody={popover}
+    //popoverBody={popover}
     />
 
 }

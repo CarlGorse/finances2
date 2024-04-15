@@ -17,3 +17,11 @@ code {
   /* border-left: 1px solid; */
   border-right: 1px solid;
 }
+
+.accordion-button {
+  background-color: white !important;
+}
+
+.accordion-button:not(.collapsed) {
+  color: #212529;
+}

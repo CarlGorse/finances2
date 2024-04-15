@@ -52,25 +52,27 @@ function AddEdit({ onUpdate }) {
 
     return (
         <>
-            <Row>
+            <Row style={{ paddingTop: "20px" }}>
 
-                <Col xs={2}>
+                <Col xs={3}>
                     <Form.Label>Date:</Form.Label>
                 </Col>
 
-                <Col xs={3}>
+                <Col xs={6}>
                     <Form.Control
                         type="date"
                         value={addEditTransaction.EffDate}
                         onChange={e => { updateTransaction("EffDate", e.target.value); }}
                     />
                 </Col>
+            </Row>
 
-                <Col xs={2}>
+            <Row style={{ paddingTop: "5px" }}>
+                <Col xs={3}>
                     <Form.Label>Category:</Form.Label>
                 </Col>
 
-                <Col xs={3}>
+                <Col xs={9}>
                     <Form.Select
                         value={addEditTransaction.CategoryId}
                         onChange={e => updateTransaction("CategoryId", e.target.value)}>
@@ -86,23 +88,25 @@ function AddEdit({ onUpdate }) {
 
             <Row style={{ paddingTop: "5px" }}>
 
-                <Col xs={2}>
+                <Col xs={3}>
                     <Form.Label>Debit:</Form.Label>
                 </Col>
 
-                <Col xs={3}>
+                <Col xs={4}>
                     <Form.Control
                         value={addEditTransaction.Debit}
                         onChange={e => updateTransaction("Debit", e.target.value)}
                         onBlur={e => updateTransaction("Debit", stringToCurrency(e.target.value))}
                     />
                 </Col>
+            </Row>
 
-                <Col xs={2}>
+            <Row style={{ paddingTop: "5px" }}>
+                <Col xs={3}>
                     <Form.Label>Credit:</Form.Label>
                 </Col>
 
-                <Col xs={3}>
+                <Col xs={4}>
                     <Form.Control
                         value={addEditTransaction.Credit}
                         onChange={e => updateTransaction("Credit", e.target.value)}
@@ -114,22 +118,24 @@ function AddEdit({ onUpdate }) {
 
             <Row style={{ paddingTop: "5px" }}>
 
-                <Col xs={2}>
+                <Col xs={3}>
                     <Form.Label>Description:</Form.Label>
                 </Col>
 
-                <Col xs={3}>
+                <Col xs={9}>
                     <Form.Control
                         value={addEditTransaction.Description}
                         onChange={e => updateTransaction("Description", e.target.value)}
                     />
                 </Col>
+            </Row>
 
-                <Col xs={2}>
+            <Row style={{ paddingTop: "5px" }}>
+                <Col xs={3}>
                     <Form.Label>Item:</Form.Label>
                 </Col>
 
-                <Col xs={3}>
+                <Col xs={9}>
                     <Form.Control
                         value={addEditTransaction.Item}
                         onChange={e => updateTransaction("Item", e.target.value)}
@@ -140,11 +146,11 @@ function AddEdit({ onUpdate }) {
 
             <Row style={{ paddingTop: "5px" }}>
 
-                <Col xs={2}>
+                <Col xs={3}>
                     <Form.Label>Is wage?:</Form.Label>
                 </Col>
 
-                <Col xs={3}>
+                <Col xs={9}>
                     <Form.Check
                         type="switch"
                         value={addEditTransaction.IsWage}

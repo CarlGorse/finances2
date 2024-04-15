@@ -7,10 +7,10 @@ function PageSizeInput() {
     const [transactionsPageSize, setTransactionsPageSize] = useRecoilState(transactionsPageSizeAtom);
 
     return <Row>
-        <Col xs={1}>
+        <Col xs={3}>
             <Form.Label>Page size:</Form.Label>
         </Col>
-        <Col xs={1}>
+        <Col xs={3}>
             <Form.Control
                 value={transactionsPageSize}
                 onChange={e => setTransactionsPageSize(e.target.value)}

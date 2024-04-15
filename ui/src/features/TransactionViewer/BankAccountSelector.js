@@ -49,30 +49,33 @@ function BankAccountSelector() {
   }
 
   return (
-    <Dropdown>
-      <Dropdown.Toggle size="lg" variant="success" id="dropdown-basic" >
-        {title}
-      </Dropdown.Toggle>
+    <>
+      <label>Bank account:</label>
+      <Dropdown>
+        <Dropdown.Toggle size="md" variant="success" id="dropdown-basic" >
+          {title}
+        </Dropdown.Toggle>
 
-      <Dropdown.Menu>
-        {
-          bankAccounts?.map(bankAccount => (
+        <Dropdown.Menu>
+          {
+            bankAccounts?.map(bankAccount => (
 
-            <Dropdown.Item key={bankAccount.AccountId} as="button" >
-              <div onClick={(e) => {
+              <Dropdown.Item key={bankAccount.AccountId} as="button" >
+                <div onClick={(e) => {
 
-                let bankAccount = bankAccounts.find(bankAccount => bankAccount.Name === e.target.textContent)
+                  let bankAccount = bankAccounts.find(bankAccount => bankAccount.Name === e.target.textContent)
 
-                selectBankAccount(bankAccount);
+                  selectBankAccount(bankAccount);
 
-              }}>
-                {bankAccount.Name}
-              </div>
-            </Dropdown.Item>
-          ))
-        }
-      </Dropdown.Menu>
-    </Dropdown >
+                }}>
+                  {bankAccount.Name}
+                </div>
+              </Dropdown.Item>
+            ))
+          }
+        </Dropdown.Menu>
+      </Dropdown >
+    </>
   );
 }
 
