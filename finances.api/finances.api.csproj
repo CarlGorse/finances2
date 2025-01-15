@@ -17,12 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\finances.api.test.data\finances.api.test.data.csproj" />
-    <ProjectReference Include="..\finanes.api.data\finanes.api.data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
+    <ProjectReference Include="..\finances.api.data.nosql\finances.api.data.nosql.csproj" />
+    <ProjectReference Include="..\finances.api.data\finances.api.data.csproj" />
   </ItemGroup>
 
 </Project>

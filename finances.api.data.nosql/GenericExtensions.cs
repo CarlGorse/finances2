@@ -1,6 +1,6 @@
 ﻿using finances.api.Data.Models;
 
-namespace finances.api.test.data {
+namespace finances.api.data.nosql {
     public static class GenericExtensions {
 
         public static void AddBaseData(this TestDataFactory dataFactory) {

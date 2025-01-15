@@ -1,6 +1,6 @@
 ﻿using finances.api.Data.Models;
 
-namespace finances.api.test.data {
+namespace finances.api.data.nosql {
     public static class TransactionExtensions {
 
         public static void AddTransactions(this TestDataFactory dataFactory, ICollection<Transaction> transactions) {
