@@ -21,4 +21,8 @@
     <ProjectReference Include="..\finanes.api.data\finanes.api.data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>
