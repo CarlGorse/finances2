@@ -17,7 +17,7 @@ function TransactionHeader({ showClearOption }) {
       </Col>
 
       <Col xs={2}>
-        <b>Datxe</b>
+        <b>Date</b>
       </Col>
 
       <Col xs={4}>

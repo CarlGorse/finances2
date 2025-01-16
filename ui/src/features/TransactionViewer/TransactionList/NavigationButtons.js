@@ -67,7 +67,7 @@ function NavigationButtons({ pageNo, pageCount, onClick }) {
 
   return (
     <Pagination size="md" >
-      Select page:
+      <span className='me-3'>Select page:</span>
       {buttons}
     </Pagination>
   )

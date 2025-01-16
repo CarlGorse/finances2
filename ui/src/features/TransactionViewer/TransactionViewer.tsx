@@ -17,17 +17,19 @@ import { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 import YearsAndPeriodsSearch from './YearsAndPeriodsSearch';
 import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
+import BankAccount from 'types/BankAccount'
+import LoadedTransactions from 'types/LoadedTransactions'
 
 function TransactionViewer() {
 
-  const loadedTransactions = useRecoilValue(loadedTransactionsAtom);
-  const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
+  const loadedTransactions = useRecoilValue<LoadedTransactions>(loadedTransactionsAtom);
+  const selectedBankAccount = useRecoilValue<BankAccount>(selectedBankAccountAtom);
   const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
   const [transactionPageNo, setTransactionPageNo] = useRecoilState(transactionsPageNoAtom);
   const [show, setShow] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showOperations, setShowOperations] = useState(false);
-  const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchAtom);
+  const yearAndPeriodSearch = useRecoilValue<YearsAndPeriodsSearch>(yearAndPeriodSearchAtom);
 
   useEffect(() => {
     setTransactionPageNo(1);
@@ -38,6 +40,8 @@ function TransactionViewer() {
       setShow(true);
     }
   }, [transactionOperation])
+
+  console.log(loadedTransactions);
 
   return (
     <Container>
@@ -54,11 +58,11 @@ function TransactionViewer() {
             <Offcanvas.Body>
               <BankAccountSelector />
 
-              <div class="mt-3">
+              <div className="mt-3">
                 <YearsAndPeriodsSearch />
               </div>
 
-              <div class="mt-3">
+              <div className="mt-3">
                 <PageSizeInput />
               </div>
 
@@ -80,7 +84,7 @@ function TransactionViewer() {
 
 
 
-          <div class="mt-3">
+          <div className="mt-3">
             <UserMessage />
           </div>
 
@@ -99,7 +103,7 @@ function TransactionViewer() {
             </div>
           </div>
 
-          <div class="mt-3">
+          <div className="mt-3">
             <NavigationButtons
               pageNo={transactionPageNo}
               pageCount={loadedTransactions?.pageCount}
@@ -107,17 +111,16 @@ function TransactionViewer() {
             />
           </div>
 
-          <div class="mt-3">
+          <div className="mt-3">
             <TransactionList />
           </div>
-
 
         </Col>
         <Col xs="1">
           <div>
             <Button onClick={() => setShowSearch(true)}>Search</Button>
           </div>
-          <div class="mt-1">
+          <div className="mt-1">
             <Button onClick={() => setShowOperations(true)}>Operations</Button>
           </div>
 
