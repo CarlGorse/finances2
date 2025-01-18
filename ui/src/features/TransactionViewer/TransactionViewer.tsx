@@ -19,6 +19,7 @@ import YearsAndPeriodsSearch from './YearsAndPeriodsSearch';
 import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
 import BankAccount from 'types/BankAccount'
 import LoadedTransactions from 'types/LoadedTransactions'
+import YearAndPeriodSearch from 'types/YearAndPeriodSearch'
 
 function TransactionViewer() {
 
@@ -29,19 +30,30 @@ function TransactionViewer() {
   const [show, setShow] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showOperations, setShowOperations] = useState(false);
-  const yearAndPeriodSearch = useRecoilValue<YearsAndPeriodsSearch>(yearAndPeriodSearchAtom);
+  const [yearAndPeriodSearch, setYearAndPeriodSearch] = useRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchAtom);
 
   useEffect(() => {
+
     setTransactionPageNo(1);
-  }, [setTransactionPageNo, yearAndPeriodSearch])
+
+    let currentDate = new Date();
+    let currentMonth = currentDate.getMonth() + 1;
+    let currentYear = currentDate.getFullYear();
+
+    setYearAndPeriodSearch({
+      StartPeriod: currentMonth,
+      StartYear: currentYear,
+      EndPeriod: currentMonth,
+      EndYear: currentYear
+    });
+
+  }, [setTransactionPageNo, setYearAndPeriodSearch])
 
   useEffect(() => {
     if (transactionOperation) {
       setShow(true);
     }
   }, [transactionOperation])
-
-  console.log(loadedTransactions);
 
   return (
     <Container>

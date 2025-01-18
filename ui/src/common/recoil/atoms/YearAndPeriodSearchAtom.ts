@@ -4,9 +4,9 @@ import YearAndPeriodSearch from 'types/YearAndPeriodSearch'
 export const yearAndPeriodSearchAtom = atom<YearAndPeriodSearch>({
     key: "YearAndPeriodSearchState",
     default: {
-        StartYear: 2024,
-        EndYear: 2024,
-        StartPeriod: 3,
-        EndPeriod: 3
+        StartYear: null,
+        EndYear: null,
+        StartPeriod: null,
+        EndPeriod: null
     }
 });
