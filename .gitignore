@@ -4,3 +4,4 @@
 ui/node_modules
 *.cache
 _NCrunch_Finances
+ui/build
