@@ -24,7 +24,7 @@ namespace finances.api.Repositories {
             if (!isValidResult.IsValid) {
                 _dbContext.CancelChanges();
                 validationErrors.Add(isValidResult.ValidationMessage);
-                return ServiceResult.Ok;
+                return ServiceResult.Error;
             }
 
             try {
@@ -112,6 +112,10 @@ namespace finances.api.Repositories {
         }
 
         protected IEnumerable<int> GetInvalidIds(IEnumerable<int> ids) {
+            var validIds = ValidIds(ids);
+            if (!validIds.Any()) {
+                return Enumerable.Empty<int>();
+            }
             return ValidIds(ids).Except(ids);
         }
     }

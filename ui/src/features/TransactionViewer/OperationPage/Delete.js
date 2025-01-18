@@ -9,11 +9,13 @@ import TransactionHeader from 'common/components/TransactionHeader';
 import TransactionRow from 'common/components/TransactionRow';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
+import { loadedTransactionsAtom } from 'common/recoil/atoms/LoadedTransactionsAtom';
 
 function Delete({ handleClose }) {
 
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
     const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
+    const setLoadedTransactions = useSetRecoilState(loadedTransactionsAtom);
 
     const setUserMessage = useSetRecoilState(userMessageAtom);
     const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
@@ -31,6 +33,7 @@ function Delete({ handleClose }) {
         )
             .then(function () {
                 setLastTransactionsLoadDate(new Date());
+
                 setUserMessage({
                     Message: `Transaction${selectedTransactions.length === 1 ? '' : 's'} deleted.`,
                     Variant: "success"
@@ -39,7 +42,7 @@ function Delete({ handleClose }) {
             })
             .catch(function (error) {
                 setUserMessage({
-                    Message: error.response.data,
+                    Message: error.response.data.validationErrors[0],
                     Variant: "danger"
                 })
             })
@@ -75,8 +78,9 @@ function Delete({ handleClose }) {
             <SaveAndCancelButtons
                 save={() => Delete()}
                 saveButtonText="Yes"
-                cancelButtonText="No"
+                cancelButtonText="Cancel"
                 handleClose={handleClose}
+                saveButtonEnabled={selectedTransactions.length > 0}
             />
 
         </>

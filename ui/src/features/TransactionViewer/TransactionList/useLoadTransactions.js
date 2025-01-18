@@ -8,6 +8,7 @@ import { transactionsPageSizeAtom } from 'common/recoil/atoms/TransactionsPageSi
 import { useEffect, useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
+import { lastTransactionsLoadDateAtom } from 'common/recoil/atoms/LastTransactionsLoadDateAtom';
 
 function useLoadTransactions() {
 
@@ -18,6 +19,7 @@ function useLoadTransactions() {
   const transactionsPageNo = useRecoilValue(transactionsPageNoAtom);
   const transactionsPageSize = useRecoilValue(transactionsPageSizeAtom);
   const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchAtom);
+  const lastTransactionLoadDate = useRecoilValue(lastTransactionsLoadDateAtom);
 
   useEffect(() => {
 
@@ -79,9 +81,13 @@ function useLoadTransactions() {
         return false;
       }
 
+      if (!(lastTransactionLoadDate instanceof Date) || isNaN(lastTransactionLoadDate.valueOf())) {
+        return false;
+      }
+
       return true;
     }
-  }, [selectedBankAccount, setLoadedTransactions, transactionsPageNo, transactionsPageSize, yearAndPeriodSearch])
+  }, [selectedBankAccount, setLoadedTransactions, transactionsPageNo, transactionsPageSize, yearAndPeriodSearch, lastTransactionLoadDate])
 
   return pageCount.current;
 }

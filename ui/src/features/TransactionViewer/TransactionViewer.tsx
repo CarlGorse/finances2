@@ -42,13 +42,15 @@ function TransactionViewer() {
 
     <Container>
 
-      <TransactionBanner />
+      <div style={{ position: "sticky", top: "3em", backgroundColor: "white", zIndex: "1" }} >
+        <TransactionBanner />
+      </div>
 
       <div className="mt-3">
         <TransactionList />
       </div>
 
-    </Container>
+    </Container >
   )
 }
 

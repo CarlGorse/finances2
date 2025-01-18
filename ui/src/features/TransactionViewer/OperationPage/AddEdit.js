@@ -3,19 +3,17 @@ import { apiBaseUrl } from 'common/consts/ApiConsts';
 import axios from 'axios'
 import { categoriesAtom } from 'common/recoil/atoms/CategoriesAtom';
 import { Col, Form, Row } from 'react-bootstrap';
+import { selectedBankAccountAtom } from 'common/recoil/atoms/SelectedBankAccountAtom';
 import { stringToCurrency } from 'common/functions/CurrencyFunctions';
 import { useEffect } from 'react'
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
+import SaveAndCancelButtons from './SaveAndCancelButtons';
 
-function AddEdit({ onUpdate }) {
+function AddEdit({ save, handleClose }) {
 
-    const [addEditTransaction, setAddEditTransaction] = useRecoilState(addEditTransactionAtom);
+    const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
     const [categories, setCategories] = useRecoilState(categoriesAtom);
-
-    async function updateTransaction(propertyName, value) {
-        setAddEditTransaction(prevState => ({ ...prevState, [propertyName]: value }));
-        onUpdate();
-    }
+    const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
 
     useEffect(() => {
         axios.get(apiBaseUrl + '/categories/get')
@@ -24,8 +22,23 @@ function AddEdit({ onUpdate }) {
             })
     }, [setCategories])
 
-    if (addEditTransaction == null) {
-        return null;
+    function Save() {
+
+        let effDate = new Date(document.getElementById("addEdit_EffDate").value);
+        let formattedEffDate = effDate.getFullYear() + '-' + (effDate.getMonth() + 1) + '-' + effDate.getDate();
+
+        setAddEditTransaction({
+            AccountId: selectedBankAccount.AccountId,
+            CategoryId: document.getElementById("addEdit_CategoryId").value,
+            Credit: stringToCurrency(document.getElementById("addEdit_Credit").value),
+            Debit: stringToCurrency(document.getElementById("addEdit_Debit").value),
+            Description: document.getElementById("addEdit_Description").value,
+            EffDate: formattedEffDate,
+            IsWage: document.getElementById("addEdit_IsWage").checked,
+            Item: document.getElementById("addEdit_Item").value
+        })
+
+        save();
     }
 
     const categoriesForSort = [...categories]
@@ -60,9 +73,8 @@ function AddEdit({ onUpdate }) {
 
                 <Col xs={6}>
                     <Form.Control
+                        id="addEdit_EffDate"
                         type="date"
-                        value={addEditTransaction.EffDate}
-                        onChange={e => { updateTransaction("EffDate", e.target.value); }}
                     />
                 </Col>
             </Row>
@@ -74,8 +86,7 @@ function AddEdit({ onUpdate }) {
 
                 <Col xs={9}>
                     <Form.Select
-                        value={addEditTransaction.CategoryId}
-                        onChange={e => updateTransaction("CategoryId", e.target.value)}>
+                        id="addEdit_CategoryId">
                         {
                             sortedCategories.map(category => (
                                 <option value={category.Id}>{`${category.Group.Name} | ${category.Name}`}</option>
@@ -94,9 +105,7 @@ function AddEdit({ onUpdate }) {
 
                 <Col xs={4}>
                     <Form.Control
-                        value={addEditTransaction.Debit}
-                        onChange={e => updateTransaction("Debit", e.target.value)}
-                        onBlur={e => updateTransaction("Debit", stringToCurrency(e.target.value))}
+                        id="addEdit_Debit"
                     />
                 </Col>
             </Row>
@@ -108,9 +117,7 @@ function AddEdit({ onUpdate }) {
 
                 <Col xs={4}>
                     <Form.Control
-                        value={addEditTransaction.Credit}
-                        onChange={e => updateTransaction("Credit", e.target.value)}
-                        onBlur={e => updateTransaction("Credit", stringToCurrency(e.target.value))}
+                        id="addEdit_Credit"
                     />
                 </Col>
 
@@ -124,8 +131,7 @@ function AddEdit({ onUpdate }) {
 
                 <Col xs={9}>
                     <Form.Control
-                        value={addEditTransaction.Description}
-                        onChange={e => updateTransaction("Description", e.target.value)}
+                        id="addEdit_Description"
                     />
                 </Col>
             </Row>
@@ -137,8 +143,7 @@ function AddEdit({ onUpdate }) {
 
                 <Col xs={9}>
                     <Form.Control
-                        value={addEditTransaction.Item}
-                        onChange={e => updateTransaction("Item", e.target.value)}
+                        id="addEdit_Item"
                     />
                 </Col>
 
@@ -152,13 +157,14 @@ function AddEdit({ onUpdate }) {
 
                 <Col xs={9}>
                     <Form.Check
+                        id="addEdit_IsWage"
                         type="switch"
-                        value={addEditTransaction.IsWage}
-                        onChange={e => { updateTransaction("IsWage", e.target.checked) }}
                     />
                 </Col>
 
             </Row>
+
+            <SaveAndCancelButtons save={() => Save()} handleClose={handleClose} saveButtonEnabled={true} />
         </>
     );
 }
