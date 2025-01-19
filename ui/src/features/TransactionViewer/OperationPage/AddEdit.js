@@ -7,7 +7,7 @@ import { selectedBankAccountAtom } from 'common/recoil/atoms/SelectedBankAccount
 import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
 import { stringToCurrency } from 'common/functions/CurrencyFunctions';
 import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import EffDate from './AddEdit/EffDate'
 import Item from './AddEdit/Item'
 import Credit from './AddEdit/Credit'
@@ -22,7 +22,7 @@ function AddEdit({ apiMethod, handleClose }) {
     const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
     const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
     const setReloadTransactions = useSetRecoilState(reloadTransactionsAtom);
-    const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
+    const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
 
     function Save() {
@@ -52,10 +52,10 @@ function AddEdit({ apiMethod, handleClose }) {
                 "Content-Type": "application/json"
             }
         })
-            .then(function () {
+            .then(function (response) {
                 setAddEditTransaction(transaction);
                 setReloadTransactions(new Date());
-                //setSelectedTransactions([response.data.transaction]);
+                setSelectedTransactions([response.data.transaction]);
                 setUserMessage({
                     Message: "Transaction saved.",
                     Variant: "success"

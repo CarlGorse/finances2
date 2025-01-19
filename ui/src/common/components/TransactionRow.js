@@ -12,7 +12,8 @@ function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
   const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {
-    setIsSelected(selectedTransactions?.filter(x => x.TransactionId === transaction.TransactionId).length > 0 ? true : false);
+    let isSelected = selectedTransactions?.some(x => x.TransactionId === transaction.TransactionId);
+    setIsSelected(isSelected);
   }, [selectedTransactions, transaction]);
 
   function onCheck() {
