@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const transactionsPageSizeAtom = atom({
+export const transactionsPageSizeState = atom({
     key: "transactionsPageSizeState",
     default: 50
 });

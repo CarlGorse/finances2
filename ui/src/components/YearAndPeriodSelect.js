@@ -1,5 +1,5 @@
 import Dropdown from 'react-bootstrap/Dropdown';
-import { padStart } from 'common/functions/NumberFunctions'
+import { padStart } from 'functions/NumberFunctions'
 import { useEffect, useState } from 'react';
 
 function YearAndPeriodSelect({ defaultValue, onSelect, values }) {
@@ -16,7 +16,9 @@ function YearAndPeriodSelect({ defaultValue, onSelect, values }) {
   }, [defaultValue]);
 
   return (
+
     <Dropdown>
+
       <Dropdown.Toggle variant="light">
         {padStart(text, 2, '0')}
       </Dropdown.Toggle>
@@ -33,7 +35,9 @@ function YearAndPeriodSelect({ defaultValue, onSelect, values }) {
           </Dropdown.Item>
         )}
       </Dropdown.Menu>
+
     </Dropdown>
+
   );
 }
 

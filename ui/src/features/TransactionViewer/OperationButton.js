@@ -1,10 +1,10 @@
 import { Button } from 'react-bootstrap';
-import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
+import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
 import { useRecoilState } from 'recoil';
 
 function OperationButton({ operation }) {
 
-    const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
+    const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationState);
     console.log(55);
     return (
         <Button

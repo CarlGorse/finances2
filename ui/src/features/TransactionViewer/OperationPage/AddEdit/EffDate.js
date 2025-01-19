@@ -1,11 +1,11 @@
-import { addEditTransactionAtom } from 'common/recoil/atoms/AddEditTransactionAtom';
+import { addEditTransactionState } from 'recoil/atoms/AddEditTransactionAtom';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useRecoilValue } from 'recoil';
-import { getDateAsYYYYMMDD } from 'common/functions/DateFunctions'
+import { getDateAsYYYYMMDD } from 'functions/DateFunctions'
 
 function AddEdit() {
 
-    const addEditTransaction = useRecoilValue(addEditTransactionAtom);
+    const addEditTransaction = useRecoilValue(addEditTransactionState);
 
     let defaultValue = (getDateAsYYYYMMDD(addEditTransaction.EffDate));
 

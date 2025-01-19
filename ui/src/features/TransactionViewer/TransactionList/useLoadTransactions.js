@@ -1,25 +1,25 @@
-import { apiBaseUrl } from 'common/consts/ApiConsts';
+import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
-import { isYearAndPeriodSearchValid } from 'common/functions/YearAndPeriodFunctions'
-import { loadedTransactionsAtom } from 'common/recoil/atoms/LoadedTransactionsAtom';
-import { selectedBankAccountAtom } from 'common/recoil/atoms/SelectedBankAccountAtom';
-import { transactionsPageNoAtom } from 'common/recoil/atoms/TransactionsPageNoAtom';
-import { transactionsPageSizeAtom } from 'common/recoil/atoms/TransactionsPageSizeAtom';
+import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions'
+import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
+import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
+import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoAtom';
+import { transactionsPageSizeState } from 'recoil/atoms/TransactionsPageSizeAtom';
 import { useEffect, useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
-import { reloadTransactionsAtom } from 'common/recoil/atoms/ReloadTransactionsAtom';
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
+import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsAtom';
 
 function useLoadTransactions() {
 
   const pageCount = useRef(1);
 
-  const reloadTransactions = useRecoilValue(reloadTransactionsAtom);
-  const setLoadedTransactions = useSetRecoilState(loadedTransactionsAtom);
-  const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
-  const transactionsPageNo = useRecoilValue(transactionsPageNoAtom);
-  const transactionsPageSize = useRecoilValue(transactionsPageSizeAtom);
-  const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchAtom);
+  const reloadTransactions = useRecoilValue(reloadTransactionsState);
+  const setLoadedTransactions = useSetRecoilState(loadedTransactionsState);
+  const selectedBankAccount = useRecoilValue(selectedBankAccountState);
+  const transactionsPageNo = useRecoilValue(transactionsPageNoState);
+  const transactionsPageSize = useRecoilValue(transactionsPageSizeState);
+  const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchState);
 
   useEffect(() => {
 

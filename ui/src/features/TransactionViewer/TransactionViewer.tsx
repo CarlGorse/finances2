@@ -1,28 +1,28 @@
-import { apiBaseUrl } from 'common/consts/ApiConsts';
+import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios'
-import { bankAccountsAtom } from 'common/recoil/atoms/BankAccountsAtom';
-import { categoriesAtom } from 'common/recoil/atoms/CategoriesAtom';
+import { bankAccountsState } from 'recoil/atoms/BankAccountsAtom';
+import { categoriesState } from 'recoil/atoms/CategoriesAtom';
 import { Container } from 'react-bootstrap';
-import { sortCategories } from 'common/functions/CategoryFunctions'
-import { selectedBankAccountAtom } from 'common/recoil/atoms/SelectedBankAccountAtom';
+import { sortCategories } from 'functions/CategoryFunctions'
+import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
 import TransactionBanner from './TransactionBanner'
 import TransactionList from './TransactionList';
-import { transactionsPageNoAtom } from 'common/recoil/atoms/TransactionsPageNoAtom';
-import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoAtom';
+import { userMessageState } from 'recoil/atoms/UserMessageAtom';
+import { useSetRecoilState } from 'recoil';
 import { useEffect } from 'react'
-import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 import YearAndPeriodSearch from 'types/YearAndPeriodSearch'
 import BankAccount from 'types/BankAccount'
 
 function TransactionViewer() {
 
-  const [bankAccounts, setBankAccounts] = useRecoilState<BankAccount>(bankAccountsAtom);
-  const setCategories = useSetRecoilState(categoriesAtom);
-  const setSelectedBankAccount = useSetRecoilState<BankAccount>(selectedBankAccountAtom);
-  const setTransactionPageNo = useSetRecoilState(transactionsPageNoAtom);
-  const setUserMessage = useSetRecoilState(userMessageAtom);
-  const setYearAndPeriodSearch = useSetRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchAtom);
+  const setBankAccounts = useSetRecoilState<BankAccount>(bankAccountsState);
+  const setCategories = useSetRecoilState(categoriesState);
+  const setSelectedBankAccount = useSetRecoilState<BankAccount>(selectedBankAccountState);
+  const setTransactionPageNo = useSetRecoilState(transactionsPageNoState);
+  const setUserMessage = useSetRecoilState(userMessageState);
+  const setYearAndPeriodSearch = useSetRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchState);
 
   useEffect(() => {
     axios.get(apiBaseUrl + '/categories/get')

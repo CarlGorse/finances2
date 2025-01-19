@@ -1,8 +1,8 @@
-import AddEdit from '../../features/TransactionViewer/OperationPage/AddEdit';
-import Delete from '../../features/TransactionViewer/OperationPage/Delete';
-import MoveWages from '../../features/TransactionViewer/OperationPage/MoveWages';
+import AddEdit from '../features/TransactionViewer/OperationPage/AddEdit';
+import Delete from '../features/TransactionViewer/OperationPage/Delete';
+import MoveWages from '../features/TransactionViewer/OperationPage/MoveWages';
 import { useSetRecoilState } from 'recoil';
-import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
+import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
 
 export const operationAdd = "add";
 export const operationEdit = "edit";
@@ -11,7 +11,7 @@ export const operationMoveWages = "move-wages";
 
 function GetOperationProperties(transactionOperation, selectedTransactions) {
 
-    const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
+    const setTransactionOperation = useSetRecoilState(transactionOperationState);
 
     let description;
     let markup;

@@ -1,14 +1,14 @@
 import { Accordion, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import { formatCurrency } from 'common/functions/CurrencyFunctions';
-import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
+import { formatCurrency } from 'functions/CurrencyFunctions';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import WageTotalBadge from 'features/TransactionViewer/TransactionList/TransactionRow/WageTotalBadge';
 
 function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
 
-  const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
+  const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsState);
   const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {

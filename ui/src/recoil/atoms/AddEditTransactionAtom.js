@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const addEditTransactionAtom = atom({
+export const addEditTransactionState = atom({
     key: "addEditTransactionState",
     default: {
         AccountId: null,

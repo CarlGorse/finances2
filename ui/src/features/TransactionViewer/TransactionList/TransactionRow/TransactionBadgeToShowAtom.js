@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const transactionBadgeToShowAtom = atom({
+export const transactionBadgeToShowState = atom({
     key: "TransactionBadgeToShowAtom",
     default: {
         Type: null,

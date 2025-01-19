@@ -1,13 +1,13 @@
-import { apiBaseUrl } from 'common/consts/ApiConsts';
+import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import { formatCurrency } from 'common/functions/CurrencyFunctions'
-import { isYearAndPeriodSearchValid } from 'common/functions/YearAndPeriodFunctions'
-import Spinner from 'common/components/Spinner'
+import { formatCurrency } from 'functions/CurrencyFunctions'
+import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions'
+import Spinner from 'components/FinancesSpinner'
 import { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
-import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
+import { userMessageState } from 'recoil/atoms/UserMessageAtom';
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 import StartYearAndPeriodSelector from './StartYearAndPeriodSelector'
 
 function CategoryTotalsReport() {
@@ -15,8 +15,8 @@ function CategoryTotalsReport() {
     const [reportData, setReportData] = useState(null)
     const [doRefresh, setDoRefresh] = useState(false)
     const [loadState, setLoadState] = useState("");
-    const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchAtom);
-    const setUserMessage = useSetRecoilState(userMessageAtom);
+    const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchState);
+    const setUserMessage = useSetRecoilState(userMessageState);
 
     useEffect(() => {
 

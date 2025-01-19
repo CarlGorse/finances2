@@ -1,33 +1,33 @@
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import BankAccountSelector from './BankAccountSelector';
-import { loadedTransactionsAtom } from 'common/recoil/atoms/LoadedTransactionsAtom';
+import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
 import NavigationButtons from './TransactionList/NavigationButtons'
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import OperationButtons from './OperationButtons';
 import OperationPage from './OperationPage';
-import { padStart } from 'common/functions/NumberFunctions';
+import { padStart } from 'functions/NumberFunctions';
 import PageSizeSelector from './TransactionList/PageSizeSelector'
-import { selectedBankAccountAtom } from 'common/recoil/atoms/SelectedBankAccountAtom';
-import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
-import { transactionsPageNoAtom } from 'common/recoil/atoms/TransactionsPageNoAtom';
+import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
+import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
+import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoAtom';
 import { useRecoilState } from 'recoil';
-import UserMessage from 'common/components/UserMessage'
+import UserMessage from 'components/UserMessage'
 import { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 import YearsAndPeriodsSearch from './YearsAndPeriodsSearch';
-import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 import BankAccount from 'types/BankAccount'
 import LoadedTransactions from 'types/LoadedTransactions'
 import YearAndPeriodSearch from 'types/YearAndPeriodSearch'
 
 export default function TransactionBanner() {
-  const loadedTransactions = useRecoilValue<LoadedTransactions>(loadedTransactionsAtom);
-  const selectedBankAccount = useRecoilValue<BankAccount>(selectedBankAccountAtom);
-  const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
-  const [transactionPageNo, setTransactionPageNo] = useRecoilState(transactionsPageNoAtom);
+  const loadedTransactions = useRecoilValue<LoadedTransactions>(loadedTransactionsState);
+  const selectedBankAccount = useRecoilValue<BankAccount>(selectedBankAccountState);
+  const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationState);
+  const [transactionPageNo, setTransactionPageNo] = useRecoilState(transactionsPageNoState);
   const [showSearch, setShowSearch] = useState(false);
   const [, setShowOperations] = useState(false);
-  const [yearAndPeriodSearch, setYearAndPeriodSearch] = useRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchAtom);
+  const [yearAndPeriodSearch, setYearAndPeriodSearch] = useRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchState);
 
   useEffect(() => {
 

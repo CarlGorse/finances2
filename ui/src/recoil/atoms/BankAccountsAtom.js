@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const bankAccountsAtom = atom({
+export const bankAccountsState = atom({
     key: "banKAccountsState",
     default: []
 });

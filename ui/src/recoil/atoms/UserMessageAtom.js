@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const userMessageAtom = atom({
+export const userMessageState = atom({
     key: "userMessageState",
     default: {
         Message: null,

@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const reloadTransactionsAtom = atom({
+export const reloadTransactionsState = atom({
     key: "reloadTranmsactionsState",
     default: new Date()
 });

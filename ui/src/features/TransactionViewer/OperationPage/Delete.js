@@ -1,20 +1,20 @@
-import { apiBaseUrl } from 'common/consts/ApiConsts';
+import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { Col, Row } from 'react-bootstrap';
-import { reloadTransactionsAtom } from 'common/recoil/atoms/ReloadTransactionsAtom';
+import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsAtom';
 import SaveAndCancelButtons from './SaveAndCancelButtons';
-import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
 import { Table } from 'react-bootstrap';
-import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
-import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
+import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
+import { userMessageState } from 'recoil/atoms/UserMessageAtom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 function Delete({ handleClose }) {
 
-    const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
-    const setReloadTransactions = useSetRecoilState(reloadTransactionsAtom);
-    const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
-    const setUserMessage = useSetRecoilState(userMessageAtom);
+    const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsState);
+    const setReloadTransactions = useSetRecoilState(reloadTransactionsState);
+    const setTransactionOperation = useSetRecoilState(transactionOperationState);
+    const setUserMessage = useSetRecoilState(userMessageState);
 
     function Delete() {
 

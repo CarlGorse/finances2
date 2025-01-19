@@ -1,10 +1,10 @@
 import { Alert } from 'react-bootstrap';
-import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
+import { userMessageState } from 'recoil/atoms/UserMessageAtom';
 import { useRecoilValue } from 'recoil';
 
 function UserMessages() {
 
-    const userMessage = useRecoilValue(userMessageAtom);
+    const userMessage = useRecoilValue(userMessageState);
 
     if (!userMessage?.Message?.length > 0) {
         return null

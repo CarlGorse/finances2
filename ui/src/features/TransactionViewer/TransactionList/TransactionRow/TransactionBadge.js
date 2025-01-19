@@ -1,12 +1,12 @@
 import Badge from 'react-bootstrap/Badge';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
-import { transactionBadgeToShowAtom } from './TransactionBadgeToShowAtom';
+import { transactionBadgeToShowState } from './TransactionBadgeToShowAtom';
 import { useRecoilState } from 'recoil';
 
 function TransactionBadge({ transaction, badgeType, badgeLabel, badgeColour, isBadgeApplicable, popoverBody }) {
 
-    const [transactionBadgeToShow, setTransactionBadgeToShow] = useRecoilState(transactionBadgeToShowAtom);
+    const [transactionBadgeToShow, setTransactionBadgeToShow] = useRecoilState(transactionBadgeToShowState);
 
     const popover = (
         <Popover id="popover-basic">

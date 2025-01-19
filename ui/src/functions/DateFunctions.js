@@ -1,6 +1,6 @@
 import { padStart } from './NumberFunctions'
 
-function getDateAsYYYYMMDD(thisDate) {
+export function getDateAsYYYYMMDD(thisDate) {
 
     let thisDateAsDate = new Date(thisDate);
 
@@ -11,7 +11,7 @@ function getDateAsYYYYMMDD(thisDate) {
     return year + '-' + month + '-' + day;
 }
 
-function getDateAsDDMMYYYY(thisDate) {
+export function getDateAsDDMMYYYY(thisDate) {
 
     let thisDateAsDate = new Date(thisDate);
 
@@ -21,5 +21,3 @@ function getDateAsDDMMYYYY(thisDate) {
 
     return day + '/' + month + '/' + year;
 }
-
-export { getDateAsYYYYMMDD, getDateAsDDMMYYYY };

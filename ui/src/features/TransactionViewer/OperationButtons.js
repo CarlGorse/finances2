@@ -1,11 +1,11 @@
-import { GetOperationProperties } from 'common/functions/OperationFunctions';
+import { GetOperationProperties } from 'functions/OperationFunctions';
 import OperationButton from './OperationButton';
-import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
 import { useRecoilValue } from 'recoil';
 
 function OperationButtons({ onClick }) {
 
-    const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
+    const selectedTransactions = useRecoilValue(selectedTransactionsState);
 
     let deleteOperation;
     let addOperation;

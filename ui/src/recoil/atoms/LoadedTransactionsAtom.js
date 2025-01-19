@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const loadedTransactionsAtom = atom({
+export const loadedTransactionsState = atom({
     key: "loadedTransactionsState",
     default: []
 });

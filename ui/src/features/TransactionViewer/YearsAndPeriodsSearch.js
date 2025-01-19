@@ -1,12 +1,12 @@
 import { Col, Row } from 'react-bootstrap';
 import { useRecoilState } from 'recoil';
-import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
-import YearAndPeriodSelect from 'common/components/YearAndPeriodSelect'
-import { periods, years } from 'common/consts/YearAndPeriodConsts'
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
+import YearAndPeriodSelect from 'components/YearAndPeriodSelect'
+import { periods, years } from 'consts/YearAndPeriodConsts'
 
 function YearsAndPeriodsSearch() {
 
-  const [yearAndPeriodSearch, setYearAndPeriodSearch] = useRecoilState(yearAndPeriodSearchAtom);
+  const [yearAndPeriodSearch, setYearAndPeriodSearch] = useRecoilState(yearAndPeriodSearchState);
 
   function UpdateSelectedStartYearAndPeriod(propertyName, value) {
     setYearAndPeriodSearch(prevState => ({ ...prevState, [propertyName]: value }))

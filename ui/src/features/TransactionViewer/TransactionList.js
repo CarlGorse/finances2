@@ -1,8 +1,8 @@
 import { Accordion, Container, Row } from 'react-bootstrap';
-import { loadedTransactionsAtom } from 'common/recoil/atoms/LoadedTransactionsAtom';
-import Spinner from 'common/components/Spinner'
-import TransactionHeader from 'common/components/TransactionHeader';
-import TransactionRow from 'common/components/TransactionRow';
+import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
+import Spinner from 'components/FinancesSpinner'
+import TransactionHeader from 'components/TransactionHeader';
+import TransactionRow from 'components/TransactionRow';
 import { useState } from 'react';
 import useLoadTransactions from './TransactionList/useLoadTransactions';
 import { useRecoilValue } from 'recoil';
@@ -10,7 +10,7 @@ import { useRecoilValue } from 'recoil';
 function TransactionList() {
 
   const [loading] = useState(null);
-  const loadedTransactions = useRecoilValue(loadedTransactionsAtom);
+  const loadedTransactions = useRecoilValue(loadedTransactionsState);
 
   useLoadTransactions();
 

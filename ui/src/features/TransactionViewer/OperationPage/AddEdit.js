@@ -1,12 +1,12 @@
-import { addEditTransactionAtom } from 'common/recoil/atoms/AddEditTransactionAtom';
-import { apiBaseUrl } from 'common/consts/ApiConsts';
+import { addEditTransactionState } from 'recoil/atoms/AddEditTransactionAtom';
+import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios'
-import { reloadTransactionsAtom } from 'common/recoil/atoms/ReloadTransactionsAtom';
+import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsAtom';
 import SaveAndCancelButtons from './SaveAndCancelButtons';
-import { selectedBankAccountAtom } from 'common/recoil/atoms/SelectedBankAccountAtom';
-import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
-import { stringToCurrency } from 'common/functions/CurrencyFunctions';
-import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
+import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
+import { stringToCurrency } from 'functions/CurrencyFunctions';
+import { userMessageState } from 'recoil/atoms/UserMessageAtom';
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import EffDate from './AddEdit/EffDate'
 import Item from './AddEdit/Item'
@@ -15,15 +15,15 @@ import Debit from './AddEdit/Debit'
 import IsWage from './AddEdit/IsWage'
 import Description from './AddEdit/Description'
 import Category from './AddEdit/Category'
-import { getDateAsYYYYMMDD } from 'common/functions/DateFunctions'
+import { getDateAsYYYYMMDD } from 'functions/DateFunctions'
 
 function AddEdit({ apiMethod, handleClose }) {
 
-    const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
-    const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
-    const setReloadTransactions = useSetRecoilState(reloadTransactionsAtom);
-    const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
-    const setUserMessage = useSetRecoilState(userMessageAtom);
+    const selectedBankAccount = useRecoilValue(selectedBankAccountState);
+    const setAddEditTransaction = useSetRecoilState(addEditTransactionState);
+    const setReloadTransactions = useSetRecoilState(reloadTransactionsAState);
+    const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsState);
+    const setUserMessage = useSetRecoilState(userMessageState);
 
     function Save() {
 

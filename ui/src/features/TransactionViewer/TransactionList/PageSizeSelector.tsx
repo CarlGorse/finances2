@@ -1,14 +1,14 @@
 import { Col, Form, Row } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { loadedTransactionsAtom } from 'common/recoil/atoms/LoadedTransactionsAtom';
-import { transactionsPageSizeAtom } from 'common/recoil/atoms/TransactionsPageSizeAtom';
+import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
+import { transactionsPageSizeState } from 'recoil/atoms/TransactionsPageSizeAtom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import LoadedTransactions from 'types/LoadedTransactions'
 
 function PageSizeSelector() {
 
-    const [transactionsPageSize, setTransactionsPageSize] = useRecoilState<number>(transactionsPageSizeAtom);
-    const loadedTransactions = useRecoilValue<LoadedTransactions>(loadedTransactionsAtom);
+    const [transactionsPageSize, setTransactionsPageSize] = useRecoilState<number>(transactionsPageSizeState);
+    const loadedTransactions = useRecoilValue<LoadedTransactions>(loadedTransactionsState);
 
     console.log(loadedTransactions.totalTransactions);
 

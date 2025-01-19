@@ -1,16 +1,16 @@
 import { Button } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
-import { getYearAndPeriodCountFromDate, getYearsAndPeriodsFromPeriodCount, getPeriodCountFromYearsAndPeriods } from 'common/functions/YearAndPeriodFunctions';
-import { reportPeriodsToShow } from 'common/consts/ReportConsts'
+import { getYearAndPeriodCountFromDate, getYearsAndPeriodsFromPeriodCount, getPeriodCountFromYearsAndPeriods } from 'functions/YearAndPeriodFunctions';
+import { reportPeriodsToShow } from 'consts/ReportConsts'
 import StartPeriodSelector from './PeriodSelector'
 import StartYearSelector from './YearSelector'
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 
 function StartYearAndPeriodSelector() {
 
-  const [selectedYearAndPeriod, setSelectedYearAndPeriod] = useRecoilState(yearAndPeriodSearchAtom);
+  const [selectedYearAndPeriod, setSelectedYearAndPeriod] = useRecoilState(yearAndPeriodSearchState);
   const [yearAndPeriodCount, setYearAndPeriodCount] = useState((2024 * 12) + 4);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const transactionsPageNoAtom = atom({
+export const transactionsPageNoState = atom({
     key: "transactionsPageNoState",
     default: 1
 });

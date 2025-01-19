@@ -1,10 +1,10 @@
-import { categoriesAtom } from 'common/recoil/atoms/CategoriesAtom';
+import { categoriesState } from 'recoil/atoms/CategoriesAtom';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useRecoilValue } from 'recoil';
 
 function AddEdit() {
 
-    const categories = useRecoilValue(categoriesAtom);
+    const categories = useRecoilValue(categoriesState);
 
     return (
 

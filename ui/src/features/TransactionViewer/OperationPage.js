@@ -1,10 +1,10 @@
 import { Form } from 'react-bootstrap';
-import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
+import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
 import { useRecoilValue } from 'recoil';
 
 function OperationPage() {
 
-    const transactionOperation = useRecoilValue(transactionOperationAtom);
+    const transactionOperation = useRecoilValue(transactionOperationState);
 
     if (!transactionOperation) {
         return;

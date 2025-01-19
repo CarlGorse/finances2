@@ -1,19 +1,19 @@
 import Dropdown from 'react-bootstrap/Dropdown';
-import { bankAccountsAtom } from 'common/recoil/atoms/BankAccountsAtom';
-import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
-import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
-import { selectedBankAccountAtom } from 'common/recoil/atoms/SelectedBankAccountAtom';
+import { bankAccountsState } from 'recoil/atoms/BankAccountsAtom';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
+import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
+import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 
 function BankAccountSelector() {
 
-  const bankAccounts = useRecoilValue(bankAccountsAtom);
+  const bankAccounts = useRecoilValue(bankAccountsState);
   const [title, setTitle] = useState("");
-  const [selectedBankAccount, setSelectedBankAccount] = useRecoilState(selectedBankAccountAtom);
+  const [selectedBankAccount, setSelectedBankAccount] = useRecoilState(selectedBankAccountState);
 
-  const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
-  const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
+  const setSelectedTransactions = useSetRecoilState(selectedTransactionsState);
+  const setTransactionOperation = useSetRecoilState(transactionOperationState);
 
   useEffect(
     () => {
@@ -44,8 +44,11 @@ function BankAccountSelector() {
 
   return (
     <>
+
       <label>Bank account:</label>
+
       <Dropdown>
+
         <Dropdown.Toggle size="md" variant="success" id="dropdown-basic" >
           {title}
         </Dropdown.Toggle>

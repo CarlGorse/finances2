@@ -1,11 +1,11 @@
-import { periods } from 'common/consts/YearAndPeriodConsts'
+import { periods } from 'consts/YearAndPeriodConsts'
 import { useRecoilValue } from 'recoil';
-import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
-import YearAndPeriodSelect from 'common/components/YearAndPeriodSelect'
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
+import YearAndPeriodSelect from 'components/YearAndPeriodSelect'
 
 function StartPeriodSelector({ onSelect }) {
 
-  const selectedYearAndPeriod = useRecoilValue(yearAndPeriodSearchAtom);
+  const selectedYearAndPeriod = useRecoilValue(yearAndPeriodSearchState);
 
   return (
     <YearAndPeriodSelect

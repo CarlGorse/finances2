@@ -1,20 +1,20 @@
-import { apiBaseUrl } from 'common/consts/ApiConsts';
+import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { Col, Container, Form, Row } from 'react-bootstrap';
-import { reloadTransactionsAtom } from 'common/recoil/atoms/ReloadTransactionsAtom';
-import { formatCurrency, isValidCurrency, stringToCurrency } from 'common/functions/CurrencyFunctions';
+import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsAtom';
+import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/CurrencyFunctions';
 import SaveAndCancelButtons from './SaveAndCancelButtons';
-import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
+import { userMessageState } from 'recoil/atoms/UserMessageAtom';
 import { useState } from 'react'
 
 function MoveWages({ handleClose }) {
 
     const [creditToMove, setCreditToMove] = useState(0);
-    const setReloadTransactions = useSetRecoilState(reloadTransactionsAtom);
-    const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
-    const setUserMessage = useSetRecoilState(userMessageAtom);
+    const setReloadTransactions = useSetRecoilState(reloadTransactionsState);
+    const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsState);
+    const setUserMessage = useSetRecoilState(userMessageState);
 
     function Save() {
 
