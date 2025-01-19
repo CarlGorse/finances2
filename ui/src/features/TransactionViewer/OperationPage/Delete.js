@@ -7,11 +7,11 @@ import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactio
 import { Table } from 'react-bootstrap';
 import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
 import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 function Delete({ handleClose }) {
 
-    const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
+    const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
     const setReloadTransactions = useSetRecoilState(reloadTransactionsAtom);
     const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
@@ -28,6 +28,7 @@ function Delete({ handleClose }) {
             }
         )
             .then(function () {
+                setSelectedTransactions(null);
                 setReloadTransactions(new Date());
 
                 setUserMessage({
