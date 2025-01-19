@@ -82,96 +82,63 @@ function MoveWages({ handleClose }) {
 
     return (
         <Container>
+
+            <Row className="mb-3">
+
+                <Form.Label>To move:</Form.Label>
+
+
+
+
+                <Form.Control
+                    defaultValue={creditToMove}
+                    type="text"
+                    size="sm"
+                    style={{ backgroundColor: "white" }}
+                    onChange={e => validateAndSetCreditToMove(e.target.value)}
+                />
+
+
+            </Row>
+
             <Row>
-                <Col xs={1} />
-
-                <Col xs={1}>
-                    <b>Date</b>
-                </Col>
-
-                <Col xs={2}>
-                    <b>Group</b>
-                </Col>
-
-                <Col xs={2}>
+                <Col xs={6}>
                     <b>Category</b>
                 </Col>
 
                 <Col xs={2}>
-                    <b>Description</b>
-                </Col>
-
-                <Col xs={1}>
                     <b>Credit</b>
                 </Col>
 
-                <Col xs={1}>
-                    <b>To move</b>
-                </Col>
-
-                <Col xs={1}>
-                    <b>New credit</b>
+                <Col xs={2}>
+                    <b>New</b>
                 </Col>
             </Row>
 
             <Row>
-                <Col xs={1} />
-
-                <Col xs={1}>
-                    {new Date(transactionToMoveFrom.EffDate).toISOString().split('T')[0]}
-                </Col>
-
-                <Col xs={2}>
-                    {transactionToMoveFrom.Category.Group?.Name}
-                </Col>
-
-                <Col xs={2}>
+                <Col xs={6}>
                     {transactionToMoveFrom.Category?.Name}
                 </Col>
 
                 <Col xs={2}>
-                    {transactionToMoveFrom.Description}
-                </Col>
-
-                <Col xs={1}>
                     {transactionToMoveFrom.Credit}
                 </Col>
 
-                <Col xs={1}>
-                    <Form.Control defaultValue={creditToMove} type="text" size="sm" style={{ backgroundColor: "white" }} onChange={e => validateAndSetCreditToMove(e.target.value)} />
-                </Col>
-
-                <Col xs={1}>
+                <Col xs={2}>
                     {transactionToMoveFrom.Credit - creditToMove}
                 </Col>
             </Row>
 
             <Row>
-                <Col xs={1} />
-
-                <Col xs={1}>
-                    {new Date(transactionToMoveTo.EffDate).toISOString().split('T')[0]}
-                </Col>
-
-                <Col xs={2}>
-                    {transactionToMoveTo.Category.Group?.Name}
-                </Col>
-
-                <Col xs={2}>
+                <Col xs={6}>
                     {transactionToMoveTo.Category?.Name}
                 </Col>
 
                 <Col xs={2}>
-                    {transactionToMoveTo.Description}
-                </Col>
-
-                <Col xs={1}>
                     {transactionToMoveTo.Credit}
                 </Col>
 
-                <Col xs={1} />
-
-                <Col xs={1}>
+                <Col xs={2}>
                     {transactionToMoveTo.Credit + stringToCurrency(creditToMove)}
                 </Col>
             </Row>
