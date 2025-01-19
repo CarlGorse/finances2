@@ -3,65 +3,37 @@ import { addEditTransactionAtom } from 'common/recoil/atoms/AddEditTransactionAt
 import { apiBaseUrl } from 'common/consts/ApiConsts';
 import axios from 'axios';
 import { lastTransactionsLoadDateAtom } from 'common/recoil/atoms/LastTransactionsLoadDateAtom';
-import SaveAndCancelButtons from './SaveAndCancelButtons';
-import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { useEffect, useState } from 'react'
+import { useSetRecoilState } from 'recoil';
+import { useEffect, useRecoilState } from 'react'
 import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
 
 function Edit({ handleClose }) {
 
-    const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
-    const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
     const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
-    const transactionToEdit = useRecoilValue(addEditTransactionAtom);
-    const [saveButtonEnabled, setSaveButtonEnabled] = useState(false);
+    const [addEditTransaction, setAddEditTransaction] = useRecoilState(addEditTransactionAtom);
 
     useEffect(() => {
 
-        setUserMessage(null);
+        if (!addEditTransaction) {
+            return;
+        }
 
-        const selectedTransaction = selectedTransactions[0];
-
-        setAddEditTransaction({
-            AccountId: selectedTransaction.AccountId,
-            CategoryId: selectedTransaction.CategoryId,
-            Credit: selectedTransaction.Credit,
-            Debit: selectedTransaction.Debit,
-            Description: selectedTransaction.Description,
-            EffDate: selectedTransaction.EffDate,
-            IsWage: selectedTransaction.IsWage,
-            Item: selectedTransaction.Item,
-            TransactionId: selectedTransaction.TransactionId
-        });
-
-    }, [selectedTransactions, setUserMessage, setAddEditTransaction])
-
-    function Save() {
         axios.post(
             apiBaseUrl + "/transactions/edit",
-            {
-                AccountId: transactionToEdit.AccountId,
-                CategoryId: transactionToEdit.CategoryId,
-                Credit: transactionToEdit.Credit,
-                Debit: transactionToEdit.Debit,
-                Description: transactionToEdit.Description,
-                EffDate: transactionToEdit.EffDate,
-                IsWage: transactionToEdit.IsWage,
-                Item: transactionToEdit.Item,
-                TransactionId: transactionToEdit.TransactionId
-            }, {
+            addEditTransaction, {
             headers: {
                 "Content-Type": "application/json"
             }
         })
             .then(function () {
+                setAddEditTransaction(null); // stops duplicate posts?
                 setLastTransactionsLoadDate(new Date());
                 setUserMessage({
                     Message: "Transaction saved.",
                     Variant: "success"
                 })
+                handleClose();
             })
             .catch(function (error) {
                 setUserMessage({
@@ -69,15 +41,10 @@ function Edit({ handleClose }) {
                     Variant: "danger"
                 })
             })
-    }
+    }, [setAddEditTransaction])
 
     return (
-        <>
-            <AddEdit onUpdate={() => setSaveButtonEnabled(true)} />
-
-            <SaveAndCancelButtons save={() => Save()} saveButtonEnabled={saveButtonEnabled} handleClose={handleClose} />
-
-        </ >
+        <AddEdit handleClose={() => handleClose} />
     );
 }
 

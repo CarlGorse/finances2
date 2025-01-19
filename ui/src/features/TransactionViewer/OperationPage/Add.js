@@ -3,16 +3,22 @@ import { addEditTransactionAtom } from 'common/recoil/atoms/AddEditTransactionAt
 import { apiBaseUrl } from 'common/consts/ApiConsts';
 import axios from 'axios';
 import { lastTransactionsLoadDateAtom } from 'common/recoil/atoms/LastTransactionsLoadDateAtom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
+import { useEffect } from 'react'
 
 function Add({ handleClose }) {
 
     const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
-    const addEditTransaction = useRecoilValue(addEditTransactionAtom);
+    const [addEditTransaction, setAddEditTransaction] = useRecoilState(addEditTransactionAtom);
 
-    function Save() {
+    useEffect(() => {
+
+        if (!addEditTransaction) {
+            return;
+        }
+
         axios.post(
             apiBaseUrl + "/transactions/add",
             addEditTransaction, {
@@ -20,7 +26,8 @@ function Add({ handleClose }) {
                 "Content-Type": "application/json"
             }
         })
-            .then(function (response) {
+            .then(function () {
+                setAddEditTransaction(null); // stops duplicate posts?
                 setLastTransactionsLoadDate(new Date());
                 //setSelectedTransactions([response.data.transaction]);
                 setUserMessage({
@@ -35,12 +42,10 @@ function Add({ handleClose }) {
                     Variant: "danger"
                 })
             })
-    }
+    }, [setAddEditTransaction])
 
     return (
-        <>
-            <AddEdit save={() => Save()} handleClose={() => handleClose} />
-        </>
+        <AddEdit handleClose={() => handleClose} />
     );
 }
 

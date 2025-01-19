@@ -9,7 +9,7 @@ import { useEffect } from 'react'
 import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import SaveAndCancelButtons from './SaveAndCancelButtons';
 
-function AddEdit({ save, handleClose }) {
+function AddEdit({ handleClose }) {
 
     const setAddEditTransaction = useSetRecoilState(addEditTransactionAtom);
     const [categories, setCategories] = useRecoilState(categoriesAtom);
@@ -37,8 +37,6 @@ function AddEdit({ save, handleClose }) {
             IsWage: document.getElementById("addEdit_IsWage").checked,
             Item: document.getElementById("addEdit_Item").value
         })
-
-        save();
     }
 
     const categoriesForSort = [...categories]
