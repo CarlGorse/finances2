@@ -6,12 +6,14 @@ import SaveAndCancelButtons from './SaveAndCancelButtons';
 import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
 import { Table } from 'react-bootstrap';
 import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
+import useClearSelectedTransactions from 'hooks/useClearSelectedTransactions';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { userMessageState } from 'recoil/atoms/UserMessageAtom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
 
 function Delete({ handleClose }) {
 
-    const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsState);
+    const clearSelectedTransactions = useClearSelectedTransactions();
+    const selectedTransactions = useRecoilValue(selectedTransactionsState);
     const setReloadTransactions = useSetRecoilState(reloadTransactionsState);
     const setTransactionOperation = useSetRecoilState(transactionOperationState);
     const setUserMessage = useSetRecoilState(userMessageState);
@@ -28,7 +30,7 @@ function Delete({ handleClose }) {
             }
         )
             .then(function () {
-                setSelectedTransactions(null);
+                clearSelectedTransactions();
                 setReloadTransactions(new Date());
 
                 setUserMessage({

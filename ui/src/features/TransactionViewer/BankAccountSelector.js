@@ -1,6 +1,6 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import { bankAccountsState } from 'recoil/atoms/BankAccountsAtom';
-import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
+import useClearSelectedTransactions from 'hooks/useClearSelectedTransactions';
 import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
 import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
@@ -9,11 +9,10 @@ import { useEffect, useState } from 'react';
 function BankAccountSelector() {
 
   const bankAccounts = useRecoilValue(bankAccountsState);
-  const [title, setTitle] = useState("");
+  const clearSelectedTransactions = useClearSelectedTransactions();
   const [selectedBankAccount, setSelectedBankAccount] = useRecoilState(selectedBankAccountState);
-
-  const setSelectedTransactions = useSetRecoilState(selectedTransactionsState);
   const setTransactionOperation = useSetRecoilState(transactionOperationState);
+  const [title, setTitle] = useState("");
 
   useEffect(
     () => {
@@ -38,7 +37,7 @@ function BankAccountSelector() {
   };
 
   function ClearSelectedTransactionsAndOperation() {
-    setSelectedTransactions(null);
+    clearSelectedTransactions();
     setTransactionOperation(null);
   }
 

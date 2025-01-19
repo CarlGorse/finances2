@@ -21,7 +21,7 @@ function AddEdit({ apiMethod, handleClose }) {
 
     const selectedBankAccount = useRecoilValue(selectedBankAccountState);
     const setAddEditTransaction = useSetRecoilState(addEditTransactionState);
-    const setReloadTransactions = useSetRecoilState(reloadTransactionsAState);
+    const setReloadTransactions = useSetRecoilState(reloadTransactionsState);
     const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsState);
     const setUserMessage = useSetRecoilState(userMessageState);
 
