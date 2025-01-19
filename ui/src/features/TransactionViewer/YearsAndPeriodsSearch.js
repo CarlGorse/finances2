@@ -1,8 +1,8 @@
 import { Col, Row } from 'react-bootstrap';
+import PeriodSelector from 'components/PeriodSelector'
 import { useRecoilState } from 'recoil';
 import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
-import YearAndPeriodSelect from 'components/YearAndPeriodSelect'
-import { periods, years } from 'consts/YearAndPeriodConsts'
+import YearSelector from 'components/YearSelector'
 
 function YearsAndPeriodsSearch() {
 
@@ -23,7 +23,7 @@ function YearsAndPeriodsSearch() {
         <Col xs={2}>From:</Col>
 
         <Col xs={2}>
-          <YearAndPeriodSelect
+          <PeriodSelector
             defaultValue={yearAndPeriodSearch?.StartPeriod}
             onSelect={
               value => {
@@ -34,11 +34,11 @@ function YearsAndPeriodsSearch() {
                 }
               }
             }
-            values={periods} />
+          />
         </Col>
 
         <Col xs={6}>
-          <YearAndPeriodSelect
+          <YearSelector
             defaultValue={yearAndPeriodSearch?.StartYear}
             onSelect={
               value => {
@@ -49,7 +49,7 @@ function YearsAndPeriodsSearch() {
                 }
               }
             }
-            values={years} />
+          />
         </Col>
         <Col />
       </Row>
@@ -59,17 +59,17 @@ function YearsAndPeriodsSearch() {
         <Col xs={2}>To:</Col>
 
         <Col xs={2}>
-          <YearAndPeriodSelect
+          <PeriodSelector
             defaultValue={yearAndPeriodSearch?.EndPeriod}
             onSelect={value => UpdateSelectedEndYearAndPeriod("EndPeriod", value)}
-            values={periods} />
+          />
         </Col>
 
         <Col xs={6}>
-          <YearAndPeriodSelect
+          <YearSelector
             defaultValue={yearAndPeriodSearch?.EndYear}
             onSelect={value => UpdateSelectedEndYearAndPeriod("EndYear", value)}
-            values={years} />
+          />
         </Col>
 
         <Col />

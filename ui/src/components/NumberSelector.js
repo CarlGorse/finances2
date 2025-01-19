@@ -2,7 +2,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { padStart } from 'functions/NumberFunctions'
 import { useEffect, useState } from 'react';
 
-function YearAndPeriodSelect({ defaultValue, onSelect, values }) {
+function NumberSelector({ defaultValue, onSelect, values, startPadding }) {
 
   const [text, setText] = useState("");
 
@@ -20,7 +20,7 @@ function YearAndPeriodSelect({ defaultValue, onSelect, values }) {
     <Dropdown>
 
       <Dropdown.Toggle variant="light">
-        {padStart(text, 2, '0')}
+        {padStart(text, startPadding, '0')}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
@@ -29,7 +29,7 @@ function YearAndPeriodSelect({ defaultValue, onSelect, values }) {
             <div onClick={(e) => {
               selectValue(e.target.textContent)
             }}>
-              {value}
+              {padStart(value, startPadding, '0')}
             </div>
 
           </Dropdown.Item>
@@ -41,4 +41,4 @@ function YearAndPeriodSelect({ defaultValue, onSelect, values }) {
   );
 }
 
-export default YearAndPeriodSelect;
+export default NumberSelector;

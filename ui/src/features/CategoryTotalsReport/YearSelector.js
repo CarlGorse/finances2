@@ -1,17 +1,15 @@
 import { useRecoilValue } from 'recoil';
 import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
-import YearAndPeriodSelect from 'components/YearAndPeriodSelect'
-import { years } from 'consts/YearAndPeriodConsts'
+import YearSelector from 'components/YearSelector'
 
 function StartPeriodSelector({ onSelect }) {
 
   const selectedYearAndPeriod = useRecoilValue(yearAndPeriodSearchState);
 
   return (
-    <YearAndPeriodSelect
+    <YearSelector
       defaultValue={selectedYearAndPeriod.StartYear}
       onSelect={onSelect}
-      values={years}
     />
   );
 }
