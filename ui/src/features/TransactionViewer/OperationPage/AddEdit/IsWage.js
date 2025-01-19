@@ -1,6 +1,4 @@
-import { categoriesAtom } from 'common/recoil/atoms/CategoriesAtom';
 import { Col, Form, Row } from 'react-bootstrap';
-import { useRecoilValue } from 'recoil';
 
 function AddEdit() {
 

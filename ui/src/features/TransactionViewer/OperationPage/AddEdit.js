@@ -38,7 +38,7 @@ function AddEdit({ apiMethod, handleClose }) {
             EffDate: effDate,
             IsWage: document.getElementById("addEdit_IsWage").checked,
             Item: document.getElementById("addEdit_Item").value,
-            TransactionId: null
+            TransactionId: 0
         };
 
         if (apiMethod === "edit") {

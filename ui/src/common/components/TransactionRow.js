@@ -48,9 +48,13 @@ function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
   let categoryGroupText = `${transaction.Category.Group.Name} | ${transaction.Category.Name}`
 
   return (
+
     <Accordion.Item eventKey={transaction.TransactionId}>
+
       <div>
+
         <Accordion.Header>
+
           <Col className="tableCell text-center" xs={1}>
             <Form.Check checked={isSelected} onChange={() => onCheck()} />
           </Col>
@@ -80,6 +84,7 @@ function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
           </Col>
 
         </Accordion.Header>
+
         <Accordion.Body>
           <div>
             Description: {transaction.Description}
@@ -88,7 +93,9 @@ function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
             Wage total: {transaction.WageTotal}
           </div>
         </Accordion.Body>
+
       </div >
+
     </Accordion.Item >
   )
 }

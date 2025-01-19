@@ -1,51 +1,45 @@
-import axios from 'axios';
-import { apiBaseUrl } from 'common/consts/ApiConsts';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { bankAccountsAtom } from 'common/recoil/atoms/BankAccountsAtom';
 import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
 import { selectedBankAccountAtom } from 'common/recoil/atoms/SelectedBankAccountAtom';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
-import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
 
 function BankAccountSelector() {
 
-  const [bankAccounts, setBankAccounts] = useState(null);
+  const bankAccounts = useRecoilValue(bankAccountsAtom);
   const [title, setTitle] = useState("");
   const [selectedBankAccount, setSelectedBankAccount] = useRecoilState(selectedBankAccountAtom);
 
   const setSelectedTransactions = useSetRecoilState(selectedTransactionsAtom);
   const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
-  const setUserMessage = useSetRecoilState(userMessageAtom);
 
-  useEffect(() => {
-    axios.get(apiBaseUrl + "/bankAccounts/get")
-      .then(response => {
-        setUserMessage({ Error: null, Variant: null });
-        setBankAccounts(response.data.Accounts);
-        selectBankAccount(response.data.Accounts.filter(x => x.AccountId === selectedBankAccount.AccountId)[0] ?? response.data.Accounts[0])
-      })
-      .catch((response) => {
-        setUserMessage({ Message: "Unable to load bank accounts", Variant: "danger" })
+  useEffect(
+    () => {
+
+      if (selectedBankAccount) {
+        selectBankAccount(selectedBankAccount.AccountId)
+        setTitle(selectedBankAccount.Name);
       }
-      )
-  }, [setUserMessage])
+    }, [selectedBankAccount]
+  );
 
-  function selectBankAccount(bankAccount) {
-    ClearSelectedTransactionsAndOperation();
-    setTitle(bankAccount.Name);
-    if (bankAccount.AccountId !== selectedBankAccount.AccountId) {
-      setSelectedBankAccount(bankAccount);
+  function selectBankAccount(id) {
+
+    if (id === selectedBankAccount.AccountId) {
+      return;
     }
+
+    let bankAccount = bankAccounts.find(bankAccount => bankAccount.AccountId === id)
+    setSelectedBankAccount(bankAccount);
+
+    ClearSelectedTransactionsAndOperation();
   };
 
   function ClearSelectedTransactionsAndOperation() {
     setSelectedTransactions(null);
     setTransactionOperation(null);
-  }
-
-  if (bankAccounts === null) {
-    return;
   }
 
   return (
@@ -62,11 +56,7 @@ function BankAccountSelector() {
 
               <Dropdown.Item key={bankAccount.AccountId} as="button" >
                 <div onClick={(e) => {
-
-                  let bankAccount = bankAccounts.find(bankAccount => bankAccount.Name === e.target.textContent)
-
-                  selectBankAccount(bankAccount);
-
+                  selectBankAccount(bankAccount.AccountId);
                 }}>
                   {bankAccount.Name}
                 </div>

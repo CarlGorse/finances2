@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap';
 
-function SaveAndCancelButtons({ save, saveButtonText, cancelButtonText, saveButtonEnabled, handleClose }) {
+export default function SaveAndCancelButtons({ save, saveButtonText, cancelButtonText, saveButtonEnabled, handleClose }) {
 
     return (
         <div style={{ marginTop: "20px" }}>
@@ -9,5 +9,3 @@ function SaveAndCancelButtons({ save, saveButtonText, cancelButtonText, saveButt
         </div>
     );
 }
-
-export default SaveAndCancelButtons;

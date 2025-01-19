@@ -12,7 +12,6 @@ function AddEdit() {
             <Col xs={4}>
                 <Form.Control
                     id="addEdit_Credit"
-                    defaultValue="44"
                 />
             </Col>
 

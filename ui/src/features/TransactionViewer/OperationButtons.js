@@ -1,9 +1,7 @@
-import { Form } from 'react-bootstrap';
 import { GetOperationProperties } from 'common/functions/OperationFunctions';
 import OperationButton from './OperationButton';
 import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
 import { useRecoilValue } from 'recoil';
-import { operationAdd, operationEdit, operationDelete, operationMoveWages } from 'common/functions/OperationFunctions';
 
 function OperationButtons({ onClick }) {
 
@@ -16,11 +14,12 @@ function OperationButtons({ onClick }) {
 
     addOperation = GetOperationProperties("add", selectedTransactions);
 
-    if (selectedTransactions) {
-        editOperation = GetOperationProperties("edit", selectedTransactions);
-        deleteOperation = GetOperationProperties("delete", selectedTransactions);
-        moveWagesOperation = GetOperationProperties("move-wages", selectedTransactions);
-    }
+    //if (selectedTransactions) {
+    editOperation = GetOperationProperties("edit", selectedTransactions);
+    deleteOperation = GetOperationProperties("delete", selectedTransactions);
+    moveWagesOperation = GetOperationProperties("move-wages", selectedTransactions);
+    //}
+
     return (
         <>
             <span style={{ marginLeft: "20px" }}>

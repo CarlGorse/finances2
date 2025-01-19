@@ -1,7 +1,6 @@
 import { Form } from 'react-bootstrap';
 import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
 import { useRecoilValue } from 'recoil';
-import AddEdit from './OperationPage/AddEdit'
 
 function OperationPage() {
 
@@ -12,11 +11,9 @@ function OperationPage() {
     }
 
     return (
-
         <Form>
             {transactionOperation.Markup}
         </Form>
-
     );
 }
 

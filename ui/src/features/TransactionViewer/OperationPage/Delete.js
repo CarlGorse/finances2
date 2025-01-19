@@ -1,14 +1,13 @@
 import { apiBaseUrl } from 'common/consts/ApiConsts';
 import axios from 'axios';
+import { Col, Row } from 'react-bootstrap';
 import { reloadTransactionsAtom } from 'common/recoil/atoms/ReloadTransactionsAtom';
 import SaveAndCancelButtons from './SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
 import { Table } from 'react-bootstrap';
 import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
-import TransactionHeader from 'common/components/TransactionHeader';
-import TransactionRow from 'common/components/TransactionRow';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 function Delete({ handleClose }) {
 
@@ -60,15 +59,25 @@ function Delete({ handleClose }) {
             <Table className="table-bordered">
 
                 <div style={{ paddingTop: "10px" }}>
-                    <TransactionHeader showClearOption={false} />
+                    <Row>
+                        <Col xs={4}>
+                            <b>Date</b>
+                        </Col>
+                        <Col xs={4}>
+                            <b>Value</b>
+                        </Col>
+                    </Row>
                 </div>
 
                 {selectedTransactions.map((transaction, index) => (
-                    <TransactionRow
-                        key={transaction.TransactionId}
-                        transaction={transaction}
-                        backgroundColor={index % 2 === 0 ? "lightGrey" : "white"}
-                    />
+                    <Row>
+                        <Col className="tableCell" xs={4}>
+                            {transaction.EffDate}
+                        </Col>
+                        <Col className="tableCell" xs={4}>
+                            {transaction.Credit > 0 ? transaction.Credit : transaction.Debit}
+                        </Col>
+                    </Row>
                 ))}
             </Table>
 

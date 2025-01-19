@@ -21,13 +21,12 @@ import LoadedTransactions from 'types/LoadedTransactions'
 import YearAndPeriodSearch from 'types/YearAndPeriodSearch'
 
 export default function TransactionBanner() {
-
   const loadedTransactions = useRecoilValue<LoadedTransactions>(loadedTransactionsAtom);
   const selectedBankAccount = useRecoilValue<BankAccount>(selectedBankAccountAtom);
   const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
   const [transactionPageNo, setTransactionPageNo] = useRecoilState(transactionsPageNoAtom);
   const [showSearch, setShowSearch] = useState(false);
-  const [showOperations, setShowOperations] = useState(false);
+  const [, setShowOperations] = useState(false);
   const [yearAndPeriodSearch, setYearAndPeriodSearch] = useRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchAtom);
 
   useEffect(() => {
@@ -99,7 +98,7 @@ export default function TransactionBanner() {
 
             <div>
               <div>
-                Bank account: <b>{selectedBankAccount.Name}</b>
+                Bank account: <b>{selectedBankAccount?.Name}</b>
               </div>
               <div>
                 From <b>

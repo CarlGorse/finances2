@@ -51,7 +51,7 @@ function useLoadTransactions() {
 
     function GetLoadModel() {
 
-      return {
+      let model = {
         AccountId: selectedBankAccount.AccountId,
         YearAndPeriodSearch: {
           StartYear: yearAndPeriodSearch.StartYear,
@@ -64,9 +64,19 @@ function useLoadTransactions() {
         IncludeRunningTotals: true,
         IncludeWageTotals: true
       }
+
+      return model;
     }
 
     function IsModelValid(model) {
+
+      if (!model) {
+        return false;
+      }
+
+      if (!model.AccountId) {
+        return false;
+      }
 
       if (!model.PageSize > 0) {
         return false;

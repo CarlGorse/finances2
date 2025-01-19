@@ -7,7 +7,9 @@ function AddEdit() {
     const categories = useRecoilValue(categoriesAtom);
 
     return (
+
         <Row style={{ paddingTop: "5px" }}>
+
             <Col xs={3}>
                 <Form.Label>Category:</Form.Label>
             </Col>
