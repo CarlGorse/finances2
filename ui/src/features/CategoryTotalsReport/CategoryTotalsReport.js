@@ -12,9 +12,9 @@ import StartYearAndPeriodSelector from './StartYearAndPeriodSelector'
 
 function CategoryTotalsReport() {
 
-    const [categoryTotalsReport, setCategoryTotalsReport] = useState(null)
+    const [reportData, setReportData] = useState(null)
     const [doRefresh, setDoRefresh] = useState(false)
-    const [loading, setLoading] = useState(null);
+    const [loadState, setLoadState] = useState("");
     const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchAtom);
     const setUserMessage = useSetRecoilState(userMessageAtom);
 
@@ -22,10 +22,10 @@ function CategoryTotalsReport() {
 
         if (!isYearAndPeriodSearchValid(yearAndPeriodSearch)
         ) {
-            return () => { };
+            return;
         }
 
-        setLoading(true);
+        setLoadState("loading");
 
         axios.post(apiBaseUrl + "/reportTotals/getCategoryTotals", {
             StartYear: yearAndPeriodSearch.StartYear,
@@ -38,9 +38,9 @@ function CategoryTotalsReport() {
             }
         })
             .then(response => {
-                setCategoryTotalsReport(response.data);
+                setReportData(response.data);
 
-                setLoading(false);
+                setLoadState("loaded");
             })
             .catch(function (error) {
                 setUserMessage({
@@ -50,102 +50,101 @@ function CategoryTotalsReport() {
             })
     }, [yearAndPeriodSearch, setUserMessage, doRefresh])
 
-    if (!categoryTotalsReport) {
-        return null;
-    }
+    let report;
 
-    return (
+    if (loadState === "loading") { report = <Spinner /> }
 
-        <Container>
+    if (loadState === "loaded") {
+        report =
+        <>
 
-            <StartYearAndPeriodSelector />
+            <Button size="md" style={{ marginTop: "20px" }} onClick={() => setDoRefresh(prevValue => !prevValue)}>Refresh</Button>
 
-            {loading && <Spinner />}
+            <Container style={{ marginTop: "20px" }}>
 
-            {!loading &&
+                <Row>
+                    <Col />
+                    {
+                        reportData.YearsAndPeriods.map(yearAndPeriod => (
 
-                <>
+                            <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center" >
+                                <b>{yearAndPeriod.Year}.{yearAndPeriod.Period}</b>
+                            </Col>
+                        ))
+                    }
+                </Row>
 
-                    <Button size="md" style={{ marginTop: "20px" }} onClick={() => setDoRefresh(prevValue => !prevValue)}>Refresh</Button>
-
-                    <Container style={{ marginTop: "20px" }}>
-
-                        <Row>
-                            <Col />
+                {
+                    reportData.Groups.map(group => (
+                        <div key={group.Id}>
                             {
-                                categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
+                                <>
+                                    <div style={{
+                                        borderBottom: "1px solid"
+                                    }}></div>
 
-                                    <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center" >
-                                        <b>{yearAndPeriod.Year}.{yearAndPeriod.Period}</b>
-                                    </Col>
-                                ))
-                            }
-                        </Row>
-
-                        {
-                            categoryTotalsReport.Groups.map(group => (
-                                <div key={group.Id}>
-                                    {
-                                        <>
-                                            <div style={{
-                                                borderBottom: "1px solid"
-                                            }}></div>
-
-                                            <Row key={group.Id} style={{ paddingTop: "10px" }}>
-                                                <Col className="tableCell text-center">
-                                                    <b>{group.Name}</b>
+                                    <Row key={group.Id} style={{ paddingTop: "10px" }}>
+                                        <Col className="tableCell text-center">
+                                            <b>{group.Name}</b>
+                                        </Col>
+                                        {
+                                            reportData.YearsAndPeriods.map(yearAndPeriod => (
+                                                <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center">
+                                                    <b>
+                                                        {formatCurrency(
+                                                            reportData.GroupTotals.filter(groupTotal =>
+                                                                groupTotal.GroupId === group.GroupId)[0]?.YearAndPeriodTotals.filter(groupYearAndPeriodTotal =>
+                                                                    groupYearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
+                                                                    && groupYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
+                                                        }
+                                                    </b>
                                                 </Col>
+                                            ))
+                                        }
+
+                                    </Row>
+
+                                    {
+                                        reportData.Categories.filter(category => category.GroupId === group.GroupId).map(category =>
+
+                                            <Row key={category.Id}>
+
+                                                <Col className="tableCell text-center">
+                                                    {category.Name}
+                                                </Col>
+
                                                 {
-                                                    categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
+                                                    reportData.YearsAndPeriods.map(yearAndPeriod => (
                                                         <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center">
-                                                            <b>
-                                                                {formatCurrency(
-                                                                    categoryTotalsReport.GroupTotals.filter(groupTotal =>
-                                                                        groupTotal.GroupId === group.GroupId)[0]?.YearAndPeriodTotals.filter(groupYearAndPeriodTotal =>
-                                                                            groupYearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
-                                                                            && groupYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
-                                                                }
-                                                            </b>
+                                                            {formatCurrency(
+                                                                reportData.CategoryTotals.filter(categoryTotal =>
+                                                                    categoryTotal.CategoryId === category.Id)[0]?.YearAndPeriodTotals.filter(categoryYearAndPeriodTotal =>
+                                                                        categoryYearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
+                                                                        && categoryYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
+                                                            }
                                                         </Col>
                                                     ))
                                                 }
 
                                             </Row>
 
-                                            {
-                                                categoryTotalsReport.Categories.filter(category => category.GroupId === group.GroupId).map(category =>
-
-                                                    <Row key={category.Id}>
-
-                                                        <Col className="tableCell text-center">
-                                                            {category.Name}
-                                                        </Col>
-
-                                                        {
-                                                            categoryTotalsReport.YearsAndPeriods.map(yearAndPeriod => (
-                                                                <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center">
-                                                                    {formatCurrency(
-                                                                        categoryTotalsReport.CategoryTotals.filter(categoryTotal =>
-                                                                            categoryTotal.CategoryId === category.Id)[0]?.YearAndPeriodTotals.filter(categoryYearAndPeriodTotal =>
-                                                                                categoryYearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
-                                                                                && categoryYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
-                                                                    }
-                                                                </Col>
-                                                            ))
-                                                        }
-
-                                                    </Row>
-
-                                                )
-                                            }
-                                        </>
+                                        )
                                     }
-                                </div>
-                            ))
-                        }
-                    </Container>
-                </>
-            }
+                                </>
+                            }
+                        </div>
+                    ))
+                }
+            </Container>
+        </>
+    }
+
+    return (
+        <Container>
+
+            <StartYearAndPeriodSelector />
+
+            {report}
 
         </Container >
     )
