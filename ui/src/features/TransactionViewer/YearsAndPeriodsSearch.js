@@ -23,13 +23,29 @@ function YearsAndPeriodsSearch() {
         <Col xs={3}>
           <YearAndPeriodSelect
             defaultValue={yearAndPeriodSearch?.StartPeriod}
-            onSelect={value => UpdateSelectedStartYearAndPeriod("StartPeriod", value)}
+            onSelect={
+              value => {
+                UpdateSelectedStartYearAndPeriod("StartPeriod", value)
+
+                if ((value > yearAndPeriodSearch.EndPeriod) && (yearAndPeriodSearch.EndYear === yearAndPeriodSearch.StartYear)) {
+                  UpdateSelectedEndYearAndPeriod("EndPeriod", value)
+                }
+              }
+            }
             values={periods} />
         </Col>
         <Col>
           <YearAndPeriodSelect
             defaultValue={yearAndPeriodSearch?.StartYear}
-            onSelect={value => UpdateSelectedStartYearAndPeriod("StartYear", value)}
+            onSelect={
+              value => {
+                UpdateSelectedStartYearAndPeriod("StartYear", value)
+
+                if (value > yearAndPeriodSearch.EndYear) {
+                  UpdateSelectedEndYearAndPeriod("EndYear", value)
+                }
+              }
+            }
             values={years} />
         </Col>
         <Col />
