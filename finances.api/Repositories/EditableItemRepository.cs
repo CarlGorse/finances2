@@ -112,10 +112,13 @@ namespace finances.api.Repositories {
         }
 
         protected IEnumerable<int> GetInvalidIds(IEnumerable<int> ids) {
+
             var validIds = ValidIds(ids);
+
             if (!validIds.Any()) {
-                return Enumerable.Empty<int>();
+                return ids;
             }
+
             return ValidIds(ids).Except(ids);
         }
     }

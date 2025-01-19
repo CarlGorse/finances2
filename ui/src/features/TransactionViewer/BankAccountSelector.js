@@ -55,7 +55,7 @@ function BankAccountSelector() {
             bankAccounts?.map(bankAccount => (
 
               <Dropdown.Item key={bankAccount.AccountId} as="button" >
-                <div onClick={(e) => {
+                <div onClick={() => {
                   selectBankAccount(bankAccount.AccountId);
                 }}>
                   {bankAccount.Name}

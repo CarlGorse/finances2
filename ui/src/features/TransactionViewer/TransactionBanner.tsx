@@ -6,7 +6,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import OperationButtons from './OperationButtons';
 import OperationPage from './OperationPage';
 import { padStart } from 'common/functions/NumberFunctions';
-import PageSizeInput from './TransactionList/PageSizeInput'
+import PageSizeSelector from './TransactionList/PageSizeSelector'
 import { selectedBankAccountAtom } from 'common/recoil/atoms/SelectedBankAccountAtom';
 import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
 import { transactionsPageNoAtom } from 'common/recoil/atoms/TransactionsPageNoAtom';
@@ -68,7 +68,7 @@ export default function TransactionBanner() {
                 </div>
 
                 <div className="mt-3">
-                  <PageSizeInput />
+                  <PageSizeSelector />
                 </div>
 
               </Offcanvas.Body>

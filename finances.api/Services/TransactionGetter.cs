@@ -25,6 +25,7 @@ namespace finances.api.Services {
             var pageCount = 0;
             ICollection<Transaction> pagedTransactions = [];
             ServiceResult serviceResult;
+            var totalTransactions = 0;
 
             try {
 
@@ -67,6 +68,8 @@ namespace finances.api.Services {
                         pagedTransactions = orderedTransactions;
                     }
 
+                    totalTransactions = orderedTransactions.Count;
+
                     if (parms.IncludeWageTotals) {
                         SetWageTotals(pagedTransactions);
                     }
@@ -82,7 +85,8 @@ namespace finances.api.Services {
             return new TransactionSearchResult {
                 PageCount = pageCount,
                 Result = serviceResult,
-                Transactions = pagedTransactions
+                Transactions = pagedTransactions,
+                TotalTransaxtions = totalTransactions
             };
         }
 

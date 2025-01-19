@@ -8,6 +8,7 @@ namespace finances.api.Dto {
         public int PageCount;
         public ServiceResult Result;
         public YearAndPeriodSearch SearchCriteria;
+        public int TotalTransaxtions;
         public IEnumerable<Transaction> Transactions;
     }
 }

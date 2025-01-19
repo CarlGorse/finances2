@@ -25,7 +25,7 @@ namespace finances.api.Controllers {
 
             return ReturnActionForServiceResult(
                 result.Result,
-                successPayload: new { transactions = result.Transactions, result.PageCount },
+                successPayload: new { transactions = result.Transactions, pageCount = result.PageCount, totalTransactions = result.TotalTransaxtions },
                 failurePayload: new { result.Errors });
         }
 
