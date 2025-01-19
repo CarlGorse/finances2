@@ -1,22 +1,25 @@
 import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { Button, Col, Container, Row } from 'react-bootstrap';
+import { categoryReportPeriodsState } from 'recoil/atoms/CategoryReportPeriodsAtom';
+import Dropdown from 'react-bootstrap/Dropdown';
 import { formatCurrency } from 'functions/CurrencyFunctions'
 import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions'
 import Spinner from 'components/FinancesSpinner'
 import { useEffect, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import { userMessageState } from 'recoil/atoms/UserMessageAtom';
 import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 import StartYearAndPeriodSelector from './StartYearAndPeriodSelector'
 
 function CategoryTotalsReport() {
 
-    const [reportData, setReportData] = useState(null)
     const [doRefresh, setDoRefresh] = useState(false)
     const [loadState, setLoadState] = useState("");
-    const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchState);
+    const [reportData, setReportData] = useState(null)
+    const [reportPeriods, setReportPeriods] = useRecoilState(categoryReportPeriodsState);
     const setUserMessage = useSetRecoilState(userMessageState);
+    const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchState);
 
     useEffect(() => {
 
@@ -147,6 +150,27 @@ function CategoryTotalsReport() {
             <Container>
                 <Container style={{ position: "sticky", top: "3em", backgroundColor: "white", zIndex: "1", paddingTop: "1em" }}>
                     <StartYearAndPeriodSelector />
+
+                    <Dropdown>
+                        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                            {reportPeriods}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {
+                                [1, 2, 3, 4, 5, 6].map(reportPeriods => (
+
+                                    <Dropdown.Item key={reportPeriods} as="button" >
+                                        <div onClick={() => {
+                                            setReportPeriods(reportPeriods);
+                                        }}>
+                                            {reportPeriods}
+                                        </div>
+                                    </Dropdown.Item>
+                                ))
+
+                            }
+                        </Dropdown.Menu>
+                    </Dropdown >
 
                     {refreshButton}
 

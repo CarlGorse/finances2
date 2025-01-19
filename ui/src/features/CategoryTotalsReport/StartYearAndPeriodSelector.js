@@ -1,15 +1,16 @@
 import { Button } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
+import { categoryReportPeriodsState } from 'recoil/atoms/CategoryReportPeriodsAtom';
 import { getYearAndPeriodCountFromDate, getYearsAndPeriodsFromPeriodCount, getPeriodCountFromYearsAndPeriods } from 'functions/YearAndPeriodFunctions';
-import { reportPeriodsToShow } from 'consts/ReportConsts'
 import StartPeriodSelector from './PeriodSelector'
 import StartYearSelector from './YearSelector'
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 
 function StartYearAndPeriodSelector() {
 
+  const reportPeriods = useRecoilValue(categoryReportPeriodsState);
   const [selectedYearAndPeriod, setSelectedYearAndPeriod] = useRecoilState(yearAndPeriodSearchState);
   const [yearAndPeriodCount, setYearAndPeriodCount] = useState((2024 * 12) + 4);
 
@@ -20,7 +21,7 @@ function StartYearAndPeriodSelector() {
   useEffect(() => {
 
     let startYearAndPeriod = getYearsAndPeriodsFromPeriodCount(yearAndPeriodCount);
-    let endYearAndPeriod = getYearsAndPeriodsFromPeriodCount(yearAndPeriodCount + (reportPeriodsToShow - 1));
+    let endYearAndPeriod = getYearsAndPeriodsFromPeriodCount(yearAndPeriodCount + (reportPeriods - 1));
 
     setSelectedYearAndPeriod({
       StartYear: startYearAndPeriod.Year,
@@ -28,7 +29,7 @@ function StartYearAndPeriodSelector() {
       EndYear: endYearAndPeriod.Year,
       EndPeriod: endYearAndPeriod.Period
     });
-  }, [setSelectedYearAndPeriod, yearAndPeriodCount])
+  }, [setSelectedYearAndPeriod, yearAndPeriodCount, reportPeriods])
 
   if (!selectedYearAndPeriod) {
     return;
