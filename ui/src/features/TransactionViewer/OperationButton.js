@@ -2,21 +2,20 @@ import { Button } from 'react-bootstrap';
 import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
 import { useRecoilState } from 'recoil';
 
-function OperationButton({ operation, enabled, description }) {
+function OperationButton({ operation }) {
 
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
-
-    const onClick = () => {
-        setTransactionOperation(operation)
-    }
-
+    console.log(55);
     return (
         <Button
+            size="sm"
             variant={transactionOperation === operation ? "info" : "primary"}
-            onClick={onClick}
-            disabled={!enabled}
+            onClick={() => {
+                setTransactionOperation(operation);
+            }}
+            disabled={!operation.IsEnabled}
         >
-            {description}
+            {operation.Description}
         </Button>
     );
 }

@@ -1,8 +1,6 @@
-import { Accordion, Col, Row } from 'react-bootstrap';
-import DescriptionBadge from 'features/TransactionViewer/TransactionList/TransactionRow/DescriptionBadge';
+import { Accordion, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { formatCurrency } from 'common/functions/CurrencyFunctions';
-import ItemBadge from 'features/TransactionViewer/TransactionList/TransactionRow/ItemBadge';
 import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -12,7 +10,6 @@ function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
 
   const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsAtom);
   const [isSelected, setIsSelected] = useState(false);
-  const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {
     setIsSelected(selectedTransactions?.filter(x => x.TransactionId === transaction.TransactionId).length > 0 ? true : false);

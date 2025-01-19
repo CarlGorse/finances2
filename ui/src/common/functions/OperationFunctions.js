@@ -1,28 +1,33 @@
-import Add from '../../features/TransactionViewer/OperationPage/Add';
+import AddEdit from '../../features/TransactionViewer/OperationPage/AddEdit';
 import Delete from '../../features/TransactionViewer/OperationPage/Delete';
-import Edit from '../../features/TransactionViewer/OperationPage/Edit';
 import MoveWages from '../../features/TransactionViewer/OperationPage/MoveWages';
+import { useSetRecoilState } from 'recoil';
+import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
 
 export const operationAdd = "add";
 export const operationEdit = "edit";
 export const operationDelete = "delete";
 export const operationMoveWages = "move-wages";
 
-function GetOperationProperties(transactionOperation, selectedTransactions, handleClose) {
+function GetOperationProperties(transactionOperation, selectedTransactions) {
+
+    const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
 
     let description;
     let markup;
     let isEnabled;
 
+    let handleClose = () => setTransactionOperation(null)
+
     switch (transactionOperation) {
         case operationAdd:
             description = "add";
-            markup = <Add handleClose={handleClose} />;
+            markup = <AddEdit apiMethod="add" handleClose={handleClose} />;
             isEnabled = true
             break;
         case operationEdit:
             description = "edit";
-            markup = <Edit handleClose={handleClose} />;
+            markup = <AddEdit apiMethod="edit" handleClose={handleClose} />;
             isEnabled = selectedTransactions?.length === 1;
             break;
         case operationDelete:

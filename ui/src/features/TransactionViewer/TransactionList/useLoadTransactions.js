@@ -8,18 +8,18 @@ import { transactionsPageSizeAtom } from 'common/recoil/atoms/TransactionsPageSi
 import { useEffect, useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
-import { lastTransactionsLoadDateAtom } from 'common/recoil/atoms/LastTransactionsLoadDateAtom';
+import { reloadTransactionsAtom } from 'common/recoil/atoms/ReloadTransactionsAtom';
 
 function useLoadTransactions() {
 
   const pageCount = useRef(1);
 
+  const reloadTransactions = useRecoilValue(reloadTransactionsAtom);
   const setLoadedTransactions = useSetRecoilState(loadedTransactionsAtom);
   const selectedBankAccount = useRecoilValue(selectedBankAccountAtom);
   const transactionsPageNo = useRecoilValue(transactionsPageNoAtom);
   const transactionsPageSize = useRecoilValue(transactionsPageSizeAtom);
   const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchAtom);
-  const lastTransactionLoadDate = useRecoilValue(lastTransactionsLoadDateAtom);
 
   useEffect(() => {
 
@@ -81,13 +81,18 @@ function useLoadTransactions() {
         return false;
       }
 
-      if (!(lastTransactionLoadDate instanceof Date) || isNaN(lastTransactionLoadDate.valueOf())) {
+      if (!(reloadTransactions instanceof Date) || isNaN(reloadTransactions.valueOf())) {
         return false;
       }
 
       return true;
     }
-  }, [selectedBankAccount, setLoadedTransactions, transactionsPageNo, transactionsPageSize, yearAndPeriodSearch, lastTransactionLoadDate])
+  }, [selectedBankAccount,
+    setLoadedTransactions,
+    transactionsPageNo,
+    transactionsPageSize,
+    yearAndPeriodSearch,
+    reloadTransactions])
 
   return pageCount.current;
 }

@@ -1,19 +1,30 @@
+import { apiBaseUrl } from 'common/consts/ApiConsts';
+import axios from 'axios'
+import { categoriesAtom } from 'common/recoil/atoms/CategoriesAtom';
 import { Container } from 'react-bootstrap';
+import { sortCategories } from 'common/functions/CategoryFunctions'
 import TransactionBanner from './TransactionBanner'
 import TransactionList from './TransactionList';
-import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
 import { transactionsPageNoAtom } from 'common/recoil/atoms/TransactionsPageNoAtom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { useEffect, useState } from 'react'
+import { useSetRecoilState } from 'recoil';
+import { useEffect } from 'react'
 import { yearAndPeriodSearchAtom } from 'common/recoil/atoms/YearAndPeriodSearchAtom';
 import YearAndPeriodSearch from 'types/YearAndPeriodSearch'
 
 function TransactionViewer() {
 
-  const transactionOperation = useRecoilValue(transactionOperationAtom);
   const setTransactionPageNo = useSetRecoilState(transactionsPageNoAtom);
-  const [, setShow] = useState(false);
   const setYearAndPeriodSearch = useSetRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchAtom);
+  const setCategories = useSetRecoilState(categoriesAtom);
+
+  useEffect(() => {
+    axios.get(apiBaseUrl + '/categories/get')
+      .then(function (response) {
+        alert(response.data);
+        let sortedCategories = sortCategories([...response.data]);
+        setCategories(sortedCategories)
+      })
+  }, [])
 
   useEffect(() => {
 
@@ -31,13 +42,13 @@ function TransactionViewer() {
     });
 
   }, [setTransactionPageNo, setYearAndPeriodSearch])
-
-  useEffect(() => {
-    if (transactionOperation) {
-      setShow(true);
-    }
-  }, [transactionOperation])
-
+  /*
+    useEffect(() => {
+      if (transactionOperation) {
+        //setShow(true);
+      }
+    }, [transactionOperation])
+  */
   return (
 
     <Container>

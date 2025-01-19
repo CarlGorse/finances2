@@ -1,6 +1,6 @@
 import { apiBaseUrl } from 'common/consts/ApiConsts';
 import axios from 'axios';
-import { lastTransactionsLoadDateAtom } from 'common/recoil/atoms/LastTransactionsLoadDateAtom';
+import { reloadTransactionsAtom } from 'common/recoil/atoms/ReloadTransactionsAtom';
 import SaveAndCancelButtons from './SaveAndCancelButtons';
 import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
 import { Table } from 'react-bootstrap';
@@ -9,16 +9,13 @@ import TransactionHeader from 'common/components/TransactionHeader';
 import TransactionRow from 'common/components/TransactionRow';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { userMessageAtom } from 'common/recoil/atoms/UserMessageAtom';
-import { loadedTransactionsAtom } from 'common/recoil/atoms/LoadedTransactionsAtom';
 
 function Delete({ handleClose }) {
 
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
+    const setReloadTransactions = useSetRecoilState(reloadTransactionsAtom);
     const setTransactionOperation = useSetRecoilState(transactionOperationAtom);
-    const setLoadedTransactions = useSetRecoilState(loadedTransactionsAtom);
-
     const setUserMessage = useSetRecoilState(userMessageAtom);
-    const setLastTransactionsLoadDate = useSetRecoilState(lastTransactionsLoadDateAtom);
 
     function Delete() {
 
@@ -32,7 +29,7 @@ function Delete({ handleClose }) {
             }
         )
             .then(function () {
-                setLastTransactionsLoadDate(new Date());
+                setReloadTransactions(new Date());
 
                 setUserMessage({
                     Message: `Transaction${selectedTransactions.length === 1 ? '' : 's'} deleted.`,

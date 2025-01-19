@@ -1,20 +1,20 @@
 import { Form } from 'react-bootstrap';
-import { GetOperationProperties } from 'common/functions/OperationFunctions';
-import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactionsAtom';
 import { transactionOperationAtom } from 'common/recoil/atoms/TransactionOperationAtom';
 import { useRecoilValue } from 'recoil';
+import AddEdit from './OperationPage/AddEdit'
 
-function OperationPage({ show, handleClose }) {
+function OperationPage() {
 
-    const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
     const transactionOperation = useRecoilValue(transactionOperationAtom);
 
-    let operationProperties = GetOperationProperties(transactionOperation, selectedTransactions, handleClose);
+    if (!transactionOperation) {
+        return;
+    }
 
     return (
 
         <Form>
-            {operationProperties.Markup}
+            {transactionOperation.Markup}
         </Form>
 
     );

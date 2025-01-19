@@ -5,42 +5,41 @@ import { selectedTransactionsAtom } from 'common/recoil/atoms/SelectedTransactio
 import { useRecoilValue } from 'recoil';
 import { operationAdd, operationEdit, operationDelete, operationMoveWages } from 'common/functions/OperationFunctions';
 
-function TransactionOperationButtons() {
+function OperationButtons({ onClick }) {
 
     const selectedTransactions = useRecoilValue(selectedTransactionsAtom);
 
-    let deleteIsEnabled = false;
-    let addIsEnabled = true;
-    let editIsEnabled = false;
-    let moveWagesIsEnabled = false;
+    let deleteOperation;
+    let addOperation;
+    let editOperation;
+    let moveWagesOperation;
 
-    addIsEnabled = GetOperationProperties(operationAdd, selectedTransactions).IsEnabled;
+    addOperation = GetOperationProperties("add", selectedTransactions);
 
     if (selectedTransactions) {
-        editIsEnabled = GetOperationProperties(operationEdit, selectedTransactions).IsEnabled;
-        deleteIsEnabled = GetOperationProperties(operationDelete, selectedTransactions).IsEnabled;
-        moveWagesIsEnabled = GetOperationProperties(operationMoveWages, selectedTransactions).IsEnabled;
+        editOperation = GetOperationProperties("edit", selectedTransactions);
+        deleteOperation = GetOperationProperties("delete", selectedTransactions);
+        moveWagesOperation = GetOperationProperties("move-wages", selectedTransactions);
     }
-
     return (
-        <Form>
+        <>
             <span style={{ marginLeft: "20px" }}>
-                <OperationButton operation="add" enabled={addIsEnabled} description="add" />
+                <OperationButton operation={addOperation} onClick={onClick} />
             </span>
 
             <span style={{ marginLeft: "1px" }}>
-                <OperationButton operation="edit" enabled={editIsEnabled} description="edit" />
+                <OperationButton operation={editOperation} onClick={onClick} />
             </span >
 
             <span style={{ marginLeft: "1px" }}>
-                <OperationButton operation="delete" enabled={deleteIsEnabled} description="delete" />
+                <OperationButton operation={deleteOperation} onClick={onClick} />
             </span >
 
             <span style={{ marginLeft: "1px" }}>
-                <OperationButton operation="move-wages" enabled={moveWagesIsEnabled} description="move wages" />
+                <OperationButton operation={moveWagesOperation} onClick={onClick} />
             </span >
-        </Form >
+        </ >
     );
 }
 
-export default TransactionOperationButtons;
+export default OperationButtons;

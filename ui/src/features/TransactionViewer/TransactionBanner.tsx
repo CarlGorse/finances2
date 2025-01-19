@@ -26,7 +26,6 @@ export default function TransactionBanner() {
   const selectedBankAccount = useRecoilValue<BankAccount>(selectedBankAccountAtom);
   const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationAtom);
   const [transactionPageNo, setTransactionPageNo] = useRecoilState(transactionsPageNoAtom);
-  const [show, setShow] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showOperations, setShowOperations] = useState(false);
   const [yearAndPeriodSearch, setYearAndPeriodSearch] = useRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchAtom);
@@ -47,12 +46,6 @@ export default function TransactionBanner() {
     });
 
   }, [setTransactionPageNo, setYearAndPeriodSearch])
-
-  useEffect(() => {
-    if (transactionOperation) {
-      setShow(true);
-    }
-  }, [transactionOperation])
 
   return (
     <Container>
@@ -82,16 +75,21 @@ export default function TransactionBanner() {
               </Offcanvas.Body>
             </Offcanvas>
 
-            <Offcanvas placement="end" show={showOperations} onHide={() => setShowOperations(false)} style={{ backgroundColor: "cornsilk" }}
+            <Offcanvas
+              placement="end"
+              show={transactionOperation}
+              onHide={
+                () => setTransactionOperation(null)
+              }
+              style={{ backgroundColor: "cornsilk" }}
               scroll={true}
               backdrop={false}
             >
               <Offcanvas.Header closeButton>
-                <Offcanvas.Title>Operations</Offcanvas.Title>
+                <Offcanvas.Title>Operation</Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
-                <OperationButtons />
-                <OperationPage show={show} handleClose={() => { setShow(false); setTransactionOperation(null); }} />
+                <OperationPage />
               </Offcanvas.Body>
             </Offcanvas>
 
@@ -126,15 +124,14 @@ export default function TransactionBanner() {
 
         </Col>
 
-        <Col xs="1">
-          <div>
-            <Button onClick={() => setShowSearch(true)}>Search</Button>
-          </div>
-          <div className="mt-1">
-            <Button onClick={() => setShowOperations(true)}>Operations</Button>
-          </div>
+        <Col xs="4">
+
+          <Button size="sm" onClick={() => setShowSearch(true)}>search</Button>
+
+          <OperationButtons onClick={() => setShowOperations(true)} />
 
         </Col>
+
       </Row>
     </Container >
   );
