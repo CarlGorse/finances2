@@ -1,5 +1,5 @@
 import { range } from 'functions/ArrayFunctions'
-import NumberSelector from './NumberSelector';
+import NumberSelector from 'components/NumberSelector';
 
 function PeriodSelector({ defaultValue, onSelect }) {
 

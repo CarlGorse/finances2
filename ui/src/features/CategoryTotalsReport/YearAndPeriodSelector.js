@@ -2,13 +2,13 @@ import { Button } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
 import { categoryReportPeriodsState } from 'recoil/atoms/CategoryReportPeriodsAtom';
 import { getYearAndPeriodCountFromDate, getYearsAndPeriodsFromPeriodCount, getPeriodCountFromYearsAndPeriods } from 'functions/YearAndPeriodFunctions';
-import StartPeriodSelector from './PeriodSelector'
-import StartYearSelector from './YearSelector'
+import PeriodSelector from './PeriodSelector'
+import YearSelector from './YearSelector'
 import { useEffect, useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 
-function StartYearAndPeriodSelector() {
+function YearAndPeriodSelector() {
 
   const reportPeriods = useRecoilValue(categoryReportPeriodsState);
   const [selectedYearAndPeriod, setSelectedYearAndPeriod] = useRecoilState(yearAndPeriodSearchState);
@@ -58,7 +58,7 @@ function StartYearAndPeriodSelector() {
         <Col xs={1}>From:</Col>
 
         <Col xs={1}>
-          <StartPeriodSelector
+          <PeriodSelector
             onSelect={value => {
               let periodCount = getPeriodCountFromYearsAndPeriods(selectedYearAndPeriod.StartYear, Number(value));
               setYearAndPeriodCount(periodCount);
@@ -67,7 +67,7 @@ function StartYearAndPeriodSelector() {
         </Col>
 
         <Col>
-          <StartYearSelector
+          <YearSelector
             onSelect={value => {
               let periodCount = getPeriodCountFromYearsAndPeriods(Number(value), selectedYearAndPeriod.StartPeriod);
               setYearAndPeriodCount(periodCount);
@@ -82,4 +82,4 @@ function StartYearAndPeriodSelector() {
   );
 }
 
-export default StartYearAndPeriodSelector;
+export default YearAndPeriodSelector;

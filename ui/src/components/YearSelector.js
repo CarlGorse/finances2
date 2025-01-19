@@ -1,5 +1,5 @@
 import { range } from 'functions/ArrayFunctions'
-import NumberSelector from './NumberSelector';
+import NumberSelector from 'components/NumberSelector';
 import { yearStart } from 'consts/SystemConsts';
 
 function YearSelector({ defaultValue, onSelect }) {

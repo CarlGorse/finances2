@@ -1,23 +1,20 @@
 import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import { categoryReportPeriodsState } from 'recoil/atoms/CategoryReportPeriodsAtom';
-import Dropdown from 'react-bootstrap/Dropdown';
+import { Col, Container, Row } from 'react-bootstrap';
 import { formatCurrency } from 'functions/CurrencyFunctions'
 import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions'
+import ReportBanner from './ReportBanner'
 import Spinner from 'components/FinancesSpinner'
 import { useEffect, useState } from 'react';
-import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { userMessageState } from 'recoil/atoms/UserMessageAtom';
 import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
-import StartYearAndPeriodSelector from './StartYearAndPeriodSelector'
 
-function CategoryTotalsReport() {
+function Report() {
 
     const [doRefresh, setDoRefresh] = useState(false)
     const [loadState, setLoadState] = useState("");
     const [reportData, setReportData] = useState(null)
-    const [reportPeriods, setReportPeriods] = useRecoilState(categoryReportPeriodsState);
     const setUserMessage = useSetRecoilState(userMessageState);
     const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchState);
 
@@ -54,7 +51,6 @@ function CategoryTotalsReport() {
     }, [yearAndPeriodSearch, setUserMessage, doRefresh])
 
     let report;
-    let refreshButton
     let spinner
 
     if (loadState === "") {
@@ -70,12 +66,6 @@ function CategoryTotalsReport() {
     }
 
     if (loadState === "loaded") {
-
-        refreshButton = <Button
-            size="md"
-            style={{ marginTop: "20px" }} onClick={() => setDoRefresh(prevValue => !prevValue)}>
-            Refresh
-        </Button>
 
         report =
             <>
@@ -148,48 +138,8 @@ function CategoryTotalsReport() {
     return (
         <>
             <Container>
-                <Container style={{ position: "sticky", top: "3em", backgroundColor: "white", zIndex: "1", paddingTop: "1em" }}>
-                    <StartYearAndPeriodSelector />
 
-                    <Dropdown>
-                        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                            {reportPeriods}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {
-                                [1, 2, 3, 4, 5, 6].map(reportPeriods => (
-
-                                    <Dropdown.Item key={reportPeriods} as="button" >
-                                        <div onClick={() => {
-                                            setReportPeriods(reportPeriods);
-                                        }}>
-                                            {reportPeriods}
-                                        </div>
-                                    </Dropdown.Item>
-                                ))
-
-                            }
-                        </Dropdown.Menu>
-                    </Dropdown >
-
-                    {refreshButton}
-
-                    <Container className="pt-3 pb-3">
-
-                        <Row>
-                            <Col />
-                            {
-                                reportData?.YearsAndPeriods.map(yearAndPeriod => (
-
-                                    <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center" >
-                                        <b>{yearAndPeriod.Year}.{yearAndPeriod.Period}</b>
-                                    </Col>
-                                ))
-                            }
-                        </Row>
-
-                    </Container>
-                </Container>
+                <ReportBanner reportLoadState={loadState} onRefresh={() => setDoRefresh(prevValue => !prevValue)} />
 
                 {spinner}
 
@@ -200,4 +150,4 @@ function CategoryTotalsReport() {
     )
 }
 
-export default CategoryTotalsReport;
+export default Report;
