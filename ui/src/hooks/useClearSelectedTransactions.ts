@@ -1,5 +1,5 @@
 import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
-import Transaction from 'types/Transaction'
+import Transaction from 'types/Transaction';
 import { useSetRecoilState } from 'recoil';
 
 const useClearSelectedTransactions = () => {
