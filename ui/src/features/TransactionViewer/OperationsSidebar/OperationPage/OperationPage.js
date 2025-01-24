@@ -6,7 +6,7 @@ import { Form } from 'react-bootstrap';
 import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
 import { useRecoilValue } from 'recoil';
 
-function OperationPage() {
+export default function OperationPage() {
 
     const transactionOperation = useRecoilValue(transactionOperationState);
 
@@ -34,5 +34,3 @@ function OperationPage() {
         </Form>
     );
 }
-
-export default OperationPage;

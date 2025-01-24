@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import { showTransactionOperationsSidebarState } from 'recoil/atoms/ShowTransactionOperationsSidebarState';
 import { useSetRecoilState } from 'recoil';
 
-function OperationButton({ description, isEnabled }) {
+export default function OperationButton({ description, isEnabled }) {
 
     const [transactionOperation, setTransactionOperation] = useRecoilState<string>(transactionOperationState);
     const setShowTransactionOperationsSidebar = useSetRecoilState(showTransactionOperationsSidebarState);
@@ -29,5 +29,3 @@ function OperationButton({ description, isEnabled }) {
         </Button>
     );
 }
-
-export default OperationButton;
