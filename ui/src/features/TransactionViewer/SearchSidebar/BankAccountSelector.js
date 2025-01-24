@@ -1,7 +1,7 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import { bankAccountsState } from 'recoil/atoms/BankAccountsAtom';
 import useClearSelectedTransactions from 'hooks/useClearSelectedTransactions';
-import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
+import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
 import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';

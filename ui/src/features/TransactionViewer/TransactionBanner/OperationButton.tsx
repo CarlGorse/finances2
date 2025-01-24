@@ -1,18 +1,23 @@
 import { Button } from 'react-bootstrap';
 import { showTransactionOperationsSidebarState } from 'recoil/atoms/ShowTransactionOperationsSidebarState';
-import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
-import { useRecoilState } from 'recoil';
-import { useSetRecoilState } from 'recoil';
+import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { validTransactionOperationsState } from 'recoil/atoms/ValidTransactionOperationsState';
 
-export default function OperationButton({ description, isEnabled }) {
+export default function OperationButton({ description }) {
+
+    const transactionOperation = useRecoilValue<string>(transactionOperationState);
+    const validTransactionOperations = useRecoilValue<string[]>(validTransactionOperationsState);
 
     const setShowTransactionOperationsSidebar = useSetRecoilState(showTransactionOperationsSidebarState);
-    const [transactionOperation, setTransactionOperation] = useRecoilState<string>(transactionOperationState);
+    const setTransactionOperation = useSetRecoilState<string>(transactionOperationState);
+
+    let isEnabled = validTransactionOperations?.includes(description);
 
     return (
         <Button
             size="sm"
-            variant={transactionOperation === description ? "info" : "primary"}
+            variant={"primary"}
             onClick={() => {
                 if (transactionOperation !== description) {
                     setTransactionOperation(description);

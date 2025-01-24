@@ -3,26 +3,24 @@ import Form from 'react-bootstrap/Form';
 import { formatCurrency } from 'functions/CurrencyFunctions';
 import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import WageTotalBadge from 'features/TransactionViewer/TransactionList/TransactionRow/WageTotalBadge';
 
 function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
 
-  const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsState);
+  const selectedTransactions = useRecoilValue(selectedTransactionsState);
   const [isSelected, setIsSelected] = useState(false);
 
+  const setSelectedTransactions = useSetRecoilState(selectedTransactionsState);
+
   useEffect(() => {
-    let isSelected = selectedTransactions?.some(x => x.TransactionId === transaction.TransactionId);
-    setIsSelected(isSelected);
+    setIsSelected(selectedTransactions?.some(x => x.TransactionId === transaction.TransactionId));
   }, [selectedTransactions, transaction]);
 
   function onCheck() {
-    selectOrDeslectTransaction(!isSelected);
-  }
+    setIsSelected(!isSelected)
 
-  function selectOrDeslectTransaction(select) {
-    setIsSelected(select)
-    if (select) {
+    if (!isSelected) {
       selectTransaction()
     }
     else {
@@ -46,8 +44,6 @@ function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
     }
   }
 
-  let categoryGroupText = `${transaction.Category.Group.Name} | ${transaction.Category.Name}`
-
   return (
 
     <Row>
@@ -60,7 +56,7 @@ function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
       </Col>
 
       <Col className="tableCell" xs={4}>
-        {categoryGroupText}
+        {`${transaction.Category.Group.Name} | ${transaction.Category.Name}`}
       </Col>
 
       <Col className="tableCell" xs={1}>

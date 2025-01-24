@@ -8,6 +8,7 @@ import { useState } from 'react';
 import useLoadTransactions from './useLoadTransactions';
 import { useRecoilValue } from 'recoil';
 
+
 function TransactionList() {
 
   const [loading] = useState(null);
@@ -20,9 +21,9 @@ function TransactionList() {
 
     transactionLoadingProgress === "loading" ? <Spinner /> :
 
-      <Container className="table-bordered">
+      <Container style={{ border: "1px solid lightGrey" }}>
 
-        <Row style={{ paddingTop: "10px" }}>
+        <Row className="mt-4">
           <TransactionHeader showClearOption={true} />
         </Row>
 

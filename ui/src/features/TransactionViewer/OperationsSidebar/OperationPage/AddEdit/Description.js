@@ -1,6 +1,6 @@
 import { Col, Form, Row } from 'react-bootstrap';
 
-function AddEdit({ handleClose }) {
+export default function AddEdit({ defaultValue }) {
 
     return (
         <Row style={{ paddingTop: "5px" }}>
@@ -12,10 +12,9 @@ function AddEdit({ handleClose }) {
             <Col xs={9}>
                 <Form.Control
                     id="addEdit_Description"
+                    defaultValue={defaultValue}
                 />
             </Col>
         </Row>
     );
 }
-
-export default AddEdit;
