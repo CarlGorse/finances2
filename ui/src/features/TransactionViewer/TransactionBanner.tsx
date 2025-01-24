@@ -31,7 +31,7 @@ export default function TransactionBanner() {
 
   useEffect(() => {
 
-    setTransactionPageNo(1);
+    setTransactionPageNo(0);
 
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth() + 1;

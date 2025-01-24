@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 function OperationButton({ operation }) {
 
     const [transactionOperation, setTransactionOperation] = useRecoilState(transactionOperationState);
-    console.log(55);
+
     return (
         <Button
             size="sm"
