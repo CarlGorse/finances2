@@ -5,24 +5,21 @@ import { categoriesState } from 'recoil/atoms/CategoriesAtom';
 import { Container } from 'react-bootstrap';
 import { sortCategories } from 'functions/CategoryFunctions'
 import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
-import TransactionBanner from './TransactionBanner'
+import TransactionBanner from './TransactionBanner/TransactionBanner'
 import TransactionList from './TransactionList';
-import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoAtom';
 import { userMessageState } from 'recoil/atoms/UserMessageAtom';
 import { useSetRecoilState } from 'recoil';
 import { useEffect } from 'react'
-import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
-import YearAndPeriodSearch from 'types/YearAndPeriodSearch'
 import BankAccount from 'types/BankAccount'
+import SearchSidebar from './SearchSidebar'
+import TransactionOperationSidebar from './TransactionOperationsSidebar'
 
 export default function TransactionViewer() {
 
   const setBankAccounts = useSetRecoilState<BankAccount[]>(bankAccountsState);
   const setCategories = useSetRecoilState(categoriesState);
   const setSelectedBankAccount = useSetRecoilState<BankAccount>(selectedBankAccountState);
-  const setTransactionPageNo = useSetRecoilState(transactionsPageNoState);
   const setUserMessage = useSetRecoilState(userMessageState);
-  const setYearAndPeriodSearch = useSetRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchState);
 
   useEffect(() => {
     axios.get(apiBaseUrl + '/categories/get')
@@ -51,42 +48,24 @@ export default function TransactionViewer() {
       })
   }, [])
 
-  useEffect(() => {
-
-    setTransactionPageNo(1);
-
-    let currentDate = new Date();
-    let currentMonth = currentDate.getMonth() + 1;
-    let currentYear = currentDate.getFullYear();
-
-    setYearAndPeriodSearch({
-      StartPeriod: currentMonth,
-      StartYear: currentYear,
-      EndPeriod: currentMonth,
-      EndYear: currentYear
-    });
-
-  }, [setTransactionPageNo, setYearAndPeriodSearch])
-  /*
-    useEffect(() => {
-      if (transactionOperation) {
-        //setShow(true);
-      }
-    }, [transactionOperation])
-  */
-
   return (
+    <>
+      <TransactionOperationSidebar />
 
-    <Container>
+      <SearchSidebar />
 
-      <div style={{ position: "sticky", top: "3em", backgroundColor: "white", zIndex: "1" }} >
-        <TransactionBanner />
-      </div>
+      <Container>
 
-      <div className="mt-3">
-        <TransactionList />
-      </div>
+        <div style={{ position: "sticky", top: "3em", backgroundColor: "white", zIndex: "1" }} >
+          <TransactionBanner />
+        </div>
 
-    </Container >
+        <div className="mt-3">
+          <TransactionList />
+        </div>
+
+      </Container >
+
+    </>
   )
 }

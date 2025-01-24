@@ -6,13 +6,9 @@ function OperationPage() {
 
     const transactionOperation = useRecoilValue(transactionOperationState);
 
-    if (!transactionOperation) {
-        return;
-    }
-
     return (
         <Form>
-            {transactionOperation.Markup}
+            {transactionOperation?.Markup}
         </Form>
     );
 }

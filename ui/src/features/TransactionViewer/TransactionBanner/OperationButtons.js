@@ -1,5 +1,5 @@
 import { GetOperationProperties } from 'functions/OperationFunctions';
-import OperationButton from './OperationButton';
+import OperationButton from '../OperationButton';
 import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
 import { useRecoilValue } from 'recoil';
 
@@ -13,29 +13,38 @@ function OperationButtons({ onClick }) {
     let moveWagesOperation;
 
     addOperation = GetOperationProperties("add", selectedTransactions);
-
-    //if (selectedTransactions) {
     editOperation = GetOperationProperties("edit", selectedTransactions);
     deleteOperation = GetOperationProperties("delete", selectedTransactions);
     moveWagesOperation = GetOperationProperties("move-wages", selectedTransactions);
-    //}
 
     return (
         <>
             <span style={{ marginLeft: "20px" }}>
-                <OperationButton operation={addOperation} onClick={onClick} />
+                <OperationButton
+                    operation={addOperation}
+                    onClick={onClick}
+                />
             </span>
 
             <span style={{ marginLeft: "1px" }}>
-                <OperationButton operation={editOperation} onClick={onClick} />
+                <OperationButton
+                    operation={editOperation}
+                    onClick={onClick}
+                />
             </span >
 
             <span style={{ marginLeft: "1px" }}>
-                <OperationButton operation={deleteOperation} onClick={onClick} />
+                <OperationButton
+                    operation={deleteOperation}
+                    onClick={onClick}
+                />
             </span >
 
             <span style={{ marginLeft: "1px" }}>
-                <OperationButton operation={moveWagesOperation} onClick={onClick} />
+                <OperationButton
+                    operation={moveWagesOperation}
+                    onClick={onClick}
+                />
             </span >
         </ >
     );
