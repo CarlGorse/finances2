@@ -12,7 +12,7 @@ export default function OperationButton({ description }) {
     const setShowTransactionOperationsSidebar = useSetRecoilState(showTransactionOperationsSidebarState);
     const setTransactionOperation = useSetRecoilState<string>(transactionOperationState);
 
-    let isEnabled = validTransactionOperations?.includes(description);
+    let isEnabled = validTransactionOperations.includes(description);
 
     return (
         <Button
