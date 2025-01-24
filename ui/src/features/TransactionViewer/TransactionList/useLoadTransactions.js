@@ -40,8 +40,9 @@ function useLoadTransactions() {
       }
     })
       .then(response => {
+        console.log(response)
         setLoadedTransactions({
-          pageCount: response.data.PageCount,
+          pageCount: response.data.pageCount,
           transactions: response.data.transactions,
           totalTransactions: response.data.totalTransactions
         });
