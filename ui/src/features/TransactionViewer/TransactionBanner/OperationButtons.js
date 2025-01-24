@@ -1,49 +1,41 @@
-import { GetOperationProperties } from 'functions/OperationFunctions';
 import OperationButton from './OperationButton';
+
 import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
 import { useRecoilValue } from 'recoil';
 
-function OperationButtons({ onClick }) {
+function OperationButtons() {
 
     const selectedTransactions = useRecoilValue(selectedTransactionsState);
-
-    let deleteOperation;
-    let addOperation;
-    let editOperation;
-    let moveWagesOperation;
-
-    addOperation = GetOperationProperties("add", selectedTransactions);
-    editOperation = GetOperationProperties("edit", selectedTransactions);
-    deleteOperation = GetOperationProperties("delete", selectedTransactions);
-    moveWagesOperation = GetOperationProperties("move-wages", selectedTransactions);
 
     return (
         <>
             <span style={{ marginLeft: "20px" }}>
                 <OperationButton
-                    operation={addOperation}
-                    onClick={onClick}
+                    description="Add"
+                    isEnabled={true}
                 />
             </span>
 
             <span style={{ marginLeft: "1px" }}>
                 <OperationButton
-                    operation={editOperation}
-                    onClick={onClick}
+                    description="Edit"
+                    isEnabled={selectedTransactions?.length === 1}
                 />
             </span >
 
             <span style={{ marginLeft: "1px" }}>
                 <OperationButton
-                    operation={deleteOperation}
-                    onClick={onClick}
+                    description="Delete"
+                    isEnabled={selectedTransactions?.length >= 1}
                 />
             </span >
 
             <span style={{ marginLeft: "1px" }}>
                 <OperationButton
-                    operation={moveWagesOperation}
-                    onClick={onClick}
+                    description="Move wages"
+                    isEnabled={selectedTransactions?.length === 2
+                        && selectedTransactions.filter(x => x.IsWage === true).length === 2
+                        && selectedTransactions[0].EffDate === selectedTransactions[1].EffDate}
                 />
             </span >
         </ >

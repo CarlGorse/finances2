@@ -37,7 +37,8 @@ function Delete({ handleClose }) {
                     Message: `Transaction${selectedTransactions.length === 1 ? '' : 's'} deleted.`,
                     Variant: "success"
                 })
-                CancelTransactionOperation()
+
+                setTransactionOperation(null)
             })
             .catch(function (error) {
                 setUserMessage({
@@ -45,10 +46,6 @@ function Delete({ handleClose }) {
                     Variant: "danger"
                 })
             })
-    }
-
-    function CancelTransactionOperation() {
-        setTransactionOperation(null)
     }
 
     return (

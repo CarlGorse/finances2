@@ -1,9 +1,6 @@
 import { atom } from 'recoil';
-import TransactionOperation from 'types/TransactionOperation';
 
-export const transactionOperationState = atom<TransactionOperation>({
+export const transactionOperationState = atom<string>({
     key: "transactionOperationState",
-    default: {
-        Description: null
-    }
+    default: ""
 });

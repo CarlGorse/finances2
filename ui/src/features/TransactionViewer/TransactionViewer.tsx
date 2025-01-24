@@ -1,18 +1,19 @@
-import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios'
+import BankAccount from 'types/BankAccount'
+import SearchSidebar from './SearchSidebar/SearchSidebar'
+import TransactionBanner from './TransactionBanner/TransactionBanner'
+import TransactionList from './TransactionList/TransactionList';
+import TransactionOperationSidebar from './OperationsSidebar/OperationsSidebar'
+
+import { apiBaseUrl } from 'consts/ApiConsts';
 import { bankAccountsState } from 'recoil/atoms/BankAccountsAtom';
 import { categoriesState } from 'recoil/atoms/CategoriesAtom';
 import { Container } from 'react-bootstrap';
-import { sortCategories } from 'functions/CategoryFunctions'
 import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
-import TransactionBanner from './TransactionBanner/TransactionBanner'
-import TransactionList from './TransactionList/TransactionList';
+import { sortCategories } from 'functions/CategoryFunctions'
+import { useEffect } from 'react'
 import { userMessageState } from 'recoil/atoms/UserMessageAtom';
 import { useSetRecoilState } from 'recoil';
-import { useEffect } from 'react'
-import BankAccount from 'types/BankAccount'
-import SearchSidebar from './SearchSidebar/SearchSidebar'
-import TransactionOperationSidebar from './OperationsSidebar/TransactionOperationsSidebar'
 
 export default function TransactionViewer() {
 
