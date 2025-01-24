@@ -14,10 +14,8 @@ export default function TransactionBanner() {
   const [transactionPageNo, setTransactionPageNo] = useRecoilState(transactionsPageNoState);
 
   useEffect(() => {
-
     setTransactionPageNo(1);
-
-  }, [])
+  })
 
   return (
     <div className="mt-3">

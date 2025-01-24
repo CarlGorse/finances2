@@ -1,13 +1,13 @@
 import { Button } from 'react-bootstrap';
+import { showTransactionOperationsSidebarState } from 'recoil/atoms/ShowTransactionOperationsSidebarState';
 import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
 import { useRecoilState } from 'recoil';
-import { showTransactionOperationsSidebarState } from 'recoil/atoms/ShowTransactionOperationsSidebarState';
 import { useSetRecoilState } from 'recoil';
 
 export default function OperationButton({ description, isEnabled }) {
 
-    const [transactionOperation, setTransactionOperation] = useRecoilState<string>(transactionOperationState);
     const setShowTransactionOperationsSidebar = useSetRecoilState(showTransactionOperationsSidebarState);
+    const [transactionOperation, setTransactionOperation] = useRecoilState<string>(transactionOperationState);
 
     return (
         <Button
