@@ -1,7 +1,7 @@
 import { Col, Form, Row } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
-import { transactionsPageSizeState } from 'recoil/atoms/TransactionsPageSizeAtom';
+import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsState';
+import { transactionsPageSizeState } from 'recoil/atoms/TransactionsPageSizeState';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import LoadedTransactions from 'types/LoadedTransactions'
 

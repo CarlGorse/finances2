@@ -1,4 +1,4 @@
-import { categoriesState } from 'recoil/atoms/CategoriesAtom';
+import { categoriesState } from 'recoil/atoms/CategoriesState';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useRecoilValue } from 'recoil';
 

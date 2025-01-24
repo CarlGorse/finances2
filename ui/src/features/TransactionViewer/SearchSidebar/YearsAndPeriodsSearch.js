@@ -1,8 +1,9 @@
-import { Col, Row } from 'react-bootstrap';
 import PeriodSelector from 'components/PeriodSelector'
-import { useRecoilState } from 'recoil';
-import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 import YearSelector from 'components/YearSelector'
+
+import { Col, Row } from 'react-bootstrap';
+import { useRecoilState } from 'recoil';
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchState';
 
 function YearsAndPeriodsSearch() {
 

@@ -9,7 +9,7 @@ import { Button, Col, Container, Row } from 'react-bootstrap';
 import { showSearchSidebarState } from 'recoil/atoms/ShowSearchSidebarState';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useEffect } from 'react'
-import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchState';
 
 export default function TransactionBanner() {
 

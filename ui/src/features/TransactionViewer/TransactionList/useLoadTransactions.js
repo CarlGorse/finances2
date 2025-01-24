@@ -1,15 +1,14 @@
 import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
-import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions'
-import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
-import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
-import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoAtom';
-import { transactionsPageSizeState } from 'recoil/atoms/TransactionsPageSizeAtom';
+import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsState';
+import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsState';
+import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountState';
+import { transactionLoadingProgressState } from 'recoil/atoms/TransactionLoadingProgressState';
+import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoState';
+import { transactionsPageSizeState } from 'recoil/atoms/TransactionsPageSizeState';
 import { useEffect, useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
-import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsAtom';
-import { transactionLoadingProgressState } from 'recoil/atoms/TransactionLoadingProgressState';
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchState';
 
 function useLoadTransactions() {
 

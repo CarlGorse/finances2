@@ -1,5 +1,5 @@
 import { Alert } from 'react-bootstrap';
-import { userMessageState } from 'recoil/atoms/UserMessageAtom';
+import { userMessageState } from 'recoil/atoms/UserMessageState';
 import { useRecoilValue } from 'recoil';
 
 function UserMessages() {

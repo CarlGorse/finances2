@@ -5,7 +5,7 @@ import TransactionRow from './TransactionRow/TransactionRow';
 import useLoadTransactions from './useLoadTransactions';
 
 import { Accordion, Container, Row } from 'react-bootstrap';
-import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
+import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsState';
 import { transactionLoadingProgressState } from 'recoil/atoms/TransactionLoadingProgressState';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';

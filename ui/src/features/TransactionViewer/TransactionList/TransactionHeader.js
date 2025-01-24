@@ -1,7 +1,8 @@
-import { Col, Form, Row } from 'react-bootstrap';
-import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
-import { useRecoilValue } from 'recoil';
 import useClearSelectedTransactions from 'hooks/useClearSelectedTransactions';
+
+import { Col, Form, Row } from 'react-bootstrap';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsState';
+import { useRecoilValue } from 'recoil';
 
 export default function TransactionHeader() {
 

@@ -1,4 +1,4 @@
-import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsState';
 import Transaction from 'types/Transaction'
 import { useSetRecoilState } from 'recoil';
 

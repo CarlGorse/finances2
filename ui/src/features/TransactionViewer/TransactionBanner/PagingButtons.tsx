@@ -2,8 +2,8 @@
 import LoadedTransactions from 'types/LoadedTransactions'
 import NavigationButtons from '../TransactionList/NavigationButtons/NavigationButtons'
 
-import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
-import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoAtom';
+import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsState';
+import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoState';
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil';
 import { useRecoilValue } from 'recoil'

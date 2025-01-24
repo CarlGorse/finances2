@@ -6,15 +6,15 @@ import TransactionList from './TransactionList/TransactionList';
 import TransactionOperationSidebar from './OperationsSidebar/OperationsSidebar'
 
 import { apiBaseUrl } from 'consts/ApiConsts';
-import { bankAccountsState } from 'recoil/atoms/BankAccountsAtom';
-import { categoriesState } from 'recoil/atoms/CategoriesAtom';
+import { bankAccountsState } from 'recoil/atoms/BankAccountsState';
+import { categoriesState } from 'recoil/atoms/CategoriesState';
 import { Container } from 'react-bootstrap';
-import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
-import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
+import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountState';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsState';
 import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
 import { sortCategories } from 'functions/CategoryFunctions'
 import { useEffect } from 'react'
-import { userMessageState } from 'recoil/atoms/UserMessageAtom';
+import { userMessageState } from 'recoil/atoms/UserMessageState';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { validTransactionOperationsState } from 'recoil/atoms/ValidTransactionOperationsState';
 
@@ -92,6 +92,9 @@ export default function TransactionViewer() {
 
     let validOperations = [];
 
+    validOperations.push("Add");
+    validOperations.push("Delete");
+
     if (selectedTransactions?.length > 0) {
       switch (selectedTransactions.length) {
         case 1:
@@ -106,9 +109,6 @@ export default function TransactionViewer() {
         default:
           break;
       }
-      validOperations.push("Delete");
-    } else {
-      validOperations.push("Add");
     }
     return validOperations;
   }

@@ -1,10 +1,11 @@
-import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+import WageTotalBadge from 'features/TransactionViewer/TransactionList/TransactionRow/WageTotalBadge';
+
+import { Col, Row } from 'react-bootstrap';
 import { formatCurrency } from 'functions/CurrencyFunctions';
-import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsState';
 import { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import WageTotalBadge from 'features/TransactionViewer/TransactionList/TransactionRow/WageTotalBadge';
 
 function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
 

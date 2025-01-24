@@ -1,6 +1,6 @@
 import OperationButton from './OperationButton';
 
-import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsState';
 import { useRecoilValue } from 'recoil';
 
 function OperationButtons() {

@@ -1,14 +1,15 @@
-import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
-import { Col, Row } from 'react-bootstrap';
-import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsAtom';
 import SaveAndCancelButtons from './SaveAndCancelButtons';
-import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
+import useClearSelectedTransactions from 'hooks/useClearSelectedTransactions';
+
+import { apiBaseUrl } from 'consts/ApiConsts';
+import { Col, Row } from 'react-bootstrap';
+import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsState';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsState';
 import { Table } from 'react-bootstrap';
 import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
-import useClearSelectedTransactions from 'hooks/useClearSelectedTransactions';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { userMessageState } from 'recoil/atoms/UserMessageAtom';
+import { userMessageState } from 'recoil/atoms/UserMessageState';
 
 function Delete({ handleClose }) {
 

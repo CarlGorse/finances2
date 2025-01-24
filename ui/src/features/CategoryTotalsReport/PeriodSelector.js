@@ -1,6 +1,7 @@
-import { useRecoilValue } from 'recoil';
-import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 import PeriodSelector from 'components/PeriodSelector'
+
+import { useRecoilValue } from 'recoil';
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchState';
 
 function StartPeriodSelector({ onSelect }) {
 

@@ -1,14 +1,15 @@
-import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
+import ReportBanner from './ReportBanner'
+import Spinner from 'components/FinancesSpinner'
+
+import { apiBaseUrl } from 'consts/ApiConsts';
 import { Col, Container, Row } from 'react-bootstrap';
 import { formatCurrency } from 'functions/CurrencyFunctions'
 import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions'
-import ReportBanner from './ReportBanner'
-import Spinner from 'components/FinancesSpinner'
 import { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { userMessageState } from 'recoil/atoms/UserMessageAtom';
-import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
+import { userMessageState } from 'recoil/atoms/UserMessageState';
+import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchState';
 
 function Report() {
 

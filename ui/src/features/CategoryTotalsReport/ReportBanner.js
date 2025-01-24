@@ -1,5 +1,5 @@
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import { categoryReportPeriodsState } from 'recoil/atoms/CategoryReportPeriodsAtom';
+import { categoryReportPeriodsState } from 'recoil/atoms/CategoryReportPeriodsState';
 import NumberSelector from 'components/NumberSelector';
 import { range } from 'functions/ArrayFunctions'
 import { useState } from 'react';

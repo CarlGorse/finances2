@@ -1,12 +1,12 @@
 import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { Col, Container, Form, Row } from 'react-bootstrap';
-import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsAtom';
+import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsState';
 import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/CurrencyFunctions';
 import SaveAndCancelButtons from './SaveAndCancelButtons';
-import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
+import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsState';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { userMessageState } from 'recoil/atoms/UserMessageAtom';
+import { userMessageState } from 'recoil/atoms/UserMessageState';
 import { useState } from 'react'
 
 function MoveWages({ handleClose }) {
