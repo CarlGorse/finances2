@@ -1,6 +1,7 @@
 import { atom } from 'recoil';
+import Transaction from 'types/Transaction';
 
-export const addEditTransactionState = atom({
+export const addEditTransactionState = atom<Transaction>({
     key: "addEditTransactionState",
     default: {
         AccountId: null,
@@ -8,7 +9,7 @@ export const addEditTransactionState = atom({
         Credit: null,
         Debit: null,
         Description: 'hi',
-        EffDate: (new Date()).toISOString().split('T')[0],
+        EffDate: new Date((new Date()).toISOString().split('T')[0]),
         IsWage: null,
         Item: null,
         TransactionId: null

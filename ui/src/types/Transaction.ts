@@ -1,3 +1,11 @@
 export default interface Transaction {
-    TransactiontId: number
+    TransactionId: number,
+    AccountId: number,
+    CategoryId,
+    Credit: number,
+    Debit: number,
+    Description: string,
+    EffDate: Date,
+    IsWage: Boolean,
+    Item: string
 }

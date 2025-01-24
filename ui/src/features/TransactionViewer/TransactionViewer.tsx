@@ -15,9 +15,9 @@ import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 import YearAndPeriodSearch from 'types/YearAndPeriodSearch'
 import BankAccount from 'types/BankAccount'
 
-function TransactionViewer() {
+export default function TransactionViewer() {
 
-  const setBankAccounts = useSetRecoilState<BankAccount>(bankAccountsState);
+  const setBankAccounts = useSetRecoilState<BankAccount[]>(bankAccountsState);
   const setCategories = useSetRecoilState(categoriesState);
   const setSelectedBankAccount = useSetRecoilState<BankAccount>(selectedBankAccountState);
   const setTransactionPageNo = useSetRecoilState(transactionsPageNoState);
@@ -90,5 +90,3 @@ function TransactionViewer() {
     </Container >
   )
 }
-
-export default TransactionViewer;
