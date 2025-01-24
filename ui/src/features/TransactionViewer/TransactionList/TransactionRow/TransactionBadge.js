@@ -1,4 +1,4 @@
-import Badge from 'react-bootstrap/Badge';
+import { Badge, Button, Tooltip } from 'react-bootstrap';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import { transactionBadgeToShowState } from './TransactionBadgeToShowAtom';
@@ -8,32 +8,27 @@ function TransactionBadge({ transaction, badgeType, badgeLabel, badgeColour, isB
 
     const [transactionBadgeToShow, setTransactionBadgeToShow] = useRecoilState(transactionBadgeToShowState);
 
-    const popover = (
-        <Popover id="popover-basic">
-            <Popover.Body>
-                {popoverBody}
-            </Popover.Body>
-        </Popover>
-    );
 
-    let badge;
 
-    if (isBadgeApplicable) {
-        badge =
-            <span style={{ paddingRight: "2px" }}>
-                <OverlayTrigger trigger="click" placement="right"// overlay={popover}
-                    show={
-                        transactionBadgeToShow?.Type === badgeType &&
-                        transactionBadgeToShow?.TransactionId === transaction.TransactionId
-                    }
-                >
-
-                    <Badge pill bg={badgeColour}>{badgeLabel}</Badge>
-                </OverlayTrigger>
-            </span>
+    if (!isBadgeApplicable) {
+        return;
     }
 
-    return (badge);
+    //
+    //transactionBadgeToShow?.Type === badgeType &&
+    //transactionBadgeToShow?.TransactionId === transaction.TransactionId
+    return (
+        <span style={{ paddingRight: "2px" }}>
+            <OverlayTrigger
+                delay={{ show: 0, hide: 0 }}
+                placement="right"
+                overlay={popoverBody}
+            >
+                <Badge pill bg={badgeColour}>{badgeLabel}</Badge>
+
+            </OverlayTrigger>
+        </span>
+    )
 }
 
 export default TransactionBadge;
