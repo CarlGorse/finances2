@@ -13,9 +13,9 @@ function App() {
         <FinancesNavbar />
 
         <Routes>
-          <Route path='/' element={<TransactionViewer />} />
-          <Route path='/transactions' element={<TransactionViewer />} />
-          <Route path='/category-totals-report' element={<CategoryTotalsReport />} />
+          <Route exact path='/' element={<TransactionViewer />} />
+          <Route exact path='/transactions' element={<TransactionViewer />} />
+          <Route exact path='/category-totals-report' element={<CategoryTotalsReport />} />
         </Routes>
 
       </BrowserRouter>
