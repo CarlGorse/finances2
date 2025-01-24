@@ -1,7 +1,7 @@
 import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
 import { Col, Container, Form, Row } from 'react-bootstrap';
-import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsState';
+import { dateToLoadTransactionsState } from 'recoil/atoms/DateToLoadTransactionsState';
 import { formatCurrency, isValidCurrency, stringToCurrency } from 'functions/CurrencyFunctions';
 import SaveAndCancelButtons from './SaveAndCancelButtons';
 import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsState';
@@ -12,7 +12,7 @@ import { useState } from 'react'
 function MoveWages({ handleClose }) {
 
     const [creditToMove, setCreditToMove] = useState(0);
-    const setReloadTransactions = useSetRecoilState(reloadTransactionsState);
+    const setDateToLoadTransactions = useSetRecoilState(dateToLoadTransactionsState);
     const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsState);
     const setUserMessage = useSetRecoilState(userMessageState);
 
@@ -30,7 +30,7 @@ function MoveWages({ handleClose }) {
             }
         })
             .then(function (response) {
-                setReloadTransactions(new Date());
+                setDateToLoadTransactions(new Date());
                 setUserMessage({
                     Message: `Credit ${formatCurrency(Math.abs(response.data.CreditToMove))} moved from ${response.data.transactionFrom.Category.Name} to ${response.data.transactionTo.Category.Name}.`,
                     Variant: "success"

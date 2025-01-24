@@ -1,6 +1,6 @@
 import { apiBaseUrl } from 'consts/ApiConsts';
+import { dateToLoadTransactionsState } from 'recoil/atoms/DateToLoadTransactionsState';
 import { getDateAsYYYYMMDD } from 'functions/DateFunctions'
-import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsState';
 import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountState';
 import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsState';
 import { stringToCurrency } from 'functions/CurrencyFunctions';
@@ -22,7 +22,7 @@ function AddEdit({ handleClose }) {
     const selectedBankAccount = useRecoilValue(selectedBankAccountState);
     const selectedTransactions = useRecoilValue(selectedTransactionsState);
 
-    const setReloadTransactions = useSetRecoilState(reloadTransactionsState);
+    const setDateToLoadTransactions = useSetRecoilState(dateToLoadTransactionsState);
     const setUserMessage = useSetRecoilState(userMessageState);
 
     let transaction = selectedTransactions[0];
@@ -81,7 +81,7 @@ function AddEdit({ handleClose }) {
     }
 
     function onSuccesfulRequest() {
-        setReloadTransactions(new Date());
+        setDateToLoadTransactions(new Date());
         setUserMessage({
             Message: "Transaction saved.",
             Variant: "success"

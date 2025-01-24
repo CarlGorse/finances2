@@ -4,7 +4,7 @@ import useClearSelectedTransactions from 'hooks/useClearSelectedTransactions';
 
 import { apiBaseUrl } from 'consts/ApiConsts';
 import { Col, Row } from 'react-bootstrap';
-import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsState';
+import { dateToLoadTransactionsState } from 'recoil/atoms/DateToLoadTransactionsState';
 import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsState';
 import { Table } from 'react-bootstrap';
 import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
@@ -16,7 +16,7 @@ function Delete({ handleClose }) {
     const selectedTransactions = useRecoilValue(selectedTransactionsState);
 
     const clearSelectedTransactions = useClearSelectedTransactions();
-    const setReloadTransactions = useSetRecoilState(reloadTransactionsState);
+    const setDateToLoadTransactions = useSetRecoilState(dateToLoadTransactionsState);
     const setTransactionOperation = useSetRecoilState(transactionOperationState);
     const setUserMessage = useSetRecoilState(userMessageState);
 
@@ -33,7 +33,7 @@ function Delete({ handleClose }) {
         )
             .then(function () {
                 clearSelectedTransactions();
-                setReloadTransactions(new Date());
+                setDateToLoadTransactions(new Date());
 
                 setUserMessage({
                     Message: `Transaction${selectedTransactions.length === 1 ? '' : 's'} deleted.`,

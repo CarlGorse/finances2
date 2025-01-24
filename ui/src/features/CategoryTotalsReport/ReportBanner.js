@@ -1,15 +1,13 @@
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import { categoryReportPeriodsState } from 'recoil/atoms/CategoryReportPeriodsState';
 import NumberSelector from 'components/NumberSelector';
 import { range } from 'functions/ArrayFunctions'
 import { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
 import YearAndPeriodSelector from './YearAndPeriodSelector'
 
 function ReportBanner({ reportLoadState, onRefresh }) {
 
     const reportData = useState(null)
-    const setReportPeriods = useSetRecoilState(categoryReportPeriodsState);
+    const [reportPeriods, setReportPeriods] = useState(6);
 
     let refreshButton
 
@@ -25,7 +23,7 @@ function ReportBanner({ reportLoadState, onRefresh }) {
     return (
 
         <Container style={{ position: "sticky", top: "3em", backgroundColor: "white", zIndex: "1", paddingTop: "1em" }}>
-            <YearAndPeriodSelector />
+            <YearAndPeriodSelector reportPeriods={reportPeriods} />
 
             <Row className="mt-3">
                 <Col xs={1}>Periods to show:</Col>

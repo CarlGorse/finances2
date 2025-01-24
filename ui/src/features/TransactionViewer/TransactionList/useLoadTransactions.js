@@ -1,7 +1,7 @@
 import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
+import { dateToLoadTransactionsState } from 'recoil/atoms/DateToLoadTransactionsState';
 import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsState';
-import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsState';
 import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountState';
 import { transactionLoadingProgressState } from 'recoil/atoms/TransactionLoadingProgressState';
 import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoState';
@@ -14,7 +14,7 @@ function useLoadTransactions() {
 
   const pageCount = useRef(null);
 
-  const reloadTransactions = useRecoilValue(reloadTransactionsState);
+  const dateToLoadTransactions = useRecoilValue(dateToLoadTransactionsState);
   const selectedBankAccount = useRecoilValue(selectedBankAccountState);
   const transactionsPageNo = useRecoilValue(transactionsPageNoState);
   const transactionsPageSize = useRecoilValue(transactionsPageSizeState);
@@ -48,7 +48,7 @@ function useLoadTransactions() {
         pageCount.current = 0;
       })
   }, [
-    reloadTransactions,
+    dateToLoadTransactions,
     selectedBankAccount,
     transactionsPageNo,
     transactionsPageSize,
@@ -99,7 +99,7 @@ function useLoadTransactions() {
       return false;
     }
 
-    if (!(reloadTransactions instanceof Date) || isNaN(reloadTransactions.valueOf())) {
+    if (!(dateToLoadTransactions instanceof Date) || isNaN(dateToLoadTransactions.valueOf())) {
       return false;
     }
 
