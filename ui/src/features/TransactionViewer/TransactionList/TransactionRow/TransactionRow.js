@@ -1,4 +1,4 @@
-import { Accordion, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { formatCurrency } from 'functions/CurrencyFunctions';
 import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
@@ -50,54 +50,36 @@ function TransactionRow({ transaction, backgroundColor, colorOnSelect }) {
 
   return (
 
-    <Accordion.Item eventKey={transaction.TransactionId}>
+    <Row>
+      <Col className="tableCell text-center" xs={1}>
+        <Form.Check checked={isSelected} onChange={() => onCheck()} />
+      </Col>
 
-      <div>
+      <Col className="tableCell" xs={2}>
+        {transaction.EffDate}
+      </Col>
 
-        <Accordion.Header>
+      <Col className="tableCell" xs={4}>
+        {categoryGroupText}
+      </Col>
 
-          <Col className="tableCell text-center" xs={1}>
-            <Form.Check checked={isSelected} onChange={() => onCheck()} />
-          </Col>
+      <Col className="tableCell" xs={1}>
+        {formatCurrency(transaction.Credit)}
+      </Col>
 
-          <Col className="tableCell" xs={2}>
-            {transaction.EffDate}
-          </Col>
+      <Col className="tableCell" xs={1}>
+        {formatCurrency(transaction.Debit)}
+      </Col>
 
-          <Col className="tableCell" xs={4}>
-            {categoryGroupText}
-          </Col>
+      <Col className="tableCell" xs={1}>
+        {formatCurrency(transaction.AccountRunningTotal)}
+      </Col>
 
-          <Col className="tableCell" xs={1}>
-            {formatCurrency(transaction.Credit)}
-          </Col>
+      <Col xs={2}>
+        <WageTotalBadge transaction={transaction} />
+      </Col>
 
-          <Col className="tableCell" xs={1}>
-            {formatCurrency(transaction.Debit)}
-          </Col>
-
-          <Col className="tableCell" xs={1}>
-            {formatCurrency(transaction.AccountRunningTotal)}
-          </Col>
-
-          <Col xs={2}>
-            <WageTotalBadge transaction={transaction} />
-          </Col>
-
-        </Accordion.Header>
-
-        <Accordion.Body>
-          <div>
-            Description: {transaction.Description}
-          </div>
-          <div>
-            Wage total: {transaction.WageTotal}
-          </div>
-        </Accordion.Body>
-
-      </div >
-
-    </Accordion.Item >
+    </Row>
   )
 }
 

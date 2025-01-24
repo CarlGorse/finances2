@@ -2,7 +2,7 @@ import { Accordion, Container, Row } from 'react-bootstrap';
 import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
 import Spinner from 'components/FinancesSpinner'
 import TransactionHeader from 'components/TransactionHeader';
-import TransactionRow from 'components/TransactionRow';
+import TransactionRow from './TransactionRow/TransactionRow';
 import { transactionLoadingProgressState } from 'recoil/atoms/TransactionLoadingProgressState';
 import { useState } from 'react';
 import useLoadTransactions from './useLoadTransactions';
@@ -30,12 +30,14 @@ function TransactionList() {
 
         {!loading && loadedTransactions?.transactions?.map((transaction, index) => (
           <Accordion>
-            <TransactionRow
-              key={transaction.TransactionId}
-              transaction={transaction}
-              backgroundColor={index % 2 === 0 ? "lightGrey" : "white"}
-              colorOnSelect="limeGreen"
-            />
+            <div className="mt-1">
+              <TransactionRow
+                key={transaction.TransactionId}
+                transaction={transaction}
+                backgroundColor={index % 2 === 0 ? "lightGrey" : "white"}
+                colorOnSelect="limeGreen"
+              />
+            </div>
           </Accordion>
         ))}
 
