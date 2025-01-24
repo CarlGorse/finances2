@@ -1,7 +1,6 @@
 import { Accordion, Container, Row } from 'react-bootstrap';
 import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
 import Spinner from 'components/FinancesSpinner'
-import TransactionHeader from 'components/TransactionHeader';
 import TransactionRow from './TransactionRow/TransactionRow';
 import { transactionLoadingProgressState } from 'recoil/atoms/TransactionLoadingProgressState';
 import { useState } from 'react';

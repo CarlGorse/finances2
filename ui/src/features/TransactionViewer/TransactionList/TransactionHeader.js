@@ -13,6 +13,7 @@ export default function TransactionHeader() {
 
       <Col xs={1} className="text-center">
         <Form.Check
+          disabled={!(selectedTransactions?.length > 0)}
           checked={selectedTransactions?.length > 0}
           onClick={clearSelectedTransactions}
         />
