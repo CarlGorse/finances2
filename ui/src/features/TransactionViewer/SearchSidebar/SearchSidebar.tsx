@@ -1,6 +1,6 @@
 import BankAccountSelector from './BankAccountSelector';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import PageSizeSelector from './TransactionList/PageSizeSelector'
+import PageSizeSelector from './PageSizeSelector'
 import { useRecoilState } from 'recoil'
 import YearsAndPeriodsSearch from './YearsAndPeriodsSearch';
 import { showSearchSidebarState } from 'recoil/atoms/ShowSearchSidebarState';

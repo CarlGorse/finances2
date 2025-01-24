@@ -1,5 +1,5 @@
 import { GetOperationProperties } from 'functions/OperationFunctions';
-import OperationButton from '../OperationButton';
+import OperationButton from './OperationButton';
 import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsAtom';
 import { useRecoilValue } from 'recoil';
 

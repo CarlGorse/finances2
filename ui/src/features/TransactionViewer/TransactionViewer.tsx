@@ -6,13 +6,13 @@ import { Container } from 'react-bootstrap';
 import { sortCategories } from 'functions/CategoryFunctions'
 import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
 import TransactionBanner from './TransactionBanner/TransactionBanner'
-import TransactionList from './TransactionList';
+import TransactionList from './TransactionList/TransactionList';
 import { userMessageState } from 'recoil/atoms/UserMessageAtom';
 import { useSetRecoilState } from 'recoil';
 import { useEffect } from 'react'
 import BankAccount from 'types/BankAccount'
-import SearchSidebar from './SearchSidebar'
-import TransactionOperationSidebar from './TransactionOperationsSidebar'
+import SearchSidebar from './SearchSidebar/SearchSidebar'
+import TransactionOperationSidebar from './OperationsSidebar/TransactionOperationsSidebar'
 
 export default function TransactionViewer() {
 

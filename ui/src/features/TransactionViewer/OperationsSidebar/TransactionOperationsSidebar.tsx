@@ -1,5 +1,5 @@
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import OperationPage from './OperationPage';
+import OperationPage from '../TransactionBanner/OperationPage';
 import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
 import { showTransactionOperationsSidebarState } from 'recoil/atoms/ShowTransactionOperationsSidebarState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';

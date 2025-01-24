@@ -1,8 +1,8 @@
-import MiddleRangeButton from './NavigationButtons/MiddleRangeButton';
-import NextPageButton from './NavigationButtons/NextPageButton';
+import MiddleRangeButton from './MiddleRangeButton';
+import NextPageButton from './NextPageButton';
 import Pagination from 'react-bootstrap/Pagination';
-import PageNumberButton from './NavigationButtons/PageNumberButton';
-import PrevPageButton from './NavigationButtons/PrevPageButton';
+import PageNumberButton from './PageNumberButton';
+import PrevPageButton from './PrevPageButton';
 
 function NavigationButtons({ pageNo, pageCount, onClick }) {
 

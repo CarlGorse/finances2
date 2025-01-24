@@ -5,7 +5,7 @@ import TransactionHeader from 'components/TransactionHeader';
 import TransactionRow from 'components/TransactionRow';
 import { transactionLoadingProgressState } from 'recoil/atoms/TransactionLoadingProgressState';
 import { useState } from 'react';
-import useLoadTransactions from './TransactionList/useLoadTransactions';
+import useLoadTransactions from './useLoadTransactions';
 import { useRecoilValue } from 'recoil';
 
 function TransactionList() {

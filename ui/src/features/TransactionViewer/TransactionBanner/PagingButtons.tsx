@@ -1,6 +1,6 @@
 
 import LoadedTransactions from 'types/LoadedTransactions'
-import NavigationButtons from '../TransactionList/NavigationButtons'
+import NavigationButtons from '../TransactionList/NavigationButtons/NavigationButtons'
 
 import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
 import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoAtom';

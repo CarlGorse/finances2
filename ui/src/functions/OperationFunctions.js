@@ -1,6 +1,6 @@
-import AddEdit from '../features/TransactionViewer/OperationPage/AddEdit';
-import Delete from '../features/TransactionViewer/OperationPage/Delete';
-import MoveWages from '../features/TransactionViewer/OperationPage/MoveWages';
+import AddEdit from '../features/TransactionViewer/OperationsSidebar/OperationPage/AddEdit';
+import Delete from '../features/TransactionViewer/OperationsSidebar/OperationPage/Delete';
+import MoveWages from '../features/TransactionViewer/OperationsSidebar/OperationPage/MoveWages';
 import { useSetRecoilState } from 'recoil';
 import { transactionOperationState } from 'recoil/atoms/TransactionOperationAtom';
 
