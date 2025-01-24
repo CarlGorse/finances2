@@ -11,10 +11,6 @@ function NavigationButtons({ pageNo, pageCount, onClick }) {
   const maxPageNoButtonsPostMiddleRangeButton = 3;
   const maxPageNoButtons = maxPageNoButtonsPreMiddleRangeButton + maxPageNoButtonsPostMiddleRangeButton;
 
-  if (pageCount === 1) {
-    return null;
-  }
-
   let buttons = [];
 
   if (pageCount > 1) {
