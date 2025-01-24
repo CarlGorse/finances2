@@ -3,6 +3,7 @@ import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsAtom';
 import Spinner from 'components/FinancesSpinner'
 import TransactionHeader from 'components/TransactionHeader';
 import TransactionRow from 'components/TransactionRow';
+import { transactionLoadingProgressState } from 'recoil/atoms/TransactionLoadingProgressState';
 import { useState } from 'react';
 import useLoadTransactions from './TransactionList/useLoadTransactions';
 import { useRecoilValue } from 'recoil';
@@ -11,31 +12,34 @@ function TransactionList() {
 
   const [loading] = useState(null);
   const loadedTransactions = useRecoilValue(loadedTransactionsState);
+  const transactionLoadingProgress = useRecoilValue(transactionLoadingProgressState);
 
   useLoadTransactions();
 
   return (
 
-    <Container className="table-bordered">
+    transactionLoadingProgress === "loading" ? <Spinner /> :
 
-      <Row style={{ paddingTop: "10px" }}>
-        <TransactionHeader showClearOption={true} />
-      </Row>
+      <Container className="table-bordered">
 
-      {loading && <><Spinner /><span>loading transactions</span></>}
+        <Row style={{ paddingTop: "10px" }}>
+          <TransactionHeader showClearOption={true} />
+        </Row>
 
-      {!loading && loadedTransactions?.transactions?.map((transaction, index) => (
-        <Accordion>
-          <TransactionRow
-            key={transaction.TransactionId}
-            transaction={transaction}
-            backgroundColor={index % 2 === 0 ? "lightGrey" : "white"}
-            colorOnSelect="limeGreen"
-          />
-        </Accordion>
-      ))}
+        {loading && <><Spinner /><span>loading transactions</span></>}
 
-    </Container>
+        {!loading && loadedTransactions?.transactions?.map((transaction, index) => (
+          <Accordion>
+            <TransactionRow
+              key={transaction.TransactionId}
+              transaction={transaction}
+              backgroundColor={index % 2 === 0 ? "lightGrey" : "white"}
+              colorOnSelect="limeGreen"
+            />
+          </Accordion>
+        ))}
+
+      </Container>
   )
 }
 

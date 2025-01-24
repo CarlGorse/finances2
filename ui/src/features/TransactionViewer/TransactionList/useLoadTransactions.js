@@ -9,14 +9,16 @@ import { useEffect, useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 import { reloadTransactionsState } from 'recoil/atoms/ReloadTransactionsAtom';
+import { transactionLoadingProgressState } from 'recoil/atoms/TransactionLoadingProgressState';
 
 function useLoadTransactions() {
 
-  const pageCount = useRef(1);
+  const pageCount = useRef(null);
 
   const reloadTransactions = useRecoilValue(reloadTransactionsState);
   const setLoadedTransactions = useSetRecoilState(loadedTransactionsState);
   const selectedBankAccount = useRecoilValue(selectedBankAccountState);
+  const setTransactionLoadingProgressState = useSetRecoilState(transactionLoadingProgressState);
   const transactionsPageNo = useRecoilValue(transactionsPageNoState);
   const transactionsPageSize = useRecoilValue(transactionsPageSizeState);
   const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchState);
@@ -34,18 +36,20 @@ function useLoadTransactions() {
       return;
     }
 
+    setTransactionLoadingProgressState("loading");
+
     axios.post(apiBaseUrl + "/transactions/get", model, {
       headers: {
         "Content-Type": "application/json"
       }
     })
       .then(response => {
-        console.log(response)
         setLoadedTransactions({
           pageCount: response.data.pageCount,
           transactions: response.data.transactions,
           totalTransactions: response.data.totalTransactions
         });
+        setTransactionLoadingProgressState("loaded");
       })
       .catch(function () {
         pageCount.current = 0;
@@ -105,8 +109,6 @@ function useLoadTransactions() {
     transactionsPageSize,
     yearAndPeriodSearch,
     reloadTransactions])
-
-  return pageCount.current;
 }
 
 export default useLoadTransactions;
