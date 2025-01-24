@@ -6,7 +6,6 @@ import useLoadTransactions from './useLoadTransactions';
 
 import { Accordion, Container, Row } from 'react-bootstrap';
 import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsState';
-import { transactionLoadingProgressState } from 'recoil/atoms/TransactionLoadingProgressState';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
@@ -16,9 +15,8 @@ function TransactionList() {
   const [loading] = useState(null);
 
   const loadedTransactions = useRecoilValue(loadedTransactionsState);
-  const transactionLoadingProgress = useRecoilValue(transactionLoadingProgressState);
 
-  useLoadTransactions();
+  let transactionLoadingProgress = useLoadTransactions();
 
   return (
 

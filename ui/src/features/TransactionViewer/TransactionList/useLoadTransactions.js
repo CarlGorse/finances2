@@ -3,10 +3,9 @@ import axios from 'axios';
 import { dateToLoadTransactionsState } from 'recoil/atoms/DateToLoadTransactionsState';
 import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsState';
 import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountState';
-import { transactionLoadingProgressState } from 'recoil/atoms/TransactionLoadingProgressState';
 import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoState';
 import { transactionsPageSizeState } from 'recoil/atoms/TransactionsPageSizeState';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchState';
 
@@ -21,7 +20,8 @@ function useLoadTransactions() {
   const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchState);
 
   const setLoadedTransactions = useSetRecoilState(loadedTransactionsState);
-  const setTransactionLoadingProgressState = useSetRecoilState(transactionLoadingProgressState);
+
+  const [transactionLoadingProgress, setTransactionLoadingProgress] = useState("");
 
   useEffect(() => {
 
@@ -31,7 +31,7 @@ function useLoadTransactions() {
       return;
     }
 
-    setTransactionLoadingProgressState("loading");
+    setTransactionLoadingProgress("loading");
 
     let requestUrl = apiBaseUrl + "/transactions/get";
     let headers = { "Content-Type": "application/json" };
@@ -63,7 +63,7 @@ function useLoadTransactions() {
       totalTransactions: response.data.totalTransactions
     });
 
-    setTransactionLoadingProgressState("loaded");
+    setTransactionLoadingProgress("loaded");
   }
 
   function getRequestBody() {
@@ -105,6 +105,8 @@ function useLoadTransactions() {
 
     return true;
   }
+
+  return transactionLoadingProgress;
 }
 
 export default useLoadTransactions;
