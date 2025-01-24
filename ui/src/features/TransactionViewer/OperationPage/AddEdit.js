@@ -60,7 +60,7 @@ function AddEdit({ apiMethod, handleClose }) {
                     Message: "Transaction saved.",
                     Variant: "success"
                 })
-                handleClose();
+                //handleClose();
             })
             .catch(function (error) {
                 setUserMessage({
