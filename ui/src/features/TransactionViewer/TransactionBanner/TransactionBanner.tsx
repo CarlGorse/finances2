@@ -7,13 +7,13 @@ import YearAndPeriodSearch from 'types/YearAndPeriodSearch'
 
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { showSearchSidebarState } from 'recoil/atoms/ShowSearchSidebarState';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useEffect } from 'react'
 import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchAtom';
 
 export default function TransactionBanner() {
 
-  const setShowSearchSidebar = useSetRecoilState(showSearchSidebarState);
+  const [showSearchSidebar, setShowSearchSidebar] = useRecoilState(showSearchSidebarState);
   const setYearAndPeriodSearch = useSetRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchState);
 
   useEffect(() => {
@@ -45,7 +45,12 @@ export default function TransactionBanner() {
 
         <Col xs="4">
 
-          <Button size="sm" onClick={() => setShowSearchSidebar(true)}>search</Button>
+          <Button
+            size="sm"
+            onClick={() => setShowSearchSidebar(!showSearchSidebar)
+            }>
+            Search
+          </Button>
 
           <OperationButtons />
 
