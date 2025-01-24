@@ -1,9 +1,7 @@
 import axios from 'axios'
 import BankAccount from 'types/BankAccount'
-import SearchSidebar from './SearchSidebar/SearchSidebar'
 import TransactionBanner from './TransactionBanner/TransactionBanner'
 import TransactionList from './TransactionList/TransactionList';
-import TransactionOperationSidebar from './OperationsSidebar/OperationsSidebar'
 
 import { apiBaseUrl } from 'consts/ApiConsts';
 import { bankAccountsState } from 'recoil/atoms/BankAccountsState';
@@ -69,10 +67,6 @@ export default function TransactionViewer() {
 
   return (
     <>
-      <TransactionOperationSidebar />
-
-      <SearchSidebar />
-
       <Container>
 
         <div style={{ position: "sticky", top: "3em", backgroundColor: "white", zIndex: "1" }} >

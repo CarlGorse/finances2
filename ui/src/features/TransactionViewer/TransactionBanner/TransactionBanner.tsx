@@ -1,19 +1,24 @@
 
 import OperationButtons from './OperationButtons';
+import OperationSidebar from 'features/TransactionViewer/OperationsSidebar/OperationsSidebar'
 import PagingButtons from './PagingButtons'
 import SearchCriteria from './SearchCriteria'
+import SearchSidebar from './SearchSidebar'
 import UserMessage from 'components/UserMessage'
 import YearAndPeriodSearch from 'types/YearAndPeriodSearch'
 
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import { showSearchSidebarState } from 'recoil/atoms/ShowSearchSidebarState';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { useEffect } from 'react'
+import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useEffect, useState } from 'react'
 import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchState';
 
 export default function TransactionBanner() {
 
-  const [showSearchSidebar, setShowSearchSidebar] = useRecoilState(showSearchSidebarState);
+  const [showOperationsSidebar, setShowOperationsSidebar] = useState(false);
+  const [showSearchSidebar, setShowSearchSidebar] = useState(false);
+  const transactionOperation = useRecoilValue(transactionOperationState);
+
   const setYearAndPeriodSearch = useSetRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchState);
 
   useEffect(() => {
@@ -31,32 +36,49 @@ export default function TransactionBanner() {
 
   }, [setYearAndPeriodSearch])
 
+  useEffect(() => {
+    if (transactionOperation) {
+      setShowOperationsSidebar(true);
+    }
+    else {
+      setShowOperationsSidebar(false);
+    }
+  }, [transactionOperation])
+
   return (
-    <Container>
-      <Row>
+    <>
 
-        <div className="mt-3">
-          <UserMessage />
-        </div>
+      <SearchSidebar show={showSearchSidebar} setShow={setShowSearchSidebar} />
 
-        <SearchCriteria />
+      <OperationSidebar show={showOperationsSidebar} setShow={setShowOperationsSidebar} />
 
-        <PagingButtons />
+      <Container>
+        <Row>
 
-        <Col xs="4">
+          <div className="mt-3">
+            <UserMessage />
+          </div>
 
-          <Button
-            size="sm"
-            onClick={() => setShowSearchSidebar(!showSearchSidebar)
-            }>
-            Search
-          </Button>
+          <SearchCriteria />
 
-          <OperationButtons />
+          <PagingButtons />
 
-        </Col>
+          <Col xs="4">
 
-      </Row>
-    </Container >
+            <Button
+              size="sm"
+              onClick={() => setShowSearchSidebar(!showSearchSidebar)
+              }>
+              Search
+            </Button>
+
+            <OperationButtons setShowOperationsSidebar={setShowOperationsSidebar} />
+
+          </Col>
+
+        </Row>
+      </Container >
+
+    </>
   );
 }

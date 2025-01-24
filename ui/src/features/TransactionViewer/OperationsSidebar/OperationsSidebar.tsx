@@ -1,26 +1,12 @@
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import OperationPage from './OperationPage/OperationPage';
 
-import { showTransactionOperationsSidebarState } from 'recoil/atoms/ShowTransactionOperationsSidebarState';
 import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
-export default function OperationsSidebar() {
+export default function OperationsSidebar({ show, setShow }) {
 
-  const [showSidebarState, setShowSidebarState] = useRecoilState(showTransactionOperationsSidebarState);
   const transactionOperation = useRecoilValue<string>(transactionOperationState);
-
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    if (transactionOperation) {
-      setShow(true);
-    }
-    else {
-      setShow(false);
-    }
-  }, [transactionOperation])
 
   return (
 

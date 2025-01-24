@@ -1,19 +1,15 @@
-import BankAccountSelector from './BankAccountSelector';
+import BankAccountSelector from '../SearchSidebar/BankAccountSelector';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import PageSizeSelector from './PageSizeSelector'
-import { useRecoilState } from 'recoil'
-import YearsAndPeriodsSearch from './YearsAndPeriodsSearch';
-import { showSearchSidebarState } from 'recoil/atoms/ShowSearchSidebarState';
+import PageSizeSelector from '../SearchSidebar/PageSizeSelector';
+import YearsAndPeriodsSearch from '../SearchSidebar/YearsAndPeriodsSearch';
 
-export default function TransactionBanner() {
-
-  const [showSearchSidebar, setShowSearchSidebar] = useRecoilState(showSearchSidebarState);
+export default function SearchSidebar({ show, setShow }) {
 
   return (
     <Offcanvas
-      show={showSearchSidebar}
+      show={show}
       placement="end"
-      onHide={() => setShowSearchSidebar(false)}
+      onHide={() => setShow(false)}
       style={{ backgroundColor: "cornsilk" }}
       scroll={true}
       backdrop={false}

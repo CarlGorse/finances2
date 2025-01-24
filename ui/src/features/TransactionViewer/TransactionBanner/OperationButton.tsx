@@ -1,15 +1,13 @@
 import { Button } from 'react-bootstrap';
-import { showTransactionOperationsSidebarState } from 'recoil/atoms/ShowTransactionOperationsSidebarState';
 import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { validTransactionOperationsState } from 'recoil/atoms/ValidTransactionOperationsState';
 
-export default function OperationButton({ description }) {
+export default function OperationButton({ description, setShowSidebar }) {
 
     const transactionOperation = useRecoilValue<string>(transactionOperationState);
     const validTransactionOperations = useRecoilValue<string[]>(validTransactionOperationsState);
 
-    const setShowTransactionOperationsSidebar = useSetRecoilState(showTransactionOperationsSidebarState);
     const setTransactionOperation = useSetRecoilState<string>(transactionOperationState);
 
     let isEnabled = validTransactionOperations.includes(description);
@@ -21,11 +19,11 @@ export default function OperationButton({ description }) {
             onClick={() => {
                 if (transactionOperation !== description) {
                     setTransactionOperation(description);
-                    setShowTransactionOperationsSidebar(true);
+                    setShowSidebar(true);
                 }
                 else {
                     setTransactionOperation(null);
-                    setShowTransactionOperationsSidebar(false);
+                    setShowSidebar(false);
                 }
             }}
             disabled={!isEnabled}
