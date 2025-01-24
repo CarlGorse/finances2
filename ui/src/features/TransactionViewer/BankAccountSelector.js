@@ -6,7 +6,7 @@ import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountAtom';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 
-function BankAccountSelector() {
+export default function BankAccountSelector() {
 
   const bankAccounts = useRecoilValue(bankAccountsState);
   const clearSelectedTransactions = useClearSelectedTransactions();
@@ -70,5 +70,3 @@ function BankAccountSelector() {
     </>
   );
 }
-
-export default BankAccountSelector;
