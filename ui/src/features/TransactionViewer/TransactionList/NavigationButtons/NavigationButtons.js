@@ -18,7 +18,7 @@ function NavigationButtons({ pageNo, pageCount, onClick }) {
       <PrevPageButton
         pageNo={pageNo}
         pageCount={pageCount}
-        onClick={() => onClick(prevPageNo => Math.max(prevPageNo - 1, 0))}
+        onClick={() => onClick(Math.max(pageNo - 1, 0))}
       />);
   }
 
@@ -27,7 +27,7 @@ function NavigationButtons({ pageNo, pageCount, onClick }) {
   if (!showMiddleRangeButton) {
 
     for (let ctr = 1; ctr <= Math.min(pageCount, maxPageNoButtons); ctr++) {
-      buttons.push(<PageNumberButton label={ctr} pageNo={pageNo} onClick={onClick} />);
+      buttons.push(<PageNumberButton label={ctr} pageNo={pageNo} onClick={() => onClick(ctr)} />);
     }
 
   }
@@ -36,7 +36,7 @@ function NavigationButtons({ pageNo, pageCount, onClick }) {
     let lastPageNoButtonPreMiddleRange = Math.min(pageCount, maxPageNoButtonsPreMiddleRangeButton);
 
     for (let ctr = 1; ctr <= lastPageNoButtonPreMiddleRange; ctr++) {
-      buttons.push(<PageNumberButton label={ctr} pageNo={pageNo} onClick={onClick} />);
+      buttons.push(<PageNumberButton label={ctr} pageNo={pageNo} onClick={() => onClick(ctr)} />);
     }
 
     const firstPageNoAfterMiddleRange = pageCount - maxPageNoButtonsPostMiddleRangeButton + 1;
@@ -47,7 +47,7 @@ function NavigationButtons({ pageNo, pageCount, onClick }) {
     );
 
     for (let ctr = firstPageNoAfterMiddleRange; ctr <= pageCount; ctr++) {
-      buttons.push(<PageNumberButton label={ctr} pageNo={pageNo} onClick={onClick} />);
+      buttons.push(<PageNumberButton label={ctr} pageNo={pageNo} onClick={() => onClick(ctr)} />);
     }
   }
 
@@ -55,9 +55,8 @@ function NavigationButtons({ pageNo, pageCount, onClick }) {
     buttons.push(<NextPageButton
       pageNo={pageNo}
       pageCount={pageCount}
-      onClick={() => onClick(prevValue => {
-        return Math.min(prevValue + 1, pageCount)
-      })}
+      onClick={() => onClick(Math.min(pageNo + 1, pageCount)
+      )}
     />)
   };
 

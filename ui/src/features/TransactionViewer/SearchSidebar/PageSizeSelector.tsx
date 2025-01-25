@@ -1,16 +1,19 @@
-import { Col, Form, Row } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsState';
-import { transactionsPageSizeState } from 'recoil/atoms/TransactionsPageSizeState';
-import { useRecoilState, useRecoilValue } from 'recoil';
 import LoadedTransactions from 'types/LoadedTransactions'
+import TransactionsPageData from 'types/TransactionsPageData';
+
+import { Col, Form, Row } from 'react-bootstrap';
+import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsState';
+import { transactionsPageDataState } from 'recoil/atoms/TransactionsPageDataState';
+import { useEffect } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 function PageSizeSelector() {
 
-    const [transactionsPageSize, setTransactionsPageSize] = useRecoilState<number>(transactionsPageSizeState);
+    const pageData = useRecoilValue<TransactionsPageData>(transactionsPageDataState);
     const loadedTransactions = useRecoilValue<LoadedTransactions>(loadedTransactionsState);
 
-    console.log(loadedTransactions.totalTransactions);
+    const setPageData = useSetRecoilState<TransactionsPageData>(transactionsPageDataState);
 
     return <Row>
 
@@ -21,17 +24,17 @@ function PageSizeSelector() {
         <Col xs={3}>
             <Dropdown>
                 <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                    {transactionsPageSize}
+                    {pageData.PageSize}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     {
-                        [15, 50, 100].filter(x => x < loadedTransactions.totalTransactions).map(pageSize => (
+                        [pageData.PageSize, 50, 100].filter(x => x < loadedTransactions.totalTransactions).map(pageSize => (
 
-                            <Dropdown.Item key={pageSize} as="button" >
+                            <Dropdown.Item key={pageSize.toString()} as="button" >
                                 <div onClick={() => {
-                                    setTransactionsPageSize(pageSize);
+                                    setPageData(prevState => ({ ...prevState, PageSize: pageSize }));
                                 }}>
-                                    {pageSize}
+                                    {pageSize.toString()}
                                 </div>
                             </Dropdown.Item>
                         ))
@@ -40,7 +43,7 @@ function PageSizeSelector() {
                     {
                         <Dropdown.Item key={loadedTransactions.totalTransactions} as="button" >
                             <div onClick={() => {
-                                setTransactionsPageSize(loadedTransactions.totalTransactions);
+                                setPageData(prevState => ({ ...prevState, PageSize: loadedTransactions.totalTransactions }));
                             }}>
                                 {loadedTransactions.totalTransactions} (all)
                             </div>

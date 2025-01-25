@@ -1,10 +1,10 @@
-import { apiBaseUrl } from 'consts/ApiConsts';
 import axios from 'axios';
+
+import { apiBaseUrl } from 'consts/ApiConsts';
 import { dateToLoadTransactionsState } from 'recoil/atoms/DateToLoadTransactionsState';
 import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsState';
 import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountState';
-import { transactionsPageNoState } from 'recoil/atoms/TransactionsPageNoState';
-import { transactionsPageSizeState } from 'recoil/atoms/TransactionsPageSizeState';
+import { transactionsPageDataState } from 'recoil/atoms/TransactionsPageDataState';
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchState';
@@ -15,12 +15,11 @@ function useLoadTransactions() {
 
   const dateToLoadTransactions = useRecoilValue(dateToLoadTransactionsState);
   const selectedBankAccount = useRecoilValue(selectedBankAccountState);
-  const transactionsPageNo = useRecoilValue(transactionsPageNoState);
-  const transactionsPageSize = useRecoilValue(transactionsPageSizeState);
   const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchState);
 
   const setLoadedTransactions = useSetRecoilState(loadedTransactionsState);
 
+  const transactionsPageData = useRecoilValue(transactionsPageDataState);
   const [transactionLoadingProgress, setTransactionLoadingProgress] = useState("");
 
   useEffect(() => {
@@ -50,8 +49,7 @@ function useLoadTransactions() {
   }, [
     dateToLoadTransactions,
     selectedBankAccount,
-    transactionsPageNo,
-    transactionsPageSize,
+    transactionsPageData,
     yearAndPeriodSearch
   ])
 
@@ -76,8 +74,8 @@ function useLoadTransactions() {
         EndYear: yearAndPeriodSearch.EndYear,
         EndPeriod: yearAndPeriodSearch.EndPeriod,
       },
-      PageNo: transactionsPageNo,
-      PageSize: transactionsPageSize,
+      PageNo: transactionsPageData.PageNo,
+      PageSize: transactionsPageData.PageSize,
       IncludeRunningTotals: true,
       IncludeWageTotals: true
     }
