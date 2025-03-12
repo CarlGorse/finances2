@@ -2,9 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <ApplicationInsightsResourceId>/subscriptions/ad2d7742-293b-4ed3-921e-2e55fee447a4/resourceGroups/rg-finances2-prod-uks-001/providers/microsoft.insights/components/appi-finances2-api-prod-uks-001</ApplicationInsightsResourceId>
+    <UserSecretsId>2e4e378f-ab9b-499c-973a-cb2989dfce52</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.13.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />

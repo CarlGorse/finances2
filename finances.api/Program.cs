@@ -18,6 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddApplicationInsightsTelemetry();
+
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -39,6 +41,7 @@ builder.Services.AddCors(options => {
     options.AddPolicy(name: policyName,
                       builder => builder
                             .WithOrigins("http://localhost:3000")
+                            .WithOrigins("https://white-meadow-02c7d4703.6.azurestaticapps.net")
                             .AllowAnyHeader()
                             .AllowAnyMethod());
 });

@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "restored": true,
+      "restoreTime": "2025-03-12T22:22:54.9847424Z"
+    },
+    "appInsights1": {
+      "restored": true,
+      "restoreTime": "2025-03-12T22:23:18.0775495Z"
+    }
+  },
+  "parameters": {
+    "appInsights1.resourceGroupName": {
+      "Name": "appInsights1.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "rg-finances2-prod-uks-001"
+    },
+    "appInsights1.subscriptionId": {
+      "Name": "appInsights1.subscriptionId",
+      "Type": "subscription",
+      "Value": "ad2d7742-293b-4ed3-921e-2e55fee447a4"
+    }
+  }
+}
