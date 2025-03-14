@@ -32,7 +32,7 @@ function ReportBanner({ reportLoadState, onRefresh }) {
                         defaultValue={6}
                         onSelect={selectedValue => setReportPeriods(selectedValue)}
                         values={range(1, 6)}
-                        startPadding={2}
+                        startPadding={1}
                     />
                 </Col>
             </Row>
