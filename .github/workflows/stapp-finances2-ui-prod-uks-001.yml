@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened, closed]
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 env:
   APP_LOCATION: "/ui/" # location of your client code
