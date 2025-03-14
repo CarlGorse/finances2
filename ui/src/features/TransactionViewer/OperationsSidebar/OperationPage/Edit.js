@@ -17,7 +17,7 @@ import IsWage from './AddEdit/IsWage'
 import Item from './AddEdit/Item'
 import SaveAndCancelButtons from './SaveAndCancelButtons';
 
-function AddEdit({ handleClose }) {
+function Edit({ handleClose }) {
 
     const selectedBankAccount = useRecoilValue(selectedBankAccountState);
     const selectedTransactions = useRecoilValue(selectedTransactionsState);
@@ -89,4 +89,4 @@ function AddEdit({ handleClose }) {
     }
 }
 
-export default AddEdit;
+export default Edit;

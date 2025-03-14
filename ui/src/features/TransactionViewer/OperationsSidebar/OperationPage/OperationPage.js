@@ -1,4 +1,4 @@
-import AddEdit from './Edit';
+import Edit from './Edit';
 import Delete from './Delete';
 import MoveWages from './MoveWages';
 
@@ -14,10 +14,10 @@ export default function OperationPage() {
 
     switch (transactionOperation) {
         case "Add":
-            markup = <AddEdit />
+            markup = <Edit />
             break;
         case "Edit":
-            markup = <AddEdit />
+            markup = <Edit />
             break;
         case "Delete":
             markup = <Delete />
