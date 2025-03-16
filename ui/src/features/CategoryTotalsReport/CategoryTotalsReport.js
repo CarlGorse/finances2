@@ -1,11 +1,10 @@
 import axios from 'axios';
-import ReportBanner from './ReportBanner'
-import Spinner from 'components/FinancesSpinner'
+import Spinner from 'components/FinancesSpinner';
+import ReportBanner from './ReportBanner';
 
 import { apiBaseUrl } from 'consts/ApiConsts';
-import { Col, Container, Row } from 'react-bootstrap';
-import { formatCurrency } from 'functions/CurrencyFunctions'
-import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions'
+import { formatCurrency } from 'functions/CurrencyFunctions';
+import { isYearAndPeriodSearchValid } from 'functions/YearAndPeriodFunctions';
 import { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { userMessageState } from 'recoil/atoms/UserMessageState';
@@ -68,25 +67,38 @@ function Report() {
 
     if (loadState === "loaded") {
 
-        report =
-            <>
-                <Container>
+        report = <div>
+<div className='d-flex flex-row col-12 justify-content-center'>
+                <div className='d-flex flex-column col-1'>
+                                            
+                        </div>
+                        {
+                                      reportData.YearsAndPeriods.map(yearAndPeriod => (
+                                        <div className='d-flex flex-column col-1'>
+                                            <b>{
+                                            `${yearAndPeriod.Year.toString().padStart(4, '0')}.
+                                            ${yearAndPeriod.Period.toString().padStart(2, '0')}`
+                                            }</b>
+                                        </div>
+                                    ))
+                                }
+                                </div>                
+                    
                     {
                         reportData.Groups.map(group => (
-                            <div key={group.Id}>
-                                {
-                                    <>
-                                        <div style={{
-                                            borderBottom: "1px solid"
-                                        }}></div>
-
-                                        <Row key={group.Id} style={{ paddingTop: "10px" }}>
-                                            <Col className="tableCell text-center">
+                            <div style={{
+                                borderTop: "1px solid"
+                            }}>
+                            <div key={group.Id} className={`d-flex flex-row col-12 justify-content-center`}  style={{ paddingTop: "10px" }}>
+                                
+                                    
+                                        
+                                            <div className='d-flex flex-column col-1' >
                                                 <b>{group.Name}</b>
-                                            </Col>
+                                            </div>
                                             {
                                                 reportData.YearsAndPeriods.map(yearAndPeriod => (
-                                                    <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center">
+                                                    <div className="d-flex flex-column col-1" key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`}>
                                                         <b>
                                                             {formatCurrency(
                                                                 reportData.GroupTotals.filter(groupTotal =>
@@ -95,59 +107,66 @@ function Report() {
                                                                         && groupYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
                                                             }
                                                         </b>
-                                                    </Col>
+                                                        
+                                                        
+
+
+                                                    </div>
                                                 ))
                                             }
 
-                                        </Row>
+                                        
+                                
 
-                                        {
+
+
+                            </div>
+                            {
                                             reportData.Categories.filter(category => category.GroupId === group.GroupId).map(category =>
 
-                                                <Row key={category.Id}>
+                                                <div className='d-flex flex-row justify-content-center' key={category.Id}>
 
-                                                    <Col className="tableCell text-center">
+                                                    <div className='d-flex flex-column col-1'>
                                                         {category.Name}
-                                                    </Col>
+                                                    </div>
 
                                                     {
                                                         reportData.YearsAndPeriods.map(yearAndPeriod => (
-                                                            <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center">
+                                                            <div className='d-flex flex-column col-1' key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`}>
                                                                 {formatCurrency(
                                                                     reportData.CategoryTotals.filter(categoryTotal =>
                                                                         categoryTotal.CategoryId === category.Id)[0]?.YearAndPeriodTotals.filter(categoryYearAndPeriodTotal =>
                                                                             categoryYearAndPeriodTotal.YearAndPeriod.Year === yearAndPeriod.Year
                                                                             && categoryYearAndPeriodTotal.YearAndPeriod.Period === yearAndPeriod.Period)[0]?.YTDTotal)
                                                                 }
-                                                            </Col>
+                                                            </div>
                                                         ))
                                                     }
 
-                                                </Row>
+                                                </div>
 
                                             )
                                         }
-                                    </>
-                                }
                             </div>
+
+                            
                         ))
                     }
-                </Container>
-            </>
+                    </div>
+                    
+                
     }
 
     return (
-        <>
-            <Container>
-
+        <div>
+            
                 <ReportBanner reportLoadState={loadState} onRefresh={() => setDoRefresh(prevValue => !prevValue)} />
 
                 {spinner}
 
                 {report}
-
-            </Container>
-        </>
+    
+        </div>
     )
 }
 
