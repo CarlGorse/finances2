@@ -1,6 +1,6 @@
-import { range } from 'functions/ArrayFunctions'
 import NumberSelector from 'components/NumberSelector';
 import { yearStart } from 'consts/SystemConsts';
+import { range } from 'functions/ArrayFunctions';
 
 function YearSelector({ defaultValue, onSelect }) {
 
@@ -13,7 +13,7 @@ function YearSelector({ defaultValue, onSelect }) {
       startPadding={4}
     />
 
-  );
+    );
 }
 
 export default YearSelector;
