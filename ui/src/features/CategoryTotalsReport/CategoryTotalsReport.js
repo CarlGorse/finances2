@@ -9,6 +9,7 @@ import { userMessageState } from "recoil/atoms/UserMessageState";
 import { yearAndPeriodSearchState } from "recoil/atoms/YearAndPeriodSearchState";
 
 import Spinner from "components/FinancesSpinner";
+import Layout from "components/Layout";
 
 function Report() {
   const [doRefresh, setDoRefresh] = useState(false);
@@ -70,8 +71,8 @@ function Report() {
   if (loadState === "loaded") {
     report = (
       <div>
-        <div className="d-flex flex-row col-12 justify-content-center">
-          <div className="d-flex flex-column col-1"></div>
+        <div className="d-flex flex-row col-10 justify-content-center">
+          <div className="d-flex flex-column col-6"></div>
           {reportData.YearsAndPeriods.map((yearAndPeriod) => (
             <div className="d-flex flex-column col-1">
               <b>{`${yearAndPeriod.Year.toString().padStart(4, "0")}.
@@ -81,17 +82,13 @@ function Report() {
         </div>
 
         {reportData.Groups.map((group) => (
-          <div
-            style={{
-              borderTop: "1px solid",
-            }}
-          >
+          <div>
             <div
               key={group.Id}
-              className={`d-flex flex-row col-12 justify-content-center`}
-              style={{ paddingTop: "10px" }}
+              className={`d-flex flex-row col-10 justify-content-center`}
+              style={{ paddingTop: "10px", borderTop: "1px solid" }}
             >
-              <div className="d-flex flex-column col-1">
+              <div className="d-flex flex-column col-6">
                 <b>{group.Name}</b>
               </div>
               {reportData.YearsAndPeriods.map((yearAndPeriod) => (
@@ -119,10 +116,10 @@ function Report() {
               (category) => category.GroupId === group.GroupId,
             ).map((category) => (
               <div
-                className="d-flex flex-row justify-content-center"
+                className="d-flex flex-row justify-content-center col-10"
                 key={category.Id}
               >
-                <div className="d-flex flex-column col-1">{category.Name}</div>
+                <div className="d-flex flex-column col-6">{category.Name}</div>
 
                 {reportData.YearsAndPeriods.map((yearAndPeriod) => (
                   <div
@@ -152,7 +149,7 @@ function Report() {
   }
 
   return (
-    <div>
+    <Layout title="Category totals report">
       <ReportBanner
         reportLoadState={loadState}
         onRefresh={() => setDoRefresh((prevValue) => !prevValue)}
@@ -161,7 +158,7 @@ function Report() {
       {spinner}
 
       {report}
-    </div>
+    </Layout>
   );
 }
 
