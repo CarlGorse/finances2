@@ -1,8 +1,8 @@
-﻿using finances.api.Data.Models;
-using finances.api.Enums;
+﻿using finances2.api.Data.Models;
+using finances2.api.Enums;
 using System.Collections.Generic;
 
-namespace finances.api.Services {
+namespace finances2.api.Services {
 
     public class TransactionManagementService(
         IEditableItemManagementService<Transaction> itemManagementService

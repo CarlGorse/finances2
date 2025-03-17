@@ -15,6 +15,8 @@ function Report() {
   const [doRefresh, setDoRefresh] = useState(false);
   const [loadState, setLoadState] = useState("");
   const [reportData, setReportData] = useState(null);
+  const [valueCalculatorType, setValueCalculatorType] = useState(0);
+  const [totalCalculatorType, setTotalCalculatorType] = useState(1);
   const setUserMessage = useSetRecoilState(userMessageState);
   const yearAndPeriodSearch = useRecoilValue(yearAndPeriodSearchState);
 
@@ -29,10 +31,14 @@ function Report() {
       .post(
         apiBaseUrl + "/reportTotals/getCategoryTotals",
         {
-          StartYear: yearAndPeriodSearch.StartYear,
-          StartPeriod: yearAndPeriodSearch.StartPeriod,
-          EndYear: yearAndPeriodSearch.EndYear,
-          EndPeriod: yearAndPeriodSearch.EndPeriod,
+          yearAndPeriodSearch: {
+            StartYear: yearAndPeriodSearch.StartYear,
+            StartPeriod: yearAndPeriodSearch.StartPeriod,
+            EndYear: yearAndPeriodSearch.EndYear,
+            EndPeriod: yearAndPeriodSearch.EndPeriod,
+          },
+          valueCalculatorType: valueCalculatorType,
+          totalCalculatorType: totalCalculatorType,
         },
         {
           headers: {
@@ -51,7 +57,13 @@ function Report() {
           Variant: "danger",
         });
       });
-  }, [yearAndPeriodSearch, setUserMessage, doRefresh]);
+  }, [
+    yearAndPeriodSearch,
+    setUserMessage,
+    doRefresh,
+    valueCalculatorType,
+    totalCalculatorType,
+  ]);
 
   let report;
   let spinner;
@@ -106,7 +118,7 @@ function Report() {
                             yearAndPeriod.Year &&
                           groupYearAndPeriodTotal.YearAndPeriod.Period ===
                             yearAndPeriod.Period,
-                      )[0]?.YTDTotal,
+                      )[0]?.Total,
                     )}
                   </b>
                 </div>
@@ -136,7 +148,7 @@ function Report() {
                             yearAndPeriod.Year &&
                           categoryYearAndPeriodTotal.YearAndPeriod.Period ===
                             yearAndPeriod.Period,
-                      )[0]?.YTDTotal,
+                      )[0]?.Total,
                     )}
                   </div>
                 ))}
@@ -153,6 +165,8 @@ function Report() {
       <ReportBanner
         reportLoadState={loadState}
         onRefresh={() => setDoRefresh((prevValue) => !prevValue)}
+        onSelectValueCalculatorType={(e) => setValueCalculatorType(e)}
+        onSelectTotalCalculatorType={(e) => setTotalCalculatorType(e)}
       />
 
       {spinner}

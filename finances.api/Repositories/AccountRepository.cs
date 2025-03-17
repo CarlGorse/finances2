@@ -1,9 +1,9 @@
-﻿using finances.api.Data;
-using finances.api.Data.Models;
+﻿using finances2.api.Data;
+using finances2.api.Data.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances.api.Repositories {
+namespace finances2.api.Repositories {
 
     public class AccountRepository(IFinancesDbContext dbContext) : GettableItemRepository<Account>(), IAccountRepository {
 

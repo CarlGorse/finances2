@@ -1,14 +1,14 @@
-﻿using finances.api.Comparers;
-using finances.api.Data.Models;
-using finances.api.Dto;
-using finances.api.Enums;
-using finances.api.Logic;
-using finances.api.Repositories;
+﻿using finances2.api.Comparers;
+using finances2.api.Data.Models;
+using finances2.api.Dto;
+using finances2.api.Enums;
+using finances2.api.Logic;
+using finances2.api.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances.api.Services {
+namespace finances2.api.Services {
 
     public class TransactionGetter(
         IYearAndPeriodSearchValidationService searchCriteriaService,

@@ -1,11 +1,11 @@
-﻿using finances.api.Data;
-using finances.api.Data.Models;
-using finances.api.Logic;
+﻿using finances2.api.Data;
+using finances2.api.Data.Models;
+using finances2.api.Logic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Collections.Generic;
 
-namespace finances.api.Repositories {
+namespace finances2.api.Repositories {
 
     public class GroupRepository(IFinancesDbContext dbContext) : EditableItemRepository<Group>(
             dbContext.CategoryGroups,

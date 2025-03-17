@@ -1,9 +1,10 @@
-﻿using finances.api.Data.Models;
-using finances.api.Enums;
+﻿using finances2.api.Data.Models;
+using finances2.api.Dto.Services.CategoryTotalsReportCreator;
+using finances2.api.Enums;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances.api.Dto.ReportService {
+namespace finances.api.Dto.Services.CategoryTotalsReportCreator {
     public class CategoryTotalsReport {
         public IOrderedEnumerable<Category> Categories { get; set; }
         public ICollection<CategoryTotal> CategoryTotals { get; set; }

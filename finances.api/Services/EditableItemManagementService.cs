@@ -1,9 +1,9 @@
-﻿using finances.api.Enums;
-using finances.api.Repositories;
+﻿using finances2.api.Enums;
+using finances2.api.Repositories;
 using finanes.api.data.Models;
 using System.Collections.Generic;
 
-namespace finances.api.Services {
+namespace finances2.api.Services {
 
     public class EditableItemManagementService<T>(
         IEditableItemRepository<T> editableItemRepository

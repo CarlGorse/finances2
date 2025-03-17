@@ -1,8 +1,8 @@
-﻿using finances.api.Repositories;
+﻿using finances2.api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace finances.api.Controllers {
+namespace finances2.api.Controllers {
 
     public class CategoriesController(ICategoryRepository categoryRepository) : Controller {
 

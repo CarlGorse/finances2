@@ -1,13 +1,13 @@
-﻿using finances.api.Data.Models;
-using finances.api.Dto;
-using finances.api.Enums;
-using finances.api.Services;
+﻿using finances2.api.Data.Models;
+using finances2.api.Dto;
+using finances2.api.Enums;
+using finances2.api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace finances.api.Controllers {
+namespace finances2.api.Controllers {
 
     public class TransactionsController(
         ITransactionGetter transacrionGetter,

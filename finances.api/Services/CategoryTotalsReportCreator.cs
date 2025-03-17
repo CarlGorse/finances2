@@ -1,8 +1,13 @@
-﻿using finances.api.Data.Models;
-using finances.api.Dto;
-using finances.api.Dto.ReportService;
+﻿using finances.api.Delegates;
+using finances.api.Dto.Services.CategoryTotalsReportCreator;
 using finances.api.Enums;
-using finances.api.Repositories;
+using finances.api.Factories;
+using finances2.api.Data.Models;
+using finances2.api.Dto;
+using finances2.api.Dto.Services.CategoryTotalsReportCreator;
+using finances2.api.Enums;
+using finances2.api.Repositories;
+using finances2.api.Services;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -15,49 +20,51 @@ namespace finances.api.Services {
         IYearAndPeriodSearchValidationService searchCriteriaService,
         IYearAndPeriodService yearAndPeriodService,
         ITransactionRepository transactionsRepository,
-        ICategoryRepository categoryRepository) : ICategoryTotalsReportCreator {
+        ICategoryRepository categoryRepository,
+        ITransactionValueCalculatorFactory transactionValueCalculatorFactory,
+        ITransactionTotalTypeCalculatorFactory transactionTotalTypeFactory) : ICategoryTotalsReportCreator {
 
-        private readonly ICategoryRepository _categoryRepository = categoryRepository;
-        private readonly IGroupRepository _groupRepository = groupRepository;
-        private readonly IYearAndPeriodSearchValidationService _searchCriteriaService = searchCriteriaService;
-        private readonly IYearAndPeriodService _yearAndPeriodService = yearAndPeriodService;
-        private readonly ITransactionRepository _transactionsRepository = transactionsRepository;
-
-        public Dto.ReportService.CategoryTotalsReport Create(YearAndPeriodSearch searchCriteria) {
+        public CategoryTotalsReport Create(YearAndPeriodSearch searchCriteria,
+                                           TeasactionValueCalculatorTypes calculatorType,
+                                           TransactionTotalCalculatorTypes totalType) {
 
             List<string> errors = [];
 
-            _searchCriteriaService.Validate(searchCriteria, errors);
+            searchCriteriaService.Validate(searchCriteria, errors);
 
             if (errors.Count > 0) {
-                return new Dto.ReportService.CategoryTotalsReport {
+                return new CategoryTotalsReport {
                     Errors = errors,
                     ServiceResult = ServiceResult.Invalid
                 };
             }
 
-            var allYearsAndPeriods = _yearAndPeriodService.GetYearsAndPeriods(
+            var allYearsAndPeriods = yearAndPeriodService.GetYearsAndPeriods(
                 searchCriteria.StartYear,
                 searchCriteria.StartPeriod,
                 searchCriteria.EndYear,
                 searchCriteria.EndPeriod).ToList();
 
-            var categories = _categoryRepository.All().ToList();
+            var categories = categoryRepository.All().ToList();
 
-            var groups = _groupRepository.All().ToList();
+            var groups = groupRepository.All().ToList();
 
-            var transactions = _transactionsRepository.Get(searchCriteria.StartDate, searchCriteria.EndDate).ToList();
-            var allTransactions = _transactionsRepository.All().ToList();
+            var transactions = totalType == TransactionTotalCalculatorTypes.YearAndPeriod ?
+                transactionsRepository.Get(searchCriteria.StartDate, searchCriteria.EndDate).ToList() :
+                transactionsRepository.All().ToList();
 
-            var groupTotals = GetGroupTotals(categories, allYearsAndPeriods, transactions, allTransactions);
+            var valueCalculator = transactionValueCalculatorFactory.Create(calculatorType);
+            var transactionTotalTypeCalculator = transactionTotalTypeFactory.Create(totalType);
 
-            var categoryTotals = GetCategoryTotals(categories, allYearsAndPeriods, transactions, allTransactions);
+            var groupTotals = GetGroupTotals(categories, allYearsAndPeriods, transactions, valueCalculator, transactionTotalTypeCalculator);
 
-            var yearAndPeriodTotals = GetYearAndPeriodTotals(allYearsAndPeriods, transactions, allTransactions);
+            var categoryTotals = GetCategoryTotals(categories, allYearsAndPeriods, transactions, valueCalculator, transactionTotalTypeCalculator);
+
+            var yearAndPeriodTotals = GetYearAndPeriodTotals(allYearsAndPeriods, transactions, valueCalculator, transactionTotalTypeCalculator);
 
             var serviceResult = ServiceResult.Ok;
 
-            return new Dto.ReportService.CategoryTotalsReport {
+            return new CategoryTotalsReport {
                 Categories = categories.OrderBy(x => x.GroupDisplayOrder),
                 CategoryTotals = categoryTotals,
                 Groups = groups.OrderBy(x => x.DisplayOrder),
@@ -71,7 +78,9 @@ namespace finances.api.Services {
         private static List<GroupTotal> GetGroupTotals(IList<Category> categories,
                                                        IList<YearAndPeriod> yearsAndPeriods,
                                                        IList<Transaction> transactions,
-                                                       IList<Transaction> allTransactions) {
+                                                       TransactionValueCalculator valueCalculator,
+                                                       TransactionTotalTypeCalculator totalTypeCalculator
+            ) {
 
             return categories
                     .GroupBy(category => category.GroupId)
@@ -80,8 +89,7 @@ namespace finances.api.Services {
                         YearAndPeriodTotals = yearsAndPeriods
                                                 .Select(x => new YearAndPeriodTotal {
                                                     YearAndPeriod = x,
-                                                    Total = transactions.Where(z => z.Category.GroupId == groupByCategory.Key && z.EffDate.Year == x.Year && z.EffDate.Month == x.Period).Sum(t => t.Credit - t.Debit),
-                                                    YTDTotal = allTransactions.Where(z => z.Category.GroupId == groupByCategory.Key && (z.EffDate.Year < x.Year || (z.EffDate.Year == x.Year && (z.EffDate.Month <= x.Period)))).Sum(t => t.Credit - t.Debit)
+                                                    Total = transactions.Where(z => z.Category.GroupId == groupByCategory.Key && totalTypeCalculator(z, x)).Sum(t => valueCalculator(t)),
                                                 }).ToList()
                     }).ToList();
         }
@@ -89,7 +97,8 @@ namespace finances.api.Services {
         private static List<CategoryTotal> GetCategoryTotals(IList<Category> categories,
                                                              IList<YearAndPeriod> yearsAndPeriods,
                                                              IList<Transaction> transactions,
-                                                             IList<Transaction> allTransactions) {
+                                                             TransactionValueCalculator valueCalculator,
+                                                             TransactionTotalTypeCalculator totalTypeCalculator) {
 
             return categories
                     .GroupBy(category => category.CategoryId)
@@ -98,22 +107,21 @@ namespace finances.api.Services {
                         YearAndPeriodTotals = yearsAndPeriods
                                                 .Select(x => new YearAndPeriodTotal {
                                                     YearAndPeriod = x,
-                                                    Total = transactions.Where(z => z.CategoryId == groupByCategory.Key && z.EffDate.Year == x.Year && z.EffDate.Month == x.Period).Sum(t => t.Credit - t.Debit),
-                                                    YTDTotal = allTransactions.Where(z => z.CategoryId == groupByCategory.Key && (z.EffDate.Year < x.Year || (z.EffDate.Year == x.Year && (z.EffDate.Month <= x.Period)))).Sum(t => t.Credit - t.Debit)
+                                                    Total = transactions.Where(z => z.CategoryId == groupByCategory.Key && totalTypeCalculator(z, x)).Sum(t => valueCalculator(t)),
                                                 }).ToList()
                     }).ToList();
         }
 
         private static List<YearAndPeriodTotal> GetYearAndPeriodTotals(IList<YearAndPeriod> yearsAndPeriods,
                                                                        IList<Transaction> transactions,
-                                                                       IList<Transaction> allTransactions) {
+                                                                       TransactionValueCalculator valueCalculator,
+                                                                        TransactionTotalTypeCalculator totalTypeCalculator) {
 
             return yearsAndPeriods
                     .GroupBy(yearAndPeriod => new { yearAndPeriod.Year, yearAndPeriod.Period })
                     .Select(groupByYearAndPeriod => new YearAndPeriodTotal {
                         YearAndPeriod = new YearAndPeriod(groupByYearAndPeriod.Key.Year, groupByYearAndPeriod.Key.Period),
-                        Total = transactions.Where(z => z.EffDate.Year == groupByYearAndPeriod.Key.Year && z.EffDate.Month == groupByYearAndPeriod.Key.Period).Sum(t => t.Credit - t.Debit),
-                        YTDTotal = allTransactions.Where(z => z.EffDate.Year < groupByYearAndPeriod.Key.Year || (z.EffDate.Year == groupByYearAndPeriod.Key.Year && (z.EffDate.Month <= groupByYearAndPeriod.Key.Period))).Sum(t => t.Credit - t.Debit)
+                        Total = transactions.Where(z => totalTypeCalculator(z, new YearAndPeriod(groupByYearAndPeriod.Key.Year, groupByYearAndPeriod.Key.Period))).Sum(t => valueCalculator(t))
                     }).ToList();
         }
     }

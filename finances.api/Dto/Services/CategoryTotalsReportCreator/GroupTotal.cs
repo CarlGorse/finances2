@@ -1,8 +1,9 @@
-﻿using System;
+﻿using finances.api.Dto.Services.CategoryTotalsReportCreator;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances.api.Dto.ReportService {
+namespace finances2.api.Dto.Services.CategoryTotalsReportCreator {
 
     public class GroupTotal {
 
@@ -11,7 +12,7 @@ namespace finances.api.Dto.ReportService {
         public ICollection<YearAndPeriodTotal> YearAndPeriodTotals { get; set; }
 
         public override bool Equals(object obj) {
-            return (obj is GroupTotal groupTotal)
+            return obj is GroupTotal groupTotal
                 && GroupId.Equals(groupTotal.GroupId)
                 && YearAndPeriodTotals != null
                 && YearAndPeriodTotals.SequenceEqual(groupTotal.YearAndPeriodTotals);

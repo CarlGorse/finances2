@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace finances.api.Dto {
+namespace finances2.api.Dto {
 
     public class YearAndPeriodSearch {
 

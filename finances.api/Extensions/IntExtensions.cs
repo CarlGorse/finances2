@@ -1,4 +1,4 @@
-﻿namespace finances.api.Extensions {
+﻿namespace finances2.api.Extensions {
 
     public static class IntExtensions {
 

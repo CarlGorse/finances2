@@ -1,4 +1,4 @@
-﻿namespace finances.api.Logic {
+﻿namespace finances2.api.Logic {
 
     public class ValidationResultFalse(string context, string message) : IValidationResult {
 

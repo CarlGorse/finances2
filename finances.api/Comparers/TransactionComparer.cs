@@ -1,7 +1,7 @@
-﻿using finances.api.Data.Models;
+﻿using finances2.api.Data.Models;
 using System.Collections.Generic;
 
-namespace finances.api.Comparers {
+namespace finances2.api.Comparers {
     public class TransactionComparer : IComparer<Transaction> {
 
         public int Compare(Transaction x, Transaction y) {

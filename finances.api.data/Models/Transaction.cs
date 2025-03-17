@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace finances.api.Data.Models {
+namespace finances2.api.Data.Models {
 
     [Table("Transactions", Schema = "finances2")]
     public partial class Transaction {

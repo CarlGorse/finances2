@@ -1,11 +1,11 @@
-﻿using finances.api.Data;
-using finances.api.Data.Models;
-using finances.api.Dto;
-using finances.api.Enums;
-using finances.api.Repositories;
+﻿using finances2.api.Data;
+using finances2.api.Data.Models;
+using finances2.api.Dto;
+using finances2.api.Enums;
+using finances2.api.Repositories;
 using System.Collections.Generic;
 
-namespace finances.api.Services {
+namespace finances2.api.Services {
 
     public class TransactionWageMover(
         IFinancesDbContext dbContext,

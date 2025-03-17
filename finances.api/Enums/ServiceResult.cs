@@ -1,4 +1,4 @@
-﻿namespace finances.api.Enums {
+﻿namespace finances2.api.Enums {
 
     public enum ServiceResult {
         Ok,

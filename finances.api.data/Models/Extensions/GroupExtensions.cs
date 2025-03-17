@@ -1,7 +1,7 @@
 ﻿using finanes.api.data.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace finances.api.Data.Models {
+namespace finances2.api.Data.Models {
 
     public partial class Group : IEditableItem<Group> {
 

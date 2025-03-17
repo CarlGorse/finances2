@@ -1,8 +1,8 @@
-﻿using finances.api.Data.Models;
+﻿using finances2.api.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace finances.api.Data {
+namespace finances2.api.Data {
 
     public interface IFinancesDbContext {
         DbSet<Account> Accounts { get; set; }

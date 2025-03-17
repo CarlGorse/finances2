@@ -1,8 +1,10 @@
-using finances.api.data.nosql;
-using finances.api.Data;
-using finances.api.Data.Models;
-using finances.api.Repositories;
+using finances.api.Factories;
 using finances.api.Services;
+using finances2.api.data.nosql;
+using finances2.api.Data;
+using finances2.api.Data.Models;
+using finances2.api.Repositories;
+using finances2.api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -34,6 +36,8 @@ builder.Services.AddScoped<ITransactionGetter, TransactionGetter>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionManagementService, TransactionManagementService>();
 builder.Services.AddScoped<ITransactionWageMover, TransactionWageMover>();
+builder.Services.AddScoped<ITransactionTotalTypeCalculatorFactory, TransactionTotalTypeCalculatorFactory>();
+builder.Services.AddScoped<ITransactionValueCalculatorFactory, TransactionValueCalculatorFactory>();
 builder.Services.AddScoped<IYearAndPeriodService, YearAndPeriodService>();
 
 builder.Services.AddCors(options => {

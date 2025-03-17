@@ -1,8 +1,8 @@
-﻿using finances.api.Enums;
+﻿using finances2.api.Enums;
 using finanes.api.data.Models;
 using System.Collections.Generic;
 
-namespace finances.api.Repositories {
+namespace finances2.api.Repositories {
 
     public interface IEditableItemRepository<T> : IGettableItemRepository<T> where T : class, IEditableItem<T>, IGettableItem<T> {
 

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace finances.api.Functions {
+namespace finances2.api.Functions {
 
     public static class StringFunctions {
 

@@ -1,7 +1,7 @@
-﻿using finances.api.Repositories;
+﻿using finances2.api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace finances.api.Controllers {
+namespace finances2.api.Controllers {
 
     public class BankAccountsController(IAccountRepository bankAccountRepository) : Controller {
 

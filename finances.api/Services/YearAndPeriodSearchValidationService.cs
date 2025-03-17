@@ -1,7 +1,7 @@
-﻿using finances.api.Dto;
+﻿using finances2.api.Dto;
 using System.Collections.Generic;
 
-namespace finances.api.Services {
+namespace finances2.api.Services {
 
     public class YearAndPeriodSearchValidationService() : IYearAndPeriodSearchValidationService {
 

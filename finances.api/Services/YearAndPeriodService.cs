@@ -1,7 +1,7 @@
-﻿using finances.api.Data.Models;
+﻿using finances2.api.Data.Models;
 using System.Collections.Generic;
 
-namespace finances.api.Services {
+namespace finances2.api.Services {
 
     public class YearAndPeriodService() : IYearAndPeriodService {
 

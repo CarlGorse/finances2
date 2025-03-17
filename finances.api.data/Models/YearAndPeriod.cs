@@ -1,4 +1,4 @@
-﻿namespace finances.api.Data.Models {
+﻿namespace finances2.api.Data.Models {
 
     public partial class YearAndPeriod(int year, int period) {
 

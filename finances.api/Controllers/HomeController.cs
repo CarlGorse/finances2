@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace finances.api.Controllers {
+namespace finances2.api.Controllers {
     public class HomeController : Controller {
 
         [HttpGet]

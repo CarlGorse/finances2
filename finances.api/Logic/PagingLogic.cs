@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances.api.Logic {
+namespace finances2.api.Logic {
     public static class PagingLogic {
 
         public static int GetPageCount(int itemCount, int pageSize) {

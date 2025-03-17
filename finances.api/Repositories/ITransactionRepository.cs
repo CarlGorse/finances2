@@ -1,10 +1,10 @@
-﻿using finances.api.Data.Models;
-using finances.api.Dto;
+﻿using finances2.api.Data.Models;
+using finances2.api.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances.api.Repositories {
+namespace finances2.api.Repositories {
 
     public interface ITransactionRepository : IEditableItemRepository<Transaction> {
         IQueryable<Transaction> Get(DateOnly startDate, DateOnly endDate);

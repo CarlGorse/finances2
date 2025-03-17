@@ -1,8 +1,8 @@
-﻿using finances.api.Logic;
+﻿using finances2.api.Logic;
 using System;
 using System.Linq;
 
-namespace finances.api.Functions {
+namespace finances2.api.Functions {
 
     public static class DecimalFunctions {
 

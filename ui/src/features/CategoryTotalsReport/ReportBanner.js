@@ -1,61 +1,82 @@
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import NumberSelector from 'components/NumberSelector';
-import { range } from 'functions/ArrayFunctions'
-import { useState } from 'react';
-import YearAndPeriodSelector from './YearAndPeriodSelector'
+import PeriodsToShowSelector from "./ReportBanner/PeriodsToShowSelector";
+import TotalCalculatorTypeSelector from "./ReportBanner/TotalCalculatorTypeSelector";
+import ValueCalculatorTypeSelector from "./ReportBanner/ValueCalculatorTypeSelector";
+import YearAndPeriodSelector from "./ReportBanner/YearAndPeriodSelector";
+import { useState } from "react";
+import { Button, Col, Container, Row } from "react-bootstrap";
 
-function ReportBanner({ reportLoadState, onRefresh }) {
+function ReportBanner({
+  reportLoadState,
+  onRefresh,
+  onSelectValueCalculatorType,
+  onSelectTotalCalculatorType,
+}) {
+  const reportData = useState(null);
+  const [reportPeriods, setReportPeriods] = useState(6);
 
-    const reportData = useState(null)
-    const [reportPeriods, setReportPeriods] = useState(6);
+  let refreshButton;
 
-    let refreshButton
+  if (reportLoadState === "loaded") {
+    refreshButton = (
+      <Button
+        size="md"
+        style={{ marginTop: "20px" }}
+        onClick={() => onRefresh((prevValue) => !prevValue)}
+      >
+        Refresh
+      </Button>
+    );
+  }
 
-    if (reportLoadState === "loaded") {
+  return (
+    <Container
+      style={{
+        position: "sticky",
+        top: "3em",
+        backgroundColor: "white",
+        zIndex: "1",
+        paddingTop: "1em",
+      }}
+    >
+      <YearAndPeriodSelector reportPeriods={reportPeriods} />
 
-        refreshButton = <Button
-            size="md"
-            style={{ marginTop: "20px" }} onClick={() => onRefresh(prevValue => !prevValue)}>
-            Refresh
-        </Button>
-    }
+      <div className="mt-1">
+        <PeriodsToShowSelector
+          onSelect={(selectedValue) => setReportPeriods(selectedValue)}
+        />
+      </div>
 
-    return (
+      <div className="mt-1">
+        <ValueCalculatorTypeSelector
+          onSelect={(selection) => onSelectValueCalculatorType(selection)}
+        />
+      </div>
 
-        <Container style={{ position: "sticky", top: "3em", backgroundColor: "white", zIndex: "1", paddingTop: "1em" }}>
-            <YearAndPeriodSelector reportPeriods={reportPeriods} />
+      <div className="mt-1">
+        <TotalCalculatorTypeSelector
+          onSelect={(selection) => onSelectTotalCalculatorType(selection)}
+        />
+      </div>
 
-            <Row className="mt-3">
-                <Col xs={1}>Periods to show:</Col>
-                <Col>
-                    <NumberSelector
-                        defaultValue={6}
-                        onSelect={selectedValue => setReportPeriods(selectedValue)}
-                        values={range(1, 6)}
-                        startPadding={1}
-                    />
-                </Col>
-            </Row>
+      {refreshButton}
 
-            {refreshButton}
-
-            <Container className="pt-3 pb-3">
-
-                <Row>
-                    <Col />
-                    {
-                        reportData?.YearsAndPeriods?.map(yearAndPeriod => (
-
-                            <Col key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`} className="tableCell text-center" >
-                                <b>{yearAndPeriod.Year}.{yearAndPeriod.Period}</b>
-                            </Col>
-                        ))
-                    }
-                </Row>
-
-            </Container>
-        </Container>
-    )
+      <Container className="pt-3 pb-3">
+        <Row>
+          <Col />
+          {reportData?.YearsAndPeriods?.map((yearAndPeriod) => (
+            <Col
+              key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`}
+              className="tableCell text-center"
+            >
+              <b>
+                {yearAndPeriod.Year}.{yearAndPeriod.Period}
+              </b>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </Container>
+  );
 }
 
 export default ReportBanner;

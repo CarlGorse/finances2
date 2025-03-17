@@ -1,16 +1,15 @@
-﻿using finances.api.Data.Models;
+﻿using finances2.api.Data.Models;
 
-namespace finances.api.Dto.ReportService {
+namespace finances.api.Dto.Services.CategoryTotalsReportCreator {
 
     public class YearAndPeriodTotal {
 
         public YearAndPeriod YearAndPeriod { get; set; }
 
         public decimal Total { get; set; }
-        public decimal YTDTotal { get; set; }
 
         public override bool Equals(object other) {
-            return (other is YearAndPeriodTotal yearAndPeriod)
+            return other is YearAndPeriodTotal yearAndPeriod
                     && YearAndPeriod.Equals(yearAndPeriod.YearAndPeriod)
                     && Total.Equals(yearAndPeriod.Total);
         }

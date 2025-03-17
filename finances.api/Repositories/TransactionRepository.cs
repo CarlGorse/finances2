@@ -1,14 +1,14 @@
-﻿using finances.api.Data;
-using finances.api.Data.Models;
-using finances.api.Dto;
-using finances.api.Functions;
-using finances.api.Logic;
+﻿using finances2.api.Data;
+using finances2.api.Data.Models;
+using finances2.api.Dto;
+using finances2.api.Functions;
+using finances2.api.Logic;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances.api.Repositories {
+namespace finances2.api.Repositories {
 
     public class TransactionRepository(
         IFinancesDbContext dbContext,

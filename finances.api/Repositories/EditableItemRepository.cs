@@ -1,12 +1,12 @@
-﻿using finances.api.Data;
-using finances.api.Enums;
-using finances.api.Logic;
+﻿using finances2.api.Data;
+using finances2.api.Enums;
+using finances2.api.Logic;
 using finanes.api.data.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances.api.Repositories {
+namespace finances2.api.Repositories {
 
     public abstract class EditableItemRepository<T>(
         DbSet<T> dbSet,

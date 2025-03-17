@@ -1,6 +1,7 @@
-﻿using finances.api.Dto;
-using finances.api.Enums;
+﻿using finances.api.Enums;
 using finances.api.Services;
+using finances2.api.Dto;
+using finances2.api.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -10,9 +11,9 @@ namespace finances.api.Controllers {
     public class ReportTotalsController(ICategoryTotalsReportCreator categoryTotalsReportCreator) : Controller {
 
         [HttpPost]
-        public IActionResult GetCategoryTotals([FromBody] YearAndPeriodSearch yearAndPeriodSearch) {
+        public IActionResult GetCategoryTotals([FromBody] GetCategoryTotalsParams @params) {
 
-            var report = categoryTotalsReportCreator.Create(yearAndPeriodSearch);
+            var report = categoryTotalsReportCreator.Create(@params.YearAndPeriodSearch, @params.ValueCalculatorType, @params.TotalCalculatorType);
 
             return ReturnActionForServiceResult(
                 report.ServiceResult,
@@ -30,6 +31,12 @@ namespace finances.api.Controllers {
                     JsonSerializer.Serialize(failurePayload)),
                 _ => Ok(successPayload)
             };
+        }
+
+        public class GetCategoryTotalsParams {
+            public YearAndPeriodSearch YearAndPeriodSearch { get; set; }
+            public TeasactionValueCalculatorTypes ValueCalculatorType { get; set; } = TeasactionValueCalculatorTypes.Total;
+            public TransactionTotalCalculatorTypes TotalCalculatorType { get; set; } = (TransactionTotalCalculatorTypes)TeasactionValueCalculatorTypes.Total;
         }
     }
 }
