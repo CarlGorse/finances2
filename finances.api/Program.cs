@@ -41,6 +41,9 @@ builder.Services.AddCors(options => {
     options.AddPolicy(name: policyName,
                       builder => builder
                             .WithOrigins("http://localhost:3000")
+                            .WithOrigins("http://localhost:3001")
+                            .WithOrigins("http://localhost:3002")
+                            .WithOrigins("http://localhost:3003")
                             .WithOrigins("https://white-meadow-02c7d4703.6.azurestaticapps.net")
                             .AllowAnyHeader()
                             .AllowAnyMethod());
@@ -57,18 +60,18 @@ var isIntegrationTest = false;
 
 if (builder.Environment.IsDevelopment() && false) {
     if (isIntegrationTest) {
-        builder.Services.AddDbContext<AppDbContext>(
+        _ = builder.Services.AddDbContext<AppDbContext>(
             options => options.UseInMemoryDatabase("App", new InMemoryDatabaseRoot())
             );
     }
     else {
-        builder.Services.AddDbContext<AppDbContext>(
+        _ = builder.Services.AddDbContext<AppDbContext>(
             options => options.UseInMemoryDatabase("App")
             );
     }
 }
 else {
-    builder.Services.AddDbContext<AppDbContext>(
+    _ = builder.Services.AddDbContext<AppDbContext>(
         options => options.UseSqlServer(configuration.GetConnectionString("Finances"))
     );
 

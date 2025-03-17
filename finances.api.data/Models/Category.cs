@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace finances.api.Data.Models {
 
+    [Table("Categories", Schema = "finances2")]
     public partial class Category {
 
         [Key]

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace finances.api.Data.Models {
 
-    [Table("CategoryGroups")]
+    [Table("CategoryGroups", Schema = "finances2")]
     public partial class Group {
 
         [Key]
