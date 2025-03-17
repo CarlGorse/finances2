@@ -10,12 +10,12 @@ using System.Linq.Dynamic.Core;
 
 namespace finances.api.Services {
 
-    public class ReportService(
+    public class CategoryTotalsReportCreator(
         IGroupRepository groupRepository,
         IYearAndPeriodSearchValidationService searchCriteriaService,
         IYearAndPeriodService yearAndPeriodService,
         ITransactionRepository transactionsRepository,
-        ICategoryRepository categoryRepository) : IReportService {
+        ICategoryRepository categoryRepository) : ICategoryTotalsReportCreator {
 
         private readonly ICategoryRepository _categoryRepository = categoryRepository;
         private readonly IGroupRepository _groupRepository = groupRepository;
@@ -23,14 +23,14 @@ namespace finances.api.Services {
         private readonly IYearAndPeriodService _yearAndPeriodService = yearAndPeriodService;
         private readonly ITransactionRepository _transactionsRepository = transactionsRepository;
 
-        public CategoryTotalsReport GetCategoryTotalsReport(YearAndPeriodSearch searchCriteria) {
+        public Dto.ReportService.CategoryTotalsReport Create(YearAndPeriodSearch searchCriteria) {
 
             List<string> errors = [];
 
             _searchCriteriaService.Validate(searchCriteria, errors);
 
             if (errors.Count > 0) {
-                return new CategoryTotalsReport {
+                return new Dto.ReportService.CategoryTotalsReport {
                     Errors = errors,
                     ServiceResult = ServiceResult.Invalid
                 };
@@ -57,7 +57,7 @@ namespace finances.api.Services {
 
             var serviceResult = ServiceResult.Ok;
 
-            return new CategoryTotalsReport {
+            return new Dto.ReportService.CategoryTotalsReport {
                 Categories = categories.OrderBy(x => x.GroupDisplayOrder),
                 CategoryTotals = categoryTotals,
                 Groups = groups.OrderBy(x => x.DisplayOrder),
@@ -96,7 +96,7 @@ namespace finances.api.Services {
                     .Select(groupByCategory => new CategoryTotal {
                         CategoryId = groupByCategory.Key,
                         YearAndPeriodTotals = yearsAndPeriods
-                                                .Select(x => new YearAndPeriodTotal { 
+                                                .Select(x => new YearAndPeriodTotal {
                                                     YearAndPeriod = x,
                                                     Total = transactions.Where(z => z.CategoryId == groupByCategory.Key && z.EffDate.Year == x.Year && z.EffDate.Month == x.Period).Sum(t => t.Credit - t.Debit),
                                                     YTDTotal = allTransactions.Where(z => z.CategoryId == groupByCategory.Key && (z.EffDate.Year < x.Year || (z.EffDate.Year == x.Year && (z.EffDate.Month <= x.Period)))).Sum(t => t.Credit - t.Debit)
@@ -109,7 +109,7 @@ namespace finances.api.Services {
                                                                        IList<Transaction> allTransactions) {
 
             return yearsAndPeriods
-                    .GroupBy(yearAndPeriod => new { yearAndPeriod.Year, yearAndPeriod.Period})
+                    .GroupBy(yearAndPeriod => new { yearAndPeriod.Year, yearAndPeriod.Period })
                     .Select(groupByYearAndPeriod => new YearAndPeriodTotal {
                         YearAndPeriod = new YearAndPeriod(groupByYearAndPeriod.Key.Year, groupByYearAndPeriod.Key.Period),
                         Total = transactions.Where(z => z.EffDate.Year == groupByYearAndPeriod.Key.Year && z.EffDate.Month == groupByYearAndPeriod.Key.Period).Sum(t => t.Credit - t.Debit),

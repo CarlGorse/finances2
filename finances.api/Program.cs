@@ -28,7 +28,7 @@ builder.Services.AddScoped<IEditableItemRepository<Category>, CategoryRepository
 builder.Services.AddScoped<IEditableItemRepository<Group>, GroupRepository>();
 builder.Services.AddScoped<IEditableItemRepository<Transaction>, TransactionRepository>();
 builder.Services.AddScoped<IFinancesDbContext, AppDbContext>();
-builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<ICategoryTotalsReportCreator, CategoryTotalsReportCreator>();
 builder.Services.AddScoped<IYearAndPeriodSearchValidationService, YearAndPeriodSearchValidationService>();
 builder.Services.AddScoped<ITransactionGetter, TransactionGetter>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
@@ -58,24 +58,17 @@ var configuration = new ConfigurationBuilder()
 
 var isIntegrationTest = false;
 
-if (builder.Environment.IsDevelopment() && false) {
-    if (isIntegrationTest) {
-        _ = builder.Services.AddDbContext<AppDbContext>(
+_ = builder.Environment.IsDevelopment() && false
+    ? isIntegrationTest
+        ? builder.Services.AddDbContext<AppDbContext>(
             options => options.UseInMemoryDatabase("App", new InMemoryDatabaseRoot())
-            );
-    }
-    else {
-        _ = builder.Services.AddDbContext<AppDbContext>(
+            )
+        : builder.Services.AddDbContext<AppDbContext>(
             options => options.UseInMemoryDatabase("App")
-            );
-    }
-}
-else {
-    _ = builder.Services.AddDbContext<AppDbContext>(
+            )
+    : builder.Services.AddDbContext<AppDbContext>(
         options => options.UseSqlServer(configuration.GetConnectionString("Finances"))
     );
-
-}
 
 builder.Services.Configure<JsonSerializerSettings>(options => options.ContractResolver = new DefaultContractResolver {
     NamingStrategy = new CamelCaseNamingStrategy()

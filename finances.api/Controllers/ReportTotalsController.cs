@@ -7,14 +7,12 @@ using System.Text.Json;
 
 namespace finances.api.Controllers {
 
-    public class ReportTotalsController(IReportService reportService) : Controller {
-
-        private readonly IReportService _reportService = reportService;
+    public class ReportTotalsController(ICategoryTotalsReportCreator categoryTotalsReportCreator) : Controller {
 
         [HttpPost]
         public IActionResult GetCategoryTotals([FromBody] YearAndPeriodSearch yearAndPeriodSearch) {
 
-            var report = _reportService.GetCategoryTotalsReport(yearAndPeriodSearch);
+            var report = categoryTotalsReportCreator.Create(yearAndPeriodSearch);
 
             return ReturnActionForServiceResult(
                 report.ServiceResult,
