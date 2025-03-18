@@ -1,60 +1,57 @@
+import OperationButtons from "./OperationButtons";
+import PagingButtons from "./PagingButtons";
+import SearchCriteria from "./SearchCriteria";
+import SearchSidebar from "./SearchSidebar";
+import OperationSidebar from "features/TransactionViewer/OperationsSidebar/OperationsSidebar";
+import { useEffect, useState } from "react";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { transactionOperationState } from "recoil/atoms/TransactionOperationState";
+import { yearAndPeriodSearchState } from "recoil/atoms/YearAndPeriodSearchState";
+import YearAndPeriodSearch from "types/YearAndPeriodSearch";
 
-import OperationButtons from './OperationButtons';
-import OperationSidebar from 'features/TransactionViewer/OperationsSidebar/OperationsSidebar'
-import PagingButtons from './PagingButtons'
-import SearchCriteria from './SearchCriteria'
-import SearchSidebar from './SearchSidebar'
-import UserMessage from 'components/UserMessage'
-import YearAndPeriodSearch from 'types/YearAndPeriodSearch'
-
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { useEffect, useState } from 'react'
-import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchState';
+import UserMessage from "components/UserMessage";
 
 export default function TransactionBanner() {
-
   const [showOperationsSidebar, setShowOperationsSidebar] = useState(false);
   const [showSearchSidebar, setShowSearchSidebar] = useState(false);
   const transactionOperation = useRecoilValue(transactionOperationState);
 
-  const setYearAndPeriodSearch = useSetRecoilState<YearAndPeriodSearch>(yearAndPeriodSearchState);
+  const setYearAndPeriodSearch = useSetRecoilState<YearAndPeriodSearch>(
+    yearAndPeriodSearchState,
+  );
 
   useEffect(() => {
-
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth() + 1;
     let currentYear = currentDate.getFullYear();
-
     setYearAndPeriodSearch({
       StartPeriod: currentMonth,
       StartYear: currentYear,
       EndPeriod: currentMonth,
-      EndYear: currentYear
+      EndYear: currentYear,
     });
-
-  }, [setYearAndPeriodSearch])
+  }, [setYearAndPeriodSearch]);
 
   useEffect(() => {
     if (transactionOperation) {
       setShowOperationsSidebar(true);
-    }
-    else {
+    } else {
       setShowOperationsSidebar(false);
     }
-  }, [transactionOperation])
+  }, [transactionOperation]);
 
   return (
     <>
-
       <SearchSidebar show={showSearchSidebar} setShow={setShowSearchSidebar} />
 
-      <OperationSidebar show={showOperationsSidebar} setShow={setShowOperationsSidebar} />
+      <OperationSidebar
+        show={showOperationsSidebar}
+        setShow={setShowOperationsSidebar}
+      />
 
       <Container>
         <Row>
-
           <div className="mt-3">
             <UserMessage />
           </div>
@@ -64,21 +61,19 @@ export default function TransactionBanner() {
           <PagingButtons />
 
           <Col xs="4">
-
             <Button
               size="sm"
-              onClick={() => setShowSearchSidebar(!showSearchSidebar)
-              }>
+              onClick={() => setShowSearchSidebar(!showSearchSidebar)}
+            >
               Search
             </Button>
 
-            <OperationButtons setShowOperationsSidebar={setShowOperationsSidebar} />
-
+            <OperationButtons
+              setShowOperationsSidebar={setShowOperationsSidebar}
+            />
           </Col>
-
         </Row>
-      </Container >
-
+      </Container>
     </>
   );
 }
