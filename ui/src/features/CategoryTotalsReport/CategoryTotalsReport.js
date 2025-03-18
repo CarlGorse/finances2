@@ -87,8 +87,7 @@ function Report() {
           <div className="d-flex flex-column col-6"></div>
           {reportData.YearsAndPeriods.map((yearAndPeriod) => (
             <div className="d-flex flex-column col-1">
-              <b>{`${yearAndPeriod.Year.toString().padStart(4, "0")}.
-                                            ${yearAndPeriod.Period.toString().padStart(2, "0")}`}</b>
+              <b>{`${yearAndPeriod.Year.toString().padStart(4, "0")}.${yearAndPeriod.Period.toString().padStart(2, "0")}`}</b>
             </div>
           ))}
         </div>
