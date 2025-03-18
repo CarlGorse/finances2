@@ -43,3 +43,5 @@ jobs:
           api_location: ${{ env.API_LOCATION }}
           app_artifact_location: ${{ env.APP_ARTIFACT_LOCATION }}
           ###### End of Repository/Build Configurations ######
+        env: 
+          REACT_APP_API_BASE_URL: https://app-finances2-api-prod-uks-001-abbkc9g6eyfjgqfp.uksouth-01.azurewebsites.net/api
