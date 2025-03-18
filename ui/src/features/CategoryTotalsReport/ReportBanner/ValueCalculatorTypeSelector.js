@@ -8,9 +8,9 @@ export default function ValueCalculatorTypeSelector({ onSelect }) {
   ];
 
   return (
-    <div className="d-flex col-5">
+    <div className="d-flex col-6">
       <div className="d-flex col-3">Value type:</div>
-      <div className="d-flex col-3">
+      <div className="d-flex col-2">
         <Form.Select onChange={(e) => onSelect(e.target.value)}>
           {options?.map((option) => (
             <option value={option.value}>{option.label}</option>
