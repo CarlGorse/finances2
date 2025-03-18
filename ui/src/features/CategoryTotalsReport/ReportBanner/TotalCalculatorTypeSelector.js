@@ -7,7 +7,7 @@ export default function TotalCalculatorTypeSelector({ onSelect }) {
   ];
 
   return (
-    <div className="d-flex col-6">
+    <div className="d-flex col-5">
       <div className="d-flex col-3">Total type:</div>
       <div className="d-flex col-3">
         <Form.Select
