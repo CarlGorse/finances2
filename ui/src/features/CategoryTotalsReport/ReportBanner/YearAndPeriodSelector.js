@@ -15,7 +15,8 @@ function YearAndPeriodSelector({ reportPeriods }) {
   const [selectedYearAndPeriod, setSelectedYearAndPeriod] = useRecoilState(
     yearAndPeriodSearchState,
   );
-  const [yearAndPeriodCount, setYearAndPeriodCount] = useState(2024 * 12 + 4);
+
+  const [yearAndPeriodCount, setYearAndPeriodCount] = useState();
 
   useEffect(() => {
     setYearAndPeriodCount(getYearAndPeriodCountFromDate(new Date()));
@@ -24,6 +25,7 @@ function YearAndPeriodSelector({ reportPeriods }) {
   useEffect(() => {
     let startYearAndPeriod =
       getYearsAndPeriodsFromPeriodCount(yearAndPeriodCount);
+
     let endYearAndPeriod = getYearsAndPeriodsFromPeriodCount(
       yearAndPeriodCount + (reportPeriods - 1),
     );
