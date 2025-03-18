@@ -10,7 +10,10 @@ export default function TotalCalculatorTypeSelector({ onSelect }) {
     <div className="d-flex col-6">
       <div className="d-flex col-3">Total type:</div>
       <div className="d-flex col-3">
-        <Form.Select onChange={(e) => onSelect(e.target.value)}>
+        <Form.Select
+          defaultValue={1}
+          onChange={(e) => onSelect(e.target.value)}
+        >
           {options?.map((option) => (
             <option value={option.value}>{option.label}</option>
           ))}

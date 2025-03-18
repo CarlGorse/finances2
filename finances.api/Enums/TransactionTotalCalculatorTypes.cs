@@ -1,6 +1,6 @@
 ﻿namespace finances.api.Enums {
     public enum TransactionTotalCalculatorTypes {
-        YearAndPeriod,
-        YTD
+        YearAndPeriod = 0,
+        YTD = 1
     }
 }
