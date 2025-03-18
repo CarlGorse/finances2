@@ -1,6 +1,5 @@
 import ReportBanner from "./ReportBanner";
 import axios from "axios";
-import { apiBaseUrl } from "consts/ApiConsts";
 import { formatCurrency } from "functions/CurrencyFunctions";
 import { isYearAndPeriodSearchValid } from "functions/YearAndPeriodFunctions";
 import { useEffect, useState } from "react";
@@ -29,7 +28,7 @@ function Report() {
 
     axios
       .post(
-        apiBaseUrl + "/reportTotals/getCategoryTotals",
+        process.env.REACT_APP_API_BASE_URL + "/reportTotals/getCategoryTotals",
         {
           yearAndPeriodSearch: {
             StartYear: yearAndPeriodSearch.StartYear,

@@ -1,16 +1,13 @@
-import axios from 'axios';
-
-import { apiBaseUrl } from 'consts/ApiConsts';
-import { dateToLoadTransactionsState } from 'recoil/atoms/DateToLoadTransactionsState';
-import { loadedTransactionsState } from 'recoil/atoms/LoadedTransactionsState';
-import { selectedBankAccountState } from 'recoil/atoms/SelectedBankAccountState';
-import { transactionsPageDataState } from 'recoil/atoms/TransactionsPageDataState';
-import { useEffect, useRef, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { yearAndPeriodSearchState } from 'recoil/atoms/YearAndPeriodSearchState';
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactionsState";
+import { loadedTransactionsState } from "recoil/atoms/LoadedTransactionsState";
+import { selectedBankAccountState } from "recoil/atoms/SelectedBankAccountState";
+import { transactionsPageDataState } from "recoil/atoms/TransactionsPageDataState";
+import { yearAndPeriodSearchState } from "recoil/atoms/YearAndPeriodSearchState";
 
 function useLoadTransactions() {
-
   const pageCount = useRef(null);
 
   const dateToLoadTransactions = useRecoilValue(dateToLoadTransactionsState);
@@ -20,10 +17,10 @@ function useLoadTransactions() {
   const setLoadedTransactions = useSetRecoilState(loadedTransactionsState);
 
   const transactionsPageData = useRecoilValue(transactionsPageDataState);
-  const [transactionLoadingProgress, setTransactionLoadingProgress] = useState("");
+  const [transactionLoadingProgress, setTransactionLoadingProgress] =
+    useState("");
 
   useEffect(() => {
-
     let requestBody = getRequestBody();
 
     if (!isRequestBodyValid(requestBody)) {
@@ -32,40 +29,37 @@ function useLoadTransactions() {
 
     setTransactionLoadingProgress("loading");
 
-    let requestUrl = apiBaseUrl + "/transactions/get";
+    let requestUrl = process.env.REACT_APP_API_BASE_URL + "/transactions/get";
     let headers = { "Content-Type": "application/json" };
 
-    axios.post(
-      requestUrl,
-      requestBody, {
-      headers
-    })
-      .then(response => {
-        onSuccesfulRequest(response)
+    axios
+      .post(requestUrl, requestBody, {
+        headers,
+      })
+      .then((response) => {
+        onSuccesfulRequest(response);
       })
       .catch(function () {
         pageCount.current = 0;
-      })
+      });
   }, [
     dateToLoadTransactions,
     selectedBankAccount,
     transactionsPageData,
-    yearAndPeriodSearch
-  ])
+    yearAndPeriodSearch,
+  ]);
 
   function onSuccesfulRequest(response) {
-
     setLoadedTransactions({
       pageCount: response.data.pageCount,
       transactions: response.data.transactions,
-      totalTransactions: response.data.totalTransactions
+      totalTransactions: response.data.totalTransactions,
     });
 
     setTransactionLoadingProgress("loaded");
   }
 
   function getRequestBody() {
-
     let model = {
       AccountId: selectedBankAccount.AccountId,
       YearAndPeriodSearch: {
@@ -77,14 +71,13 @@ function useLoadTransactions() {
       PageNo: transactionsPageData.PageNo,
       PageSize: transactionsPageData.PageSize,
       IncludeRunningTotals: true,
-      IncludeWageTotals: true
-    }
+      IncludeWageTotals: true,
+    };
 
     return model;
   }
 
   function isRequestBodyValid(model) {
-
     if (!model) {
       return false;
     }
@@ -97,7 +90,10 @@ function useLoadTransactions() {
       return false;
     }
 
-    if (!(dateToLoadTransactions instanceof Date) || isNaN(dateToLoadTransactions.valueOf())) {
+    if (
+      !(dateToLoadTransactions instanceof Date) ||
+      isNaN(dateToLoadTransactions.valueOf())
+    ) {
       return false;
     }
 

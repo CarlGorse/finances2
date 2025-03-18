@@ -1,98 +1,95 @@
-import axios from 'axios';
-import SaveAndCancelButtons from './SaveAndCancelButtons';
-import useClearSelectedTransactions from 'hooks/useClearSelectedTransactions';
+import SaveAndCancelButtons from "./SaveAndCancelButtons";
+import axios from "axios";
+import { Col, Row, Table } from "react-bootstrap";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactionsState";
+import { selectedTransactionsState } from "recoil/atoms/SelectedTransactionsState";
+import { transactionOperationState } from "recoil/atoms/TransactionOperationState";
+import { userMessageState } from "recoil/atoms/UserMessageState";
 
-import { apiBaseUrl } from 'consts/ApiConsts';
-import { Col, Row } from 'react-bootstrap';
-import { dateToLoadTransactionsState } from 'recoil/atoms/DateToLoadTransactionsState';
-import { selectedTransactionsState } from 'recoil/atoms/SelectedTransactionsState';
-import { Table } from 'react-bootstrap';
-import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { userMessageState } from 'recoil/atoms/UserMessageState';
+import useClearSelectedTransactions from "hooks/useClearSelectedTransactions";
 
 function Delete({ handleClose }) {
+  const selectedTransactions = useRecoilValue(selectedTransactionsState);
 
-    const selectedTransactions = useRecoilValue(selectedTransactionsState);
+  const clearSelectedTransactions = useClearSelectedTransactions();
+  const setDateToLoadTransactions = useSetRecoilState(
+    dateToLoadTransactionsState,
+  );
+  const setTransactionOperation = useSetRecoilState(transactionOperationState);
+  const setUserMessage = useSetRecoilState(userMessageState);
 
-    const clearSelectedTransactions = useClearSelectedTransactions();
-    const setDateToLoadTransactions = useSetRecoilState(dateToLoadTransactionsState);
-    const setTransactionOperation = useSetRecoilState(transactionOperationState);
-    const setUserMessage = useSetRecoilState(userMessageState);
+  function Delete() {
+    axios
+      .post(
+        process.env.REACT_APP_API_BASE_URL + "/transactions/delete",
+        selectedTransactions.map((x) => x.TransactionId),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      )
+      .then(function () {
+        clearSelectedTransactions();
+        setDateToLoadTransactions(new Date());
 
-    function Delete() {
+        setUserMessage({
+          Message: `Transaction${selectedTransactions.length === 1 ? "" : "s"} deleted.`,
+          Variant: "success",
+        });
 
-        axios.post(
-            apiBaseUrl + "/transactions/delete",
-            selectedTransactions.map(x => x.TransactionId),
-            {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        )
-            .then(function () {
-                clearSelectedTransactions();
-                setDateToLoadTransactions(new Date());
+        setTransactionOperation(null);
+      })
+      .catch(function (error) {
+        setUserMessage({
+          Message: error.response.data.validationErrors[0],
+          Variant: "danger",
+        });
+      });
+  }
 
-                setUserMessage({
-                    Message: `Transaction${selectedTransactions.length === 1 ? '' : 's'} deleted.`,
-                    Variant: "success"
-                })
+  return (
+    <>
+      <span>
+        {`Do you wish to delete ${selectedTransactions.length === 1 ? "this transaction" : `these transactions`}?`}
+      </span>
 
-                setTransactionOperation(null)
-            })
-            .catch(function (error) {
-                setUserMessage({
-                    Message: error.response.data.validationErrors[0],
-                    Variant: "danger"
-                })
-            })
-    }
+      <div style={{ paddingTop: "10px" }} />
 
-    return (
-        <>
-            <span>
-                {`Do you wish to delete ${selectedTransactions.length === 1 ? 'this transaction' : `these transactions`}?`}
-            </span>
+      <Table className="table-bordered">
+        <div style={{ paddingTop: "10px" }}>
+          <Row>
+            <Col xs={4}>
+              <b>Date</b>
+            </Col>
+            <Col xs={4}>
+              <b>Value</b>
+            </Col>
+          </Row>
+        </div>
 
-            <div style={{ paddingTop: "10px" }} />
+        {selectedTransactions.map((transaction, index) => (
+          <Row>
+            <Col className="tableCell" xs={4}>
+              {transaction.EffDate}
+            </Col>
+            <Col className="tableCell" xs={4}>
+              {transaction.Credit > 0 ? transaction.Credit : transaction.Debit}
+            </Col>
+          </Row>
+        ))}
+      </Table>
 
-            <Table className="table-bordered">
-
-                <div style={{ paddingTop: "10px" }}>
-                    <Row>
-                        <Col xs={4}>
-                            <b>Date</b>
-                        </Col>
-                        <Col xs={4}>
-                            <b>Value</b>
-                        </Col>
-                    </Row>
-                </div>
-
-                {selectedTransactions.map((transaction, index) => (
-                    <Row>
-                        <Col className="tableCell" xs={4}>
-                            {transaction.EffDate}
-                        </Col>
-                        <Col className="tableCell" xs={4}>
-                            {transaction.Credit > 0 ? transaction.Credit : transaction.Debit}
-                        </Col>
-                    </Row>
-                ))}
-            </Table>
-
-            <SaveAndCancelButtons
-                save={() => Delete()}
-                saveButtonText="Yes"
-                cancelButtonText="Cancel"
-                handleClose={handleClose}
-                saveButtonEnabled={selectedTransactions.length > 0}
-            />
-
-        </>
-    );
+      <SaveAndCancelButtons
+        save={() => Delete()}
+        saveButtonText="Yes"
+        cancelButtonText="Cancel"
+        handleClose={handleClose}
+        saveButtonEnabled={selectedTransactions.length > 0}
+      />
+    </>
+  );
 }
 
 export default Delete;

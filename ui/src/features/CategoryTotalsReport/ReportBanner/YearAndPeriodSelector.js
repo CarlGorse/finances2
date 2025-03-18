@@ -19,7 +19,13 @@ function YearAndPeriodSelector({ reportPeriods }) {
   const [yearAndPeriodCount, setYearAndPeriodCount] = useState();
 
   useEffect(() => {
-    setYearAndPeriodCount(getYearAndPeriodCountFromDate(new Date()));
+    let currentDate = new Date();
+    let currentDateMinusTwoMonths = new Date(
+      currentDate.setMonth(currentDate.getMonth() - 2),
+    );
+    setYearAndPeriodCount(
+      getYearAndPeriodCountFromDate(currentDateMinusTwoMonths),
+    );
   }, []);
 
   useEffect(() => {
