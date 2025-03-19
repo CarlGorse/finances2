@@ -1,6 +1,6 @@
-﻿using finances.api.Enums;
+﻿using finances.api.CategoryTotalsReport.Dto;
+using finances.api.CategoryTotalsReport.Enums;
 using finances.api.Services;
-using finances2.api.Dto;
 using finances2.api.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,9 +34,9 @@ namespace finances.api.Controllers {
         }
 
         public class GetCategoryTotalsParams {
-            public YearAndPeriodSearch YearAndPeriodSearch { get; set; }
-            public TeasactionValueCalculatorTypes ValueCalculatorType { get; set; } = TeasactionValueCalculatorTypes.Total;
-            public TransactionTotalCalculatorTypes TotalCalculatorType { get; set; } = (TransactionTotalCalculatorTypes)TeasactionValueCalculatorTypes.Total;
+            public YearAndPeriodSearchDTO YearAndPeriodSearch { get; set; }
+            public TeasactionValueCalculationTypes ValueCalculatorType { get; set; } = TeasactionValueCalculationTypes.Total;
+            public TransactionTotalCalculatorTypes TotalCalculatorType { get; set; } = (TransactionTotalCalculatorTypes)TeasactionValueCalculationTypes.Total;
         }
     }
 }

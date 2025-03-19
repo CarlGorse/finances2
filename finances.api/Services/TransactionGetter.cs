@@ -1,14 +1,15 @@
-﻿using finances2.api.Comparers;
+﻿using finances.api.CategoryTotalsReport.Dto;
+using finances2.api.Comparers;
 using finances2.api.Data.Models;
-using finances2.api.Dto;
 using finances2.api.Enums;
 using finances2.api.Logic;
 using finances2.api.Repositories;
+using finances2.api.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances2.api.Services {
+namespace finances.api.Services {
 
     public class TransactionGetter(
         IYearAndPeriodSearchValidationService searchCriteriaService,
@@ -19,7 +20,7 @@ namespace finances2.api.Services {
         private readonly ITransactionRepository _transactionRepository = transactionRepository;
         private readonly IYearAndPeriodService _yearAndPeriodService = yearAndPeriodService;
 
-        public TransactionSearchResult Get(GetTransactionsParams parms) {
+        public TransactionSearchResultDTO Get(GetTransactionsParamsDTO parms) {
 
             List<string> errors = [];
             var pageCount = 0;
@@ -82,7 +83,7 @@ namespace finances2.api.Services {
                 errors.Add(ex.Message);
             }
 
-            return new TransactionSearchResult {
+            return new TransactionSearchResultDTO {
                 PageCount = pageCount,
                 Result = serviceResult,
                 Transactions = pagedTransactions,
@@ -104,7 +105,7 @@ namespace finances2.api.Services {
             }
         }//
 
-        private void SetRunningTotals(IList<Transaction> transactionsOrdered, int accountId, YearAndPeriodSearch yearAndPeriodSearch) {
+        private void SetRunningTotals(IList<Transaction> transactionsOrdered, int accountId, YearAndPeriodSearchDTO yearAndPeriodSearch) {
 
             if (transactionsOrdered.Count == 0) {
                 return;

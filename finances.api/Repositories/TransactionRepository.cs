@@ -1,6 +1,6 @@
-﻿using finances2.api.Data;
+﻿using finances.api.CategoryTotalsReport.Dto;
+using finances2.api.Data;
 using finances2.api.Data.Models;
-using finances2.api.Dto;
 using finances2.api.Functions;
 using finances2.api.Logic;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +28,7 @@ namespace finances2.api.Repositories {
                     .Include(x => x.Account);
         }
 
-        public ICollection<Transaction> Get(int accountId, YearAndPeriodSearch yearAndPeriodSearch) {
+        public ICollection<Transaction> Get(int accountId, YearAndPeriodSearchDTO yearAndPeriodSearch) {
             return ItemsQuery().Where(x =>
                         x.AccountId == accountId
                         && (x.EffDate.Year > yearAndPeriodSearch.StartYear || (x.EffDate.Year == yearAndPeriodSearch.StartYear && (x.EffDate.Month >= yearAndPeriodSearch.StartPeriod)))

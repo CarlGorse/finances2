@@ -2,12 +2,12 @@
 using finances2.api.Enums;
 using System.Collections.Generic;
 
-namespace finances2.api.Dto {
-    public class TransactionSearchResult {
+namespace finances.api.CategoryTotalsReport.Dto {
+    public class TransactionSearchResultDTO {
         public ICollection<string> Errors = [];
         public int PageCount;
         public ServiceResult Result;
-        public YearAndPeriodSearch SearchCriteria;
+        public YearAndPeriodSearchDTO SearchCriteria;
         public int TotalTransaxtions;
         public IEnumerable<Transaction> Transactions;
     }

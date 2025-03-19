@@ -1,7 +1,7 @@
-﻿using finances2.api.Data.Models;
-using finances2.api.Dto;
+﻿using finances.api.CategoryTotalsReport.Dto;
+using finances.api.Services.Interfaces;
+using finances2.api.Data.Models;
 using finances2.api.Enums;
-using finances2.api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace finances2.api.Controllers {
         private readonly ITransactionWageMover _transacrionWageMover = transactionWageMover;
 
         [HttpPost]
-        public IActionResult Get([FromBody] GetTransactionsParams @params) {
+        public IActionResult Get([FromBody] GetTransactionsParamsDTO @params) {
 
             var result = transacrionGetter.Get(@params);
 
@@ -63,7 +63,7 @@ namespace finances2.api.Controllers {
         }
 
         [HttpPost]
-        public IActionResult MoveWages([FromBody] MoveWagesModel model) {
+        public IActionResult MoveWages([FromBody] MoveWagesDTO model) {
 
             var result = _transacrionWageMover.MoveWages(
                 model,

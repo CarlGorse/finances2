@@ -1,4 +1,4 @@
-using finances.api.Factories;
+using finances.api.CategoryTotalsReport.Factories;
 using finances.api.Services;
 using finances2.api.data.nosql;
 using finances2.api.Data;

@@ -1,6 +1,7 @@
-﻿using finances2.api.Data;
+﻿using finances.api.CategoryTotalsReport.Dto;
+using finances.api.Services.Interfaces;
+using finances2.api.Data;
 using finances2.api.Data.Models;
-using finances2.api.Dto;
 using finances2.api.Enums;
 using finances2.api.Repositories;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace finances2.api.Services {
         private readonly ITransactionRepository _transactionRepository = transactionRepository;
 
         public ServiceResult MoveWages(
-            MoveWagesModel model,
+            MoveWagesDTO model,
             out ICollection<string> validationErrors,
             out Transaction transactionFrom,
             out Transaction transactionTo) {

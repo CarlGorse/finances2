@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace finances2.api.Dto {
+namespace finances.api.CategoryTotalsReport.Dto {
 
-    public class YearAndPeriodSearch {
+    public class YearAndPeriodSearchDTO {
 
         public int StartYear { get; set; }
         public int StartPeriod { get; set; }

@@ -1,18 +1,17 @@
-﻿using finances.api.Dto.Services.CategoryTotalsReportCreator;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances2.api.Dto.Services.CategoryTotalsReportCreator {
+namespace finances.api.CategoryTotalsReport.Dto.CategoryTotalsReport {
 
-    public class CategoryTotal {
+    public class CategoryTotalDTO {
 
         public int CategoryId { get; set; }
 
-        public ICollection<YearAndPeriodTotal> YearAndPeriodTotals { get; set; }
+        public ICollection<YearAndPeriodTotalDTO> YearAndPeriodTotals { get; set; }
 
         public override bool Equals(object obj) {
-            return obj is CategoryTotal categoryTotal
+            return obj is CategoryTotalDTO categoryTotal
                 && CategoryId.Equals(categoryTotal.CategoryId)
                 && YearAndPeriodTotals != null
                 && YearAndPeriodTotals.SequenceEqual(categoryTotal.YearAndPeriodTotals);
