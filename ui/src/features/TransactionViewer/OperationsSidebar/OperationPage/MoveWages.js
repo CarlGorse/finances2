@@ -1,5 +1,6 @@
 import SaveAndCancelButtons from "./SaveAndCancelButtons";
 import axios from "axios";
+import { getValidOperations } from "features/TransactionViewer/Utilities";
 import {
   formatCurrency,
   isValidCurrency,
@@ -7,19 +8,23 @@ import {
 } from "functions/CurrencyFunctions";
 import { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactionsState";
 import { selectedTransactionsState } from "recoil/atoms/SelectedTransactionsState";
+import { transactionOperationState } from "recoil/atoms/TransactionOperationState";
 import { userMessageState } from "recoil/atoms/UserMessageState";
 
 function MoveWages({ handleClose }) {
+  const transactionOperation = useRecoilValue(transactionOperationState);
+  const [selectedTransactions, setSelectedTransactions] = useRecoilState(
+    selectedTransactionsState,
+  );
+
   const [creditToMove, setCreditToMove] = useState(0);
   const setDateToLoadTransactions = useSetRecoilState(
     dateToLoadTransactionsState,
   );
-  const [selectedTransactions, setSelectedTransactions] = useRecoilState(
-    selectedTransactionsState,
-  );
+
   const setUserMessage = useSetRecoilState(userMessageState);
 
   function Save() {
@@ -97,6 +102,12 @@ function MoveWages({ handleClose }) {
     setUserMessage(null);
 
     setCreditToMove(credit);
+  }
+
+  let validOperations = getValidOperations(selectedTransactions);
+
+  if (!validOperations.includes(transactionOperation)) {
+    return;
   }
 
   const transactionToMoveFrom = selectedTransactions[0];

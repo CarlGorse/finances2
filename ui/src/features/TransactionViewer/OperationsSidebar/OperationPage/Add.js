@@ -7,23 +7,35 @@ import IsWage from "./AddEdit/IsWage";
 import Item from "./AddEdit/Item";
 import SaveAndCancelButtons from "./SaveAndCancelButtons";
 import axios from "axios";
+import { getValidOperations } from "features/TransactionViewer/Utilities";
 import { stringToCurrency } from "functions/CurrencyFunctions";
 import { getDateAsYYYYMMDD } from "functions/DateFunctions";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactionsState";
 import { selectedBankAccountState } from "recoil/atoms/SelectedBankAccountState";
 import { selectedTransactionsState } from "recoil/atoms/SelectedTransactionsState";
+import { transactionOperationState } from "recoil/atoms/TransactionOperationState";
 import { userMessageState } from "recoil/atoms/UserMessageState";
 import { isValid } from "utilities/TransactionValidator";
 
-function AddEdit({ handleClose }) {
+function Add({ handleClose }) {
   const selectedBankAccount = useRecoilValue(selectedBankAccountState);
-  const setSelectedTransactions = useSetRecoilState(selectedTransactionsState);
+
+  const transactionOperation = useRecoilValue(transactionOperationState);
+  const [selectedTransactions, setSelectedTransactions] = useRecoilState(
+    selectedTransactionsState,
+  );
 
   const setDateToLoadTransactions = useSetRecoilState(
     dateToLoadTransactionsState,
   );
   const setUserMessage = useSetRecoilState(userMessageState);
+
+  let validOperations = getValidOperations(selectedTransactions);
+
+  if (!validOperations.includes(transactionOperation)) {
+    return;
+  }
 
   return (
     <>
@@ -99,4 +111,4 @@ function AddEdit({ handleClose }) {
   }
 }
 
-export default AddEdit;
+export default Add;

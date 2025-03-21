@@ -21,8 +21,6 @@ function TransactionList() {
 
   let transactionLoadingProgress = useLoadTransactions();
 
-  console.log(loadedTransactions);
-
   return transactionLoadingProgress === "loading" ? (
     <Spinner />
   ) : (

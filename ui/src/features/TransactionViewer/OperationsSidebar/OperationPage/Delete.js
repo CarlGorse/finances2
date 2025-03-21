@@ -1,5 +1,6 @@
 import SaveAndCancelButtons from "./SaveAndCancelButtons";
 import axios from "axios";
+import { getValidOperations } from "features/TransactionViewer/Utilities";
 import { Col, Row, Table } from "react-bootstrap";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactionsState";
@@ -18,6 +19,7 @@ function Delete({ handleClose }) {
   );
   const setTransactionOperation = useSetRecoilState(transactionOperationState);
   const setUserMessage = useSetRecoilState(userMessageState);
+  const transactionOperation = useRecoilValue(transactionOperationState);
 
   function Delete() {
     axios
@@ -47,6 +49,12 @@ function Delete({ handleClose }) {
           Variant: "danger",
         });
       });
+  }
+
+  let validOperations = getValidOperations(selectedTransactions);
+
+  if (!validOperations.includes(transactionOperation)) {
+    return;
   }
 
   return (

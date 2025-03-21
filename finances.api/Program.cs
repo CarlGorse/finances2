@@ -45,12 +45,9 @@ builder.Services.AddScoped<IYearAndPeriodUtiltities, YearAndPeriodUtilities>();
 builder.Services.AddCors(options => {
     var policyName = "MyAllowedOrigins";
     options.AddPolicy(name: policyName,
-                      builder => builder
-                            .WithOrigins("http://localhost:3000")
-                            .WithOrigins("http://localhost:3001")
-                            .WithOrigins("http://localhost:3002")
-                            .WithOrigins("http://localhost:3003")
-                            .WithOrigins("https://white-meadow-02c7d4703.6.azurestaticapps.net")
+                      builder => builder.SetIsOriginAllowed(origin =>
+                                new Uri(origin).Host is "localhost" or
+                                "white-meadow-02c7d4703.6.azurestaticapps.net") // should be more secure, e.g. factor in ASPNETCORE_ENVIRONMENT
                             .AllowAnyHeader()
                             .AllowAnyMethod());
 });

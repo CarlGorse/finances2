@@ -1,5 +1,6 @@
 import TransactionBanner from "./TransactionBanner/TransactionBanner";
 import TransactionList from "./TransactionList/TransactionList";
+import { getValidOperations } from "./Utilities";
 import axios from "axios";
 import { sortCategories } from "functions/CategoryFunctions";
 import { useEffect } from "react";
@@ -39,7 +40,7 @@ export default function TransactionViewer() {
   }, []);
 
   useEffect(() => {
-    let validOperations = getValidOperations();
+    let validOperations = getValidOperations(selectedTransactions);
     setValidTransactionOperations(validOperations);
 
     if (!validOperations.includes(transactionOperation)) {
@@ -88,31 +89,4 @@ export default function TransactionViewer() {
       </Container>
     </>
   );
-
-  function getValidOperations() {
-    let validOperations = [];
-
-    validOperations.push("Add");
-    validOperations.push("Delete");
-
-    if (selectedTransactions?.length > 0) {
-      switch (selectedTransactions.length) {
-        case 1:
-          validOperations.push("Edit");
-          break;
-        case 2:
-          if (
-            selectedTransactions.filter((x) => x.IsWage === true).length ===
-              2 &&
-            selectedTransactions[0].EffDate === selectedTransactions[1].EffDate
-          ) {
-            validOperations.push("Move wages");
-          }
-          break;
-        default:
-          break;
-      }
-    }
-    return validOperations;
-  }
 }
