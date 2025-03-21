@@ -2,9 +2,9 @@
 using finances2.api.Data.Models;
 using System.Collections.Generic;
 
-namespace finances2.api.Services {
+namespace finances.api.Services {
 
-    public class YearAndPeriodService() : IYearAndPeriodService {
+    public class YearAndPeriodUtilities() : IYearAndPeriodUtiltities {
 
         public IEnumerable<YearAndPeriod> GetYearsAndPeriods(
             int startYear, int startPeriod, int endYear, int endPeriod) {
@@ -16,7 +16,7 @@ namespace finances2.api.Services {
 
             for (var periodCount = periodCountAtStart; periodCount <= periodCountAtEnd; periodCount++) {
                 var year = (int)System.Math.Floor((decimal)(periodCount - 1) / 12);
-                var period = periodCount - (year * 12);
+                var period = periodCount - year * 12;
                 yearsAndPeriods.Add(new YearAndPeriod(year, period));
             }
 
@@ -24,7 +24,7 @@ namespace finances2.api.Services {
         }
 
         private static int GetPeriodCount(int year, int period) {
-            return (year * 12) + period;
+            return year * 12 + period;
         }
 
         public YearAndPeriod GetPreviousYearAndPeriod(YearAndPeriod yearAndPeriod) {

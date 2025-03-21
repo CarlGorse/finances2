@@ -2,7 +2,7 @@
 using finances.api.CategoryTotalsReport.Enums;
 
 namespace finances.api.CategoryTotalsReport.Factories {
-    public interface ITransactionTotalTypeCalculatorFactory {
-        TransactionTotalTypeCalculator Create(TransactionTotalCalculatorTypes type);
+    public interface ITransactionFilterFactory {
+        TransactionFilter Create(TransactionFilterTypes filterType);
     }
 }

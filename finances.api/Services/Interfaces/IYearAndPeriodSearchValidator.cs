@@ -1,8 +1,8 @@
 ﻿using finances.api.CategoryTotalsReport.Dto;
 using System.Collections.Generic;
 
-namespace finances2.api.Services {
-    public interface IYearAndPeriodSearchValidationService {
+namespace finances.api.Services.Interfaces {
+    public interface IYearAndPeriodSearchValidator {
         void Validate(YearAndPeriodSearchDTO yearAndPeriodSearch, ICollection<string> validationErrors);
     }
 }

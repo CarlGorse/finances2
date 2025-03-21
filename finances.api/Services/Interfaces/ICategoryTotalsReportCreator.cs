@@ -2,9 +2,9 @@
 using finances.api.CategoryTotalsReport.Dto.CategoryTotalsReport;
 using finances.api.CategoryTotalsReport.Enums;
 
-namespace finances.api.Services {
+namespace finances.api.Services.Interfaces {
 
     public interface ICategoryTotalsReportCreator {
-        CategoryTotalsReportDTO Create(YearAndPeriodSearchDTO searchCriteria, TeasactionValueCalculationTypes calculatorType, TransactionTotalCalculatorTypes totalType);
+        CategoryTotalsReportDTO Create(YearAndPeriodSearchDTO searchCriteria, TeasactionValueCalculationTypes calculatorType, TransactionFilterTypes totalType);
     }
 }

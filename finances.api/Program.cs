@@ -1,5 +1,6 @@
 using finances.api.CategoryTotalsReport.Factories;
 using finances.api.Services;
+using finances.api.Services.Interfaces;
 using finances2.api.data.nosql;
 using finances2.api.Data;
 using finances2.api.Data.Models;
@@ -31,14 +32,14 @@ builder.Services.AddScoped<IEditableItemRepository<Group>, GroupRepository>();
 builder.Services.AddScoped<IEditableItemRepository<Transaction>, TransactionRepository>();
 builder.Services.AddScoped<IFinancesDbContext, AppDbContext>();
 builder.Services.AddScoped<ICategoryTotalsReportCreator, CategoryTotalsReportCreator>();
-builder.Services.AddScoped<IYearAndPeriodSearchValidationService, YearAndPeriodSearchValidationService>();
+builder.Services.AddScoped<IYearAndPeriodSearchValidator, YearAndPeriodSearchValidator>();
 builder.Services.AddScoped<ITransactionGetter, TransactionGetter>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionManagementService, TransactionManagementService>();
 builder.Services.AddScoped<ITransactionWageMover, TransactionWageMover>();
-builder.Services.AddScoped<ITransactionTotalTypeCalculatorFactory, TransactionTotalTypeCalculatorFactory>();
-builder.Services.AddScoped<ITransactionValueCalculatorFactory, TransactionValueCalculatorFactory>();
-builder.Services.AddScoped<IYearAndPeriodService, YearAndPeriodService>();
+builder.Services.AddScoped<ITransactionFilterFactory, TransactionFilterFactory>();
+builder.Services.AddScoped<ITransactionValueCalculaionFactory, TransactionValueCalculationFactory>();
+builder.Services.AddScoped<IYearAndPeriodUtiltities, YearAndPeriodUtilities>();
 
 builder.Services.AddCors(options => {
     var policyName = "MyAllowedOrigins";

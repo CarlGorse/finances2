@@ -1,10 +1,10 @@
 ﻿using finances.api.CategoryTotalsReport.Dto;
+using finances.api.Services.Interfaces;
 using finances2.api.Comparers;
 using finances2.api.Data.Models;
 using finances2.api.Enums;
 using finances2.api.Logic;
 using finances2.api.Repositories;
-using finances2.api.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +12,13 @@ using System.Linq;
 namespace finances.api.Services {
 
     public class TransactionGetter(
-        IYearAndPeriodSearchValidationService searchCriteriaService,
+        IYearAndPeriodSearchValidator searchCriteriaService,
         ITransactionRepository transactionRepository,
-        IYearAndPeriodService yearAndPeriodService) : ITransactionGetter {
+        IYearAndPeriodUtiltities yearAndPeriodService) : ITransactionGetter {
 
-        private readonly IYearAndPeriodSearchValidationService _searchCriteriaService = searchCriteriaService;
+        private readonly IYearAndPeriodSearchValidator _searchCriteriaService = searchCriteriaService;
         private readonly ITransactionRepository _transactionRepository = transactionRepository;
-        private readonly IYearAndPeriodService _yearAndPeriodService = yearAndPeriodService;
+        private readonly IYearAndPeriodUtiltities _yearAndPeriodService = yearAndPeriodService;
 
         public TransactionSearchResultDTO Get(GetTransactionsParamsDTO parms) {
 
