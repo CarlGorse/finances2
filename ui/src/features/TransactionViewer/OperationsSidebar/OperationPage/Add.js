@@ -12,10 +12,12 @@ import { getDateAsYYYYMMDD } from "functions/DateFunctions";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactionsState";
 import { selectedBankAccountState } from "recoil/atoms/SelectedBankAccountState";
+import { selectedTransactionsState } from "recoil/atoms/SelectedTransactionsState";
 import { userMessageState } from "recoil/atoms/UserMessageState";
 
 function AddEdit({ handleClose }) {
   const selectedBankAccount = useRecoilValue(selectedBankAccountState);
+  const setSelectedTransactions = useSetRecoilState(selectedTransactionsState);
 
   const setDateToLoadTransactions = useSetRecoilState(
     dateToLoadTransactionsState,
@@ -65,7 +67,8 @@ function AddEdit({ handleClose }) {
           "Content-Type": "application/json",
         },
       )
-      .then(function () {
+      .then((response) => {
+        setSelectedTransactions([response.data.transaction]);
         onSuccesfulRequest();
       })
       .catch(function (error) {
