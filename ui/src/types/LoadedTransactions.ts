@@ -1,7 +1,8 @@
-import Transaction from 'types/Transaction'
+import Transaction from "types/Transaction";
 
 export default interface LoadedTransactions {
-    pageCount: number,
-    transactions: Transaction[],
-    totalTransactions: number
+  PageCount: number;
+  PageSize: number;
+  Transactions: Transaction[];
+  TotalTransactions: number;
 }

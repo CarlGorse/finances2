@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances2.api.Logic {
+namespace finances.api.Logic {
     public static class PagingLogic {
 
         public static int GetPageCount(int itemCount, int pageSize) {
 
-            if (itemCount < 0) {
-                throw new InvalidOperationException("Item count must not be negative.");
-            }
-
-            if (pageSize <= 0) {
-                throw new InvalidOperationException("Page size must be greater than zero.");
+            if (itemCount <= 0 || pageSize <= 0) {
+                return 1;
             }
 
             return (int)Math.Ceiling((decimal)(Math.Max(itemCount - 1, 0) / pageSize)) + 1;

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactionsState";
 import { loadedTransactionsState } from "recoil/atoms/LoadedTransactionsState";
 import { selectedBankAccountState } from "recoil/atoms/SelectedBankAccountState";
@@ -16,7 +16,9 @@ function useLoadTransactions() {
 
   const setLoadedTransactions = useSetRecoilState(loadedTransactionsState);
 
-  const transactionsPageData = useRecoilValue(transactionsPageDataState);
+  const [transactionsPageData, setTransactionsPageData] = useRecoilState(
+    transactionsPageDataState,
+  );
   const [transactionLoadingProgress, setTransactionLoadingProgress] =
     useState("");
 
@@ -50,12 +52,7 @@ function useLoadTransactions() {
   ]);
 
   function onSuccesfulRequest(response) {
-    setLoadedTransactions({
-      pageCount: response.data.pageCount,
-      transactions: response.data.transactions,
-      totalTransactions: response.data.totalTransactions,
-    });
-
+    setLoadedTransactions(response.data);
     setTransactionLoadingProgress("loaded");
   }
 
@@ -83,10 +80,6 @@ function useLoadTransactions() {
     }
 
     if (!model.AccountId) {
-      return false;
-    }
-
-    if (!model.PageSize > 0) {
       return false;
     }
 

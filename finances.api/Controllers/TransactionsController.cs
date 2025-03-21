@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace finances2.api.Controllers {
+namespace finances.api.Controllers {
 
     public class TransactionsController(
         ITransactionGetter transacrionGetter,
@@ -25,7 +25,7 @@ namespace finances2.api.Controllers {
 
             return ReturnActionForServiceResult(
                 result.Result,
-                successPayload: new { transactions = result.Transactions, pageCount = result.PageCount, totalTransactions = result.TotalTransaxtions },
+                successPayload: result,
                 failurePayload: new { result.Errors });
         }
 

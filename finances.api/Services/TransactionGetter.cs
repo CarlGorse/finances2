@@ -1,9 +1,9 @@
 ﻿using finances.api.CategoryTotalsReport.Dto;
+using finances.api.Logic;
 using finances.api.Services.Interfaces;
 using finances2.api.Comparers;
 using finances2.api.Data.Models;
 using finances2.api.Enums;
-using finances2.api.Logic;
 using finances2.api.Repositories;
 using System;
 using System.Collections.Generic;
@@ -28,15 +28,10 @@ namespace finances.api.Services {
             ServiceResult serviceResult;
             var totalTransactions = 0;
 
+            var pageNo = parms.PageNo > 0 ? parms.PageNo : 1;
+            var pageSize = parms.PageSize;
+
             try {
-
-                if (parms.PageNo < 0) {
-                    errors.Add($"PageNo must not be negative.");
-                }
-
-                if (parms.PageSize <= 0) {
-                    errors.Add($"PageSize must be greater than zero.");
-                }
 
                 _searchCriteriaService.Validate(parms.YearAndPeriodSearch, errors);
 
@@ -57,19 +52,16 @@ namespace finances.api.Services {
                         SetRunningTotals(orderedTransactions, parms.AccountId, parms.YearAndPeriodSearch);
                     }
 
-                    if (parms.PageNo > 0) {
-                        pagedTransactions = PagingLogic.GetPagedItems(
-                            orderedTransactions.ToList(),
-                            parms.PageSize,
-                            parms.PageNo).ToList();
-
-                        pageCount = PagingLogic.GetPageCount(orderedTransactions.Count, parms.PageSize);
-                    }
-                    else {
-                        pagedTransactions = orderedTransactions;
-                    }
-
                     totalTransactions = orderedTransactions.Count;
+
+                    pageSize = pageSize > 0 ? pageSize : totalTransactions;
+
+                    pagedTransactions = PagingLogic.GetPagedItems(
+                        orderedTransactions.ToList(),
+                        pageSize,
+                        pageNo).ToList();
+
+                    pageCount = PagingLogic.GetPageCount(orderedTransactions.Count, parms.PageSize);
 
                     if (parms.IncludeWageTotals) {
                         SetWageTotals(pagedTransactions);
@@ -85,9 +77,10 @@ namespace finances.api.Services {
 
             return new TransactionSearchResultDTO {
                 PageCount = pageCount,
+                PageSize = pageSize,
                 Result = serviceResult,
                 Transactions = pagedTransactions,
-                TotalTransaxtions = totalTransactions
+                TotalTransactions = totalTransactions
             };
         }
 

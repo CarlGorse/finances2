@@ -3,8 +3,10 @@ import TransactionRow from "./TransactionRow/TransactionRow";
 import useLoadTransactions from "./useLoadTransactions";
 import { useState } from "react";
 import { Accordion, Container, Row } from "react-bootstrap";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loadedTransactionsState } from "recoil/atoms/LoadedTransactionsState";
+import { transactionsPageDataState } from "recoil/atoms/TransactionsPageDataState";
+import TransactionsPageData from "types/TransactionsPageData";
 
 import Spinner from "components/FinancesSpinner";
 
@@ -13,7 +15,13 @@ function TransactionList() {
 
   const loadedTransactions = useRecoilValue(loadedTransactionsState);
 
+  const setPageData = useSetRecoilState<TransactionsPageData>(
+    transactionsPageDataState,
+  );
+
   let transactionLoadingProgress = useLoadTransactions();
+
+  console.log(loadedTransactions);
 
   return transactionLoadingProgress === "loading" ? (
     <Spinner />
@@ -31,7 +39,7 @@ function TransactionList() {
       )}
 
       {!loading &&
-        loadedTransactions?.transactions?.map((transaction, index) => (
+        loadedTransactions?.Transactions?.map((transaction, index) => (
           <Accordion>
             <div className="mt-1">
               <TransactionRow
