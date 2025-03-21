@@ -1,4 +1,4 @@
-export default interface ValidaitonResult {
+export default interface ValidationResult {
   IsValid: Boolean;
   Errors: [String];
 }

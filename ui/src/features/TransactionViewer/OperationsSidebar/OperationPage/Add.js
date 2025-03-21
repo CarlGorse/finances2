@@ -62,8 +62,6 @@ function AddEdit({ handleClose }) {
 
     var validationResult = isValid(transaction);
 
-    console.log(validationResult);
-
     if (!validationResult.IsValid) {
       setUserMessage({
         Message: validationResult.Errors[0],

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageState } from "recoil/atoms/UserMessageState";
 import { yearAndPeriodSearchState } from "recoil/atoms/YearAndPeriodSearchState";
+import YearAndPeriod from "types/YearAndPeriod";
 
 import Spinner from "components/FinancesSpinner";
 import Layout from "components/Layout";
@@ -79,13 +80,27 @@ function Report() {
     );
   }
 
+  function isCurrentYearAndPeriod(yearAndPeriod: YearAndPeriod) {
+    return (
+      yearAndPeriod.Year == new Date().getFullYear() &&
+      yearAndPeriod.Period == new Date().getMonth() + 1
+    );
+  }
+
   if (loadState === "loaded") {
     report = (
       <div>
         <div className="d-flex flex-row col-10 justify-content-center">
           <div className="d-flex flex-column col-6"></div>
           {reportData.YearsAndPeriods.map((yearAndPeriod) => (
-            <div className="d-flex flex-column col-1">
+            <div
+              className="d-flex flex-column col-1"
+              style={{
+                backgroundColor: isCurrentYearAndPeriod(yearAndPeriod)
+                  ? "paleturquoise"
+                  : "",
+              }}
+            >
               <b>{`${yearAndPeriod.Year.toString().padStart(4, "0")}.${yearAndPeriod.Period.toString().padStart(2, "0")}`}</b>
             </div>
           ))}
@@ -105,6 +120,11 @@ function Report() {
                 <div
                   className="d-flex flex-column col-1"
                   key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`}
+                  style={{
+                    backgroundColor: isCurrentYearAndPeriod(yearAndPeriod)
+                      ? "paleturquoise"
+                      : "",
+                  }}
                 >
                   <b>
                     {formatCurrency(
@@ -135,6 +155,11 @@ function Report() {
                   <div
                     className="d-flex flex-column col-1"
                     key={`${yearAndPeriod.Year}.${yearAndPeriod.Period}`}
+                    style={{
+                      backgroundColor: isCurrentYearAndPeriod(yearAndPeriod)
+                        ? "paleturquoise"
+                        : "",
+                    }}
                   >
                     {formatCurrency(
                       reportData.CategoryTotals.filter(
