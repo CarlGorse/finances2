@@ -56,7 +56,7 @@ function TransactionRow({ transaction }) {
   }
 
   return (
-    <Row style={{ backgroundColor: isSelected ? "yellow" : "" }}>
+    <Row style={{ backgroundColor: isSelected ? "paleturquoise" : "" }}>
       <Col className="tableCell text-center" xs={1}>
         <Form.Check checked={isSelected} onChange={() => onCheck()} />
       </Col>

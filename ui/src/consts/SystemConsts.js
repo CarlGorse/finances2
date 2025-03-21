@@ -1,3 +1,1 @@
-const yearStart = 2019;
-
-export { yearStart };
+export const yearStart = 2019;

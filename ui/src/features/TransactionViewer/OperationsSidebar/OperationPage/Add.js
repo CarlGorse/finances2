@@ -14,6 +14,7 @@ import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactions
 import { selectedBankAccountState } from "recoil/atoms/SelectedBankAccountState";
 import { selectedTransactionsState } from "recoil/atoms/SelectedTransactionsState";
 import { userMessageState } from "recoil/atoms/UserMessageState";
+import { isValid } from "utilities/TransactionValidator";
 
 function AddEdit({ handleClose }) {
   const selectedBankAccount = useRecoilValue(selectedBankAccountState);
@@ -58,6 +59,18 @@ function AddEdit({ handleClose }) {
       Item: document.getElementById("addEdit_Item").value,
       TransactionId: 0,
     };
+
+    var validationResult = isValid(transaction);
+
+    console.log(validationResult);
+
+    if (!validationResult.IsValid) {
+      setUserMessage({
+        Message: validationResult.Errors[0],
+        Variant: "danger",
+      });
+      return;
+    }
 
     axios
       .post(

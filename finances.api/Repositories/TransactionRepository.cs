@@ -3,12 +3,13 @@ using finances2.api.Data;
 using finances2.api.Data.Models;
 using finances2.api.Functions;
 using finances2.api.Logic;
+using finances2.api.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace finances2.api.Repositories {
+namespace finances.api.Repositories {
 
     public class TransactionRepository(
         IFinancesDbContext dbContext,
@@ -31,8 +32,8 @@ namespace finances2.api.Repositories {
         public ICollection<Transaction> Get(int accountId, YearAndPeriodSearchDTO yearAndPeriodSearch) {
             return ItemsQuery().Where(x =>
                         x.AccountId == accountId
-                        && (x.EffDate.Year > yearAndPeriodSearch.StartYear || (x.EffDate.Year == yearAndPeriodSearch.StartYear && (x.EffDate.Month >= yearAndPeriodSearch.StartPeriod)))
-                        && (x.EffDate.Year < yearAndPeriodSearch.EndYear || (x.EffDate.Year == yearAndPeriodSearch.EndYear && (x.EffDate.Month <= yearAndPeriodSearch.EndPeriod))))
+                        && (x.EffDate.Year > yearAndPeriodSearch.StartYear || x.EffDate.Year == yearAndPeriodSearch.StartYear && x.EffDate.Month >= yearAndPeriodSearch.StartPeriod)
+                        && (x.EffDate.Year < yearAndPeriodSearch.EndYear || x.EffDate.Year == yearAndPeriodSearch.EndYear && x.EffDate.Month <= yearAndPeriodSearch.EndPeriod))
                     .ToList();
         }
 
