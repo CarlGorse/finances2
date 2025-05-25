@@ -1,6 +1,6 @@
 import { Col, Form, Row } from 'react-bootstrap';
 
-function AddEdit() {
+export default function IsWage({ defaultValue }) {
 
     return (
         <Row style={{ paddingTop: "5px" }}>
@@ -13,11 +13,10 @@ function AddEdit() {
                 <Form.Check
                     id="addEdit_IsWage"
                     type="switch"
+                    defaultChecked={defaultValue}
                 />
             </Col>
 
         </Row>
     );
 }
-
-export default AddEdit;

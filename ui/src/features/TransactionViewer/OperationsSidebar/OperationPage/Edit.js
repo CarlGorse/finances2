@@ -1,11 +1,3 @@
-import Category from "./AddEdit/Category";
-import Credit from "./AddEdit/Credit";
-import Debit from "./AddEdit/Debit";
-import Description from "./AddEdit/Description";
-import EffDate from "./AddEdit/EffDate";
-import IsWage from "./AddEdit/IsWage";
-import Item from "./AddEdit/Item";
-import SaveAndCancelButtons from "./SaveAndCancelButtons";
 import axios from "axios";
 import { getValidOperations } from "features/TransactionViewer/Utilities";
 import { stringToCurrency } from "functions/CurrencyFunctions";
@@ -17,6 +9,14 @@ import { selectedTransactionsState } from "recoil/atoms/SelectedTransactionsStat
 import { transactionOperationState } from "recoil/atoms/TransactionOperationState";
 import { userMessageState } from "recoil/atoms/UserMessageState";
 import { isValid } from "utilities/TransactionValidator";
+import Category from "./AddEdit/Category";
+import Credit from "./AddEdit/Credit";
+import Debit from "./AddEdit/Debit";
+import Description from "./AddEdit/Description";
+import EffDate from "./AddEdit/EffDate";
+import IsWage from "./AddEdit/IsWage";
+import Item from "./AddEdit/Item";
+import SaveAndCancelButtons from "./SaveAndCancelButtons";
 
 function Edit({ handleClose }) {
   const selectedBankAccount = useRecoilValue(selectedBankAccountState);
@@ -35,7 +35,7 @@ function Edit({ handleClose }) {
   }
 
   let transaction = selectedTransactions[0];
-
+  console.log(transaction);
   return (
     <>
       <EffDate defaultValue={transaction.EffDate} />

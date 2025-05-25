@@ -1,7 +1,7 @@
+import { getDateAsYYYYMMDD } from 'functions/DateFunctions';
 import { Col, Form, Row } from 'react-bootstrap';
-import { getDateAsYYYYMMDD } from 'functions/DateFunctions'
 
-function AddEdit({ defaultValue }) {
+export default function EffDate({ defaultValue }) {
 
     return (
         <Row style={{ paddingTop: "20px" }}>
@@ -20,5 +20,3 @@ function AddEdit({ defaultValue }) {
         </Row>
     );
 }
-
-export default AddEdit;

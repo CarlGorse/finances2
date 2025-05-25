@@ -1,6 +1,6 @@
 import { Col, Form, Row } from 'react-bootstrap';
 
-export default function AddEdit({ defaultValue }) {
+export default function Description({ defaultValue }) {
 
     return (
         <Row style={{ paddingTop: "5px" }}>

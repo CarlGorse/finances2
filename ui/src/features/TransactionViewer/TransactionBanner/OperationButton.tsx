@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap';
-import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
 import { validTransactionOperationsState } from 'recoil/atoms/ValidTransactionOperationsState';
 
 export default function OperationButton({ description, setShowSidebar }) {
@@ -19,11 +19,11 @@ export default function OperationButton({ description, setShowSidebar }) {
             onClick={() => {
                 if (transactionOperation !== description) {
                     setTransactionOperation(description);
-                    setShowSidebar(true);
+                    //setShowSidebar(true);
                 }
                 else {
                     setTransactionOperation(null);
-                    setShowSidebar(false);
+                    //setShowSidebar(false);
                 }
             }}
             disabled={!isEnabled}
