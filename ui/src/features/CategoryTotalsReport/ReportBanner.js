@@ -1,9 +1,9 @@
+import { useState } from "react";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import PeriodsToShowSelector from "./ReportBanner/PeriodsToShowSelector";
 import TotalCalculatorTypeSelector from "./ReportBanner/TotalCalculatorTypeSelector";
 import ValueCalculatorTypeSelector from "./ReportBanner/ValueCalculatorTypeSelector";
 import YearAndPeriodSelector from "./ReportBanner/YearAndPeriodSelector";
-import { useState } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
 
 function ReportBanner({
   reportLoadState,
@@ -40,23 +40,24 @@ function ReportBanner({
     >
       <YearAndPeriodSelector reportPeriods={reportPeriods} />
 
-      <div className="mt-1">
-        <PeriodsToShowSelector
-          onSelect={(selectedValue) => setReportPeriods(selectedValue)}
-        />
+      <div className="d-flex flex-row col-12">
+        <div className="d-flex col-4 pe-5">
+          <PeriodsToShowSelector
+            onSelect={(selectedValue) => setReportPeriods(selectedValue)}
+          />
+        </div>
+        <div className="d-flex col-4 pe-5">
+          <ValueCalculatorTypeSelector
+            onSelect={(selection) => onSelectValueCalculatorType(selection)}
+          />
+        </div>
+        <div className="d-flex col-4">
+          <TotalCalculatorTypeSelector
+            onSelect={(selection) => onSelectTotalCalculatorType(selection)}
+          />
+        </div>
       </div>
 
-      <div className="mt-1">
-        <ValueCalculatorTypeSelector
-          onSelect={(selection) => onSelectValueCalculatorType(selection)}
-        />
-      </div>
-
-      <div className="mt-1">
-        <TotalCalculatorTypeSelector
-          onSelect={(selection) => onSelectTotalCalculatorType(selection)}
-        />
-      </div>
 
       {refreshButton}
 

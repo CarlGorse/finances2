@@ -7,9 +7,9 @@ export default function TotalCalculatorTypeSelector({ onSelect }) {
   ];
 
   return (
-    <div className="d-flex col-5">
-      <div className="d-flex col-3">Total type:</div>
-      <div className="d-flex col-3">
+    <div className="d-flex flex-row col-12">
+      <div className="d-flex col-6">Total type:</div>
+      <div className="d-flex col-6">
         <Form.Select
           defaultValue={1}
           onChange={(e) => onSelect(e.target.value)}

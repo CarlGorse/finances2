@@ -70,11 +70,11 @@ function YearAndPeriodSelector({ reportPeriods }) {
       </Button>
 
       <div className="d-flex flex-row col-5" style={{ marginTop: "20px" }}>
-        <div className="d-flex col-3" xs={1}>
+        <div className="d-flex col-6" xs={1}>
           From:
         </div>
 
-        <div className="d-flex col-1" xs={1}>
+        <div className="d-flex col-6" xs={1}>
           <div>
             <PeriodSelector
               onSelect={(value) => {
