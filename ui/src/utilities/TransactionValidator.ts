@@ -23,12 +23,5 @@ export function isValid(transaction: Transaction): ValidationResult {
     } as ValidationResult;
   }
 
-  if (!(transaction.Debit > 0 || transaction.Credit > 0)) {
-    return {
-      IsValid: false,
-      Errors: ["Debit or Credit must be set."],
-    } as ValidationResult;
-  }
-
   return { IsValid: true, Errors: null } as ValidationResult;
 }
