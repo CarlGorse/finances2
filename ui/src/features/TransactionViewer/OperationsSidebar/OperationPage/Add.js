@@ -1,11 +1,3 @@
-import Category from "./AddEdit/Category";
-import Credit from "./AddEdit/Credit";
-import Debit from "./AddEdit/Debit";
-import Description from "./AddEdit/Description";
-import EffDate from "./AddEdit/EffDate";
-import IsWage from "./AddEdit/IsWage";
-import Item from "./AddEdit/Item";
-import SaveAndCancelButtons from "./SaveAndCancelButtons";
 import axios from "axios";
 import { getValidOperations } from "features/TransactionViewer/Utilities";
 import { stringToCurrency } from "functions/CurrencyFunctions";
@@ -17,18 +9,21 @@ import { selectedTransactionsState } from "recoil/atoms/SelectedTransactionsStat
 import { transactionOperationState } from "recoil/atoms/TransactionOperationState";
 import { userMessageState } from "recoil/atoms/UserMessageState";
 import { isValid } from "utilities/TransactionValidator";
+import Category from "./AddEdit/Category";
+import Credit from "./AddEdit/Credit";
+import Debit from "./AddEdit/Debit";
+import Description from "./AddEdit/Description";
+import EffDate from "./AddEdit/EffDate";
+import IsWage from "./AddEdit/IsWage";
+import Item from "./AddEdit/Item";
+import SaveAndCancelButtons from "./SaveAndCancelButtons";
 
-function Add({ handleClose }) {
+export default function Add({ handleClose }) {
+
+  const [selectedTransactions, setSelectedTransactions] = useRecoilState(selectedTransactionsState);
   const selectedBankAccount = useRecoilValue(selectedBankAccountState);
-
   const transactionOperation = useRecoilValue(transactionOperationState);
-  const [selectedTransactions, setSelectedTransactions] = useRecoilState(
-    selectedTransactionsState,
-  );
-
-  const setDateToLoadTransactions = useSetRecoilState(
-    dateToLoadTransactionsState,
-  );
+  const setDateToLoadTransactions = useSetRecoilState(dateToLoadTransactionsState);
   const setUserMessage = useSetRecoilState(userMessageState);
 
   let validOperations = getValidOperations(selectedTransactions);
@@ -110,5 +105,3 @@ function Add({ handleClose }) {
     });
   }
 }
-
-export default Add;

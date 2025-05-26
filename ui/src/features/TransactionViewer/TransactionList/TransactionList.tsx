@@ -1,12 +1,12 @@
-import TransactionHeader from "./TransactionHeader";
-import TransactionRow from "./TransactionRow/TransactionRow";
-import useLoadTransactions from "./useLoadTransactions";
 import { useState } from "react";
 import { Accordion, Container, Row } from "react-bootstrap";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loadedTransactionsState } from "recoil/atoms/LoadedTransactionsState";
 import { transactionsPageDataState } from "recoil/atoms/TransactionsPageDataState";
 import TransactionsPageData from "types/TransactionsPageData";
+import TransactionHeader from "./TransactionHeader";
+import TransactionRow from "./TransactionRow/TransactionRow";
+import useLoadTransactions from "./useLoadTransactions";
 
 import Spinner from "components/FinancesSpinner";
 

@@ -1,8 +1,8 @@
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import OperationPage from './OperationPage/OperationPage';
 
-import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
 import { useRecoilValue } from 'recoil';
+import { transactionOperationState } from 'recoil/atoms/TransactionOperationState';
 
 export default function OperationsSidebar({ show, setShow }) {
 
@@ -26,7 +26,7 @@ export default function OperationsSidebar({ show, setShow }) {
       </Offcanvas.Header>
 
       <Offcanvas.Body>
-        <OperationPage />
+        <OperationPage handleClose={() => setShow(false)} />
       </Offcanvas.Body>
 
     </Offcanvas>
