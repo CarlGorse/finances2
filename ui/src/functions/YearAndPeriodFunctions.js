@@ -12,10 +12,10 @@ function getPeriodCountFromYearsAndPeriods(year, period) {
 
 function isYearAndPeriodSearchValid(yearAndPeriodSearch) {
 
-  if (yearAndPeriodSearch.StartPeriod == null
-    || yearAndPeriodSearch.StartYear == null
-    || yearAndPeriodSearch.EndPeriod == null
-    || yearAndPeriodSearch.EndYear == null) {
+  if (!yearAndPeriodSearch.StartPeriod
+    || !yearAndPeriodSearch.StartYear
+    || !yearAndPeriodSearch.EndPeriod
+    || !yearAndPeriodSearch.EndYear) {
     return false;
   }
 
@@ -38,9 +38,7 @@ function getYearAndPeriodCountFromDate(date) {
 }
 
 export {
-  getYearAndPeriodCountFromDate,
-  getYearsAndPeriodsFromPeriodCount,
-  getPeriodCountFromYearsAndPeriods,
-  isYearAndPeriodSearchValid
+  getPeriodCountFromYearsAndPeriods, getYearAndPeriodCountFromDate,
+  getYearsAndPeriodsFromPeriodCount, isYearAndPeriodSearchValid
 };
 
