@@ -92,7 +92,7 @@ function Delete({ handleClose }) {
       <SaveAndCancelButtons
         save={() => Delete()}
         saveButtonText="Yes"
-        cancelButtonText="Cancel"
+        cancelButtonText="Close"
         handleClose={handleClose}
         saveButtonEnabled={selectedTransactions.length > 0}
       />

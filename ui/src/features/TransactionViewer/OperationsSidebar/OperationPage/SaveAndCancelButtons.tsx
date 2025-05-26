@@ -24,7 +24,7 @@ export default function SaveAndCancelButtons({
         <div style={{ marginTop: "20px" }}>
 
             {saveButtonOrSpinner}
-            <Button style={{ marginLeft: "1px" }} size="sm" onClick={handleClose} > {cancelButtonText ?? "Cancel"}</Button>
+            <Button style={{ marginLeft: "1px" }} size="sm" onClick={handleClose} > {cancelButtonText ?? "Close"}</Button>
         </div>
     );
 }
