@@ -1,4 +1,3 @@
-import SaveAndCancelButtons from "./SaveAndCancelButtons";
 import axios from "axios";
 import { getValidOperations } from "features/TransactionViewer/Utilities";
 import {
@@ -13,6 +12,7 @@ import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactions
 import { selectedTransactionsState } from "recoil/atoms/SelectedTransactionsState";
 import { transactionOperationState } from "recoil/atoms/TransactionOperationState";
 import { userMessageState } from "recoil/atoms/UserMessageState";
+import SaveAndCancelButtons from "./SaveAndCancelButtons.tsx";
 
 function MoveWages({ handleClose }) {
   const transactionOperation = useRecoilValue(transactionOperationState);

@@ -2,6 +2,7 @@ import axios from "axios";
 import { getValidOperations } from "features/TransactionViewer/Utilities";
 import { stringToCurrency } from "functions/CurrencyFunctions";
 import { getDateAsYYYYMMDD } from "functions/DateFunctions";
+import { useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactionsState";
 import { selectedBankAccountState } from "recoil/atoms/SelectedBankAccountState";
@@ -16,17 +17,16 @@ import Description from "./AddEdit/Description";
 import EffDate from "./AddEdit/EffDate";
 import IsWage from "./AddEdit/IsWage";
 import Item from "./AddEdit/Item";
-import SaveAndCancelButtons from "./SaveAndCancelButtons";
+import SaveAndCancelButtons from "./SaveAndCancelButtons.tsx";
 
 function Edit({ handleClose }) {
+
   const selectedBankAccount = useRecoilValue(selectedBankAccountState);
   const selectedTransactions = useRecoilValue(selectedTransactionsState);
   const transactionOperation = useRecoilValue(transactionOperationState);
-
-  const setDateToLoadTransactions = useSetRecoilState(
-    dateToLoadTransactionsState,
-  );
+  const setDateToLoadTransactions = useSetRecoilState(dateToLoadTransactionsState);
   const setUserMessage = useSetRecoilState(userMessageState);
+  const [isSaving, setIsSaving] = useState(false);
 
   let validOperations = getValidOperations(selectedTransactions);
 
@@ -35,7 +35,7 @@ function Edit({ handleClose }) {
   }
 
   let transaction = selectedTransactions[0];
-  console.log(transaction);
+
   return (
     <>
       <EffDate defaultValue={transaction.EffDate} />
@@ -50,6 +50,7 @@ function Edit({ handleClose }) {
         save={() => Save()}
         handleClose={handleClose}
         saveButtonEnabled={true}
+        isSaving={isSaving}
       />
     </>
   );
@@ -83,6 +84,8 @@ function Edit({ handleClose }) {
       return;
     }
 
+    setIsSaving(true);
+
     axios
       .post(
         process.env.REACT_APP_API_BASE_URL + "/transactions/Edit",
@@ -92,7 +95,12 @@ function Edit({ handleClose }) {
         },
       )
       .then(function () {
-        onSuccesfulRequest();
+        setDateToLoadTransactions(new Date());
+        setUserMessage({
+          Message: "Transaction saved.",
+          Variant: "success",
+        });
+        setIsSaving(false);
       })
       .catch(function (error) {
         setUserMessage({
@@ -100,14 +108,6 @@ function Edit({ handleClose }) {
           Variant: "danger",
         });
       });
-  }
-
-  function onSuccesfulRequest() {
-    setDateToLoadTransactions(new Date());
-    setUserMessage({
-      Message: "Transaction saved.",
-      Variant: "success",
-    });
   }
 }
 

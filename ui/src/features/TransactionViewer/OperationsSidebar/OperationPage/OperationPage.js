@@ -16,16 +16,16 @@ export default function OperationPage({ handleClose }) {
       markup = <Add handleClose={handleClose} />;
       break;
     case "Edit":
-      markup = <Edit />;
+      markup = <Edit handleClose={handleClose} />;
       break;
     case "Delete":
-      markup = <Delete />;
+      markup = <Delete handleClose={handleClose} />;
       break;
     case "Move wages":
-      markup = <MoveWages />;
+      markup = <MoveWages handleClose={handleClose} />;
       break;
     default:
   }
 
-  return <Form>xx{markup}</Form>;
+  return <Form>{markup}</Form>;
 }

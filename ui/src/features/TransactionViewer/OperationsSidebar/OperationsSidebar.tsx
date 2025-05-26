@@ -13,15 +13,11 @@ export default function OperationsSidebar({ show, setShow }) {
     <Offcanvas
       show={show}
       placement="end"
-      onHide={() => {
-        setShow(false)
-        //setTransactionOperation(null)
-      }}
       style={{ backgroundColor: "cornsilk" }}
       scroll={true}
       backdrop={false}
     >
-      <Offcanvas.Header closeButton>
+      <Offcanvas.Header>
         <Offcanvas.Title>{transactionOperation}</Offcanvas.Title>
       </Offcanvas.Header>
 

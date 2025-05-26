@@ -1,5 +1,6 @@
-import ReportBanner from "./ReportBanner";
 import axios from "axios";
+import Spinner from "components/FinancesSpinner";
+import Layout from "components/Layout";
 import { formatCurrency } from "functions/CurrencyFunctions";
 import { isYearAndPeriodSearchValid } from "functions/YearAndPeriodFunctions";
 import { useEffect, useState } from "react";
@@ -7,9 +8,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userMessageState } from "recoil/atoms/UserMessageState";
 import { yearAndPeriodSearchState } from "recoil/atoms/YearAndPeriodSearchState";
 import YearAndPeriod from "types/YearAndPeriod";
-
-import Spinner from "components/FinancesSpinner";
-import Layout from "components/Layout";
+import ReportBanner from "./ReportBanner";
 
 function Report() {
   const [doRefresh, setDoRefresh] = useState(false);
@@ -133,9 +132,9 @@ function Report() {
                       )[0]?.YearAndPeriodTotals.filter(
                         (groupYearAndPeriodTotal) =>
                           groupYearAndPeriodTotal.YearAndPeriod.Year ===
-                            yearAndPeriod.Year &&
+                          yearAndPeriod.Year &&
                           groupYearAndPeriodTotal.YearAndPeriod.Period ===
-                            yearAndPeriod.Period,
+                          yearAndPeriod.Period,
                       )[0]?.Total,
                     )}
                   </b>
@@ -168,9 +167,9 @@ function Report() {
                       )[0]?.YearAndPeriodTotals.filter(
                         (categoryYearAndPeriodTotal) =>
                           categoryYearAndPeriodTotal.YearAndPeriod.Year ===
-                            yearAndPeriod.Year &&
+                          yearAndPeriod.Year &&
                           categoryYearAndPeriodTotal.YearAndPeriod.Period ===
-                            yearAndPeriod.Period,
+                          yearAndPeriod.Period,
                       )[0]?.Total,
                     )}
                   </div>

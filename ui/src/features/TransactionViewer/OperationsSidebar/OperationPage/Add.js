@@ -2,6 +2,7 @@ import axios from "axios";
 import { getValidOperations } from "features/TransactionViewer/Utilities";
 import { stringToCurrency } from "functions/CurrencyFunctions";
 import { getDateAsYYYYMMDD } from "functions/DateFunctions";
+import { useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactionsState";
 import { selectedBankAccountState } from "recoil/atoms/SelectedBankAccountState";
@@ -16,7 +17,7 @@ import Description from "./AddEdit/Description";
 import EffDate from "./AddEdit/EffDate";
 import IsWage from "./AddEdit/IsWage";
 import Item from "./AddEdit/Item";
-import SaveAndCancelButtons from "./SaveAndCancelButtons";
+import SaveAndCancelButtons from "./SaveAndCancelButtons.tsx";
 
 export default function Add({ handleClose }) {
 
@@ -25,6 +26,7 @@ export default function Add({ handleClose }) {
   const transactionOperation = useRecoilValue(transactionOperationState);
   const setDateToLoadTransactions = useSetRecoilState(dateToLoadTransactionsState);
   const setUserMessage = useSetRecoilState(userMessageState);
+  const [isSaving, setIsSaving] = useState(false);
 
   let validOperations = getValidOperations(selectedTransactions);
 
@@ -46,6 +48,7 @@ export default function Add({ handleClose }) {
         save={() => Save()}
         handleClose={handleClose}
         saveButtonEnabled={true}
+        isSaving={isSaving}
       />
     </>
   );
@@ -77,6 +80,8 @@ export default function Add({ handleClose }) {
       return;
     }
 
+    setIsSaving(true);
+
     axios
       .post(
         process.env.REACT_APP_API_BASE_URL + "/transactions/Add",
@@ -87,21 +92,19 @@ export default function Add({ handleClose }) {
       )
       .then((response) => {
         setSelectedTransactions([response.data.transaction]);
-        onSuccesfulRequest();
+        setDateToLoadTransactions(new Date());
+        setUserMessage({
+          Message: "Transaction saved.",
+          Variant: "success",
+        });
+        setIsSaving(false);
       })
       .catch(function (error) {
         setUserMessage({
           Message: error.response.data.validationErrors[0],
           Variant: "danger",
         });
+        setIsSaving(false);
       });
-  }
-
-  function onSuccesfulRequest() {
-    setDateToLoadTransactions(new Date());
-    setUserMessage({
-      Message: "Transaction saved.",
-      Variant: "success",
-    });
   }
 }
