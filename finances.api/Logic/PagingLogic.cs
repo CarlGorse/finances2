@@ -18,12 +18,8 @@ namespace finances.api.Logic {
 
             ArgumentNullException.ThrowIfNull(items);
 
-            if (pageSize <= 0) {
-                throw new InvalidOperationException("Page size must be greater than zero.");
-            }
-
-            if (pageNo <= 0) {
-                throw new InvalidOperationException("Page number must be greater than zero.");
+            if (items.Count == 0 || pageSize <= 0 || pageNo <= 0) {
+                return items.ToList();
             }
 
             return items.Skip(Math.Max((pageNo - 1) * pageSize, 0)).Take(pageSize).ToList();

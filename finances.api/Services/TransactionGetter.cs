@@ -24,9 +24,9 @@ namespace finances.api.Services {
 
             List<string> errors = [];
             var pageCount = 0;
-            ICollection<Transaction> pagedTransactions = [];
+            ICollection<Transaction> transactionsToReturn = [];
             ServiceResult serviceResult;
-            var totalTransactions = 0;
+            var transactionCount = 0;
 
             var pageNo = parms.PageNo > 0 ? parms.PageNo : 1;
             var pageSize = parms.PageSize;
@@ -52,19 +52,21 @@ namespace finances.api.Services {
                         SetRunningTotals(orderedTransactions, parms.AccountId, parms.YearAndPeriodSearch);
                     }
 
-                    totalTransactions = orderedTransactions.Count;
+                    transactionCount = orderedTransactions.Count;
 
-                    pageSize = pageSize > 0 ? pageSize : totalTransactions;
+                    transactionsToReturn = orderedTransactions;
 
-                    pagedTransactions = PagingLogic.GetPagedItems(
-                        orderedTransactions.ToList(),
-                        pageSize,
-                        pageNo).ToList();
+                    if (transactionCount > 0 && pageSize > 0 && pageNo > 0) {
+                        transactionsToReturn = PagingLogic.GetPagedItems(
+                            transactionsToReturn,
+                            pageSize,
+                            pageNo).ToList();
 
-                    pageCount = PagingLogic.GetPageCount(orderedTransactions.Count, parms.PageSize);
+                        pageCount = PagingLogic.GetPageCount(transactionCount, parms.PageSize);
+                    }
 
                     if (parms.IncludeWageTotals) {
-                        SetWageTotals(pagedTransactions);
+                        SetWageTotals(transactionsToReturn);
                     }
 
                     serviceResult = ServiceResult.Ok;
@@ -79,8 +81,8 @@ namespace finances.api.Services {
                 PageCount = pageCount,
                 PageSize = pageSize,
                 Result = serviceResult,
-                Transactions = pagedTransactions,
-                TotalTransactions = totalTransactions
+                Transactions = transactionsToReturn,
+                TotalTransactions = transactionCount
             };
         }
 
