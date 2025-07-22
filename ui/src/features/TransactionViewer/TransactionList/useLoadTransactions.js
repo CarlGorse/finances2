@@ -1,4 +1,5 @@
 import axios from "axios";
+import useClearSelectedTransactions from "hooks/useClearSelectedTransactions";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactionsState";
@@ -21,6 +22,8 @@ function useLoadTransactions() {
   );
   const [transactionLoadingProgress, setTransactionLoadingProgress] =
     useState("");
+
+  const clearSelectedTransactions = useClearSelectedTransactions();
 
   useEffect(() => {
     let requestBody = getRequestBody();
@@ -52,6 +55,7 @@ function useLoadTransactions() {
   ]);
 
   function onSuccesfulRequest(response) {
+    clearSelectedTransactions();
     setLoadedTransactions(response.data);
     setTransactionLoadingProgress("loaded");
   }
