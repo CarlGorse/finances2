@@ -2,12 +2,13 @@ import axios from "axios";
 import { getValidOperations } from "features/TransactionViewer/Utilities";
 import { stringToCurrency } from "functions/CurrencyFunctions";
 import { getDateAsYYYYMMDD } from "functions/DateFunctions";
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { dateToLoadTransactionsState } from "recoil/atoms/DateToLoadTransactionsState";
 import { selectedBankAccountState } from "recoil/atoms/SelectedBankAccountState";
 import { selectedTransactionsState } from "recoil/atoms/SelectedTransactionsState";
 import { transactionOperationState } from "recoil/atoms/TransactionOperationState";
+import useLocalStorage from 'hooks/useLocalStorage'
 import { userMessageState } from "recoil/atoms/UserMessageState";
 import { isValid } from "utilities/TransactionValidator";
 import Category from "./AddEdit/Category";
@@ -27,17 +28,18 @@ export default function Add({ handleClose }) {
   const setDateToLoadTransactions = useSetRecoilState(dateToLoadTransactionsState);
   const setUserMessage = useSetRecoilState(userMessageState);
   const [isSaving, setIsSaving] = useState(false);
+  const [lastSavedTransaction, setLastSavedTransaction] = useLocalStorage('lastSavedTransaction', null)
 
   let validOperations = getValidOperations(selectedTransactions);
-
+  
   if (!validOperations.includes(transactionOperation)) {
     return;
   }
 
   return (
     <>
-      <EffDate />
-      <Category />
+      <EffDate defaultValue={lastSavedTransaction?.EffDate ?? getDateAsYYYYMMDD(new Date())} />
+      <Category defaultValue={lastSavedTransaction?.Category?.Id}/>
       <Debit />
       <Credit />
       <Description />
@@ -92,6 +94,7 @@ export default function Add({ handleClose }) {
       )
       .then((response) => {
         setSelectedTransactions([response.data.transaction]);
+        setLastSavedTransaction(response.data.transaction);
         setDateToLoadTransactions(new Date());
         setUserMessage({
           Message: "Transaction saved.",

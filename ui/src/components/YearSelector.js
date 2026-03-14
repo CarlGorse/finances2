@@ -9,11 +9,11 @@ function YearSelector({ defaultValue, onSelect }) {
     <NumberSelector
       defaultValue={defaultValue}
       onSelect={onSelect}
-      values={range(yearStart, new Date().getFullYear())}
+      values={range(yearStart, new Date().getFullYear() + 1)}
       startPadding={4}
     />
 
-    );
+  );
 }
 
 export default YearSelector;
