@@ -142,7 +142,7 @@ function Report() {
               ))}
             </div>
             {reportData.Categories.filter(
-              (category) => category.GroupId === group.GroupId,
+              (category) => category.GroupId === group.GroupId && category.DoNotDisplay == 0,
             ).map((category) => (
               <div
                 className="d-flex flex-row justify-content-center col-10"
